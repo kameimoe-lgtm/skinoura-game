@@ -1448,7 +1448,12 @@ function ending() {
   else { kicker = 'LONELY END'; title = 'ひとりぼっちエンド'; lines = [['nar', '疑いすぎたのかもしれない。誰にもだまされなかったけれど、誰とも近づけなかった'], ['nar', 'アプリの通知は、今夜も鳴らない']]; }
   return { metWolves, converted, title, lines, kicker };
 }
-const wolfListHTML = (fate) => `<ul class="wolves">${S.wolves.map(id => `<li ${who(id)}>${pfHTML(id)}<span><b class="wolfmark">${C[id].full}</b>　${esc(C[id].scam)}<br><small>${fate(id)}</small></span></li>`).join('')}</ul>`;
+// Only wolves the player matched are revealed, so unmatched characters keep their secret for the next run.
+const wolfListHTML = (fate) => {
+  const met = S.wolves.filter(id => S.matched.includes(id));
+  if (!met.length) return '<p>マッチした人のなかに、狼はいませんでした。</p>';
+  return `<p>マッチした人のなかの狼は、この${met.length}人でした。</p><ul class="wolves">${met.map(id => `<li ${who(id)}>${pfHTML(id)}<span><b class="wolfmark">${C[id].full}</b>　${esc(C[id].scam)}<br><small>${fate(id)}</small></span></li>`).join('')}</ul>`;
+};
 
 /* ---------- render ---------- */
 const who = id => `style="--who:var(--c-${id})"`;
@@ -1552,8 +1557,7 @@ function overHTML() {
     <div class="window"><span class="tag">${S.day}日目</span><div class="lines">${linesHTML(C[id].over.lines)}</div></div>
     <div class="reveal"><h3>答え合わせ</h3>
       <p>あなたが信じた<span class="wolfmark">${C[id].full}</span>は、${esc(C[id].scam)}が目的の狼でした。</p>
-      <p>今回の狼は、この${S.wolves.length}人でした。</p>
-      ${wolfListHTML(w => w === id ? 'あなたをだました' : S.matched.includes(w) ? 'あなたとマッチしていた' : 'マッチしなかった')}</div>
+      ${wolfListHTML(w => w === id ? 'あなたをだました' : 'まだ正体を見せていなかった')}</div>
     <div class="reveal"><h3>好感度</h3>${tallyHTML()}</div>
     <div class="row"><button class="btn-main" data-go="restart">もう一度あそぶ</button><button class="btn-sub" data-go="toTitle">タイトルへ</button></div>
   </section>${noteHTML()}</div>`;
@@ -1575,7 +1579,6 @@ function endingHTML() {
     <div class="window"><span class="tag">${dateLabel(LAST_DAY)}</span><div class="lines">${linesHTML(e.lines)}</div></div>
     <div class="reveal"><h3>答え合わせ</h3>
       <p>${guessLine}</p>
-      <p>今回の狼は、この${S.wolves.length}人でした。</p>
       ${wolfListHTML(fate)}
       ${e.metWolves.length > e.converted.length ? `<p class="empty">もっと距離を縮めていたら、狼の心も変えられたかもしれません。</p>` : ''}
     </div>
