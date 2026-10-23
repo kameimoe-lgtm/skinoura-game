@@ -7,182 +7,234 @@
 </head>
 <body>
 <title>スキのウラ</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
 <style>
-/* Layout: one narrow column like a phone novel game — matching-app swipe deck first, then status bar, cast strip, message window, clue notebook. */
+/* Layout: the whole game is the heroine's phone — a bezel on desktop, edge to edge on a real phone. Apps sit behind a bottom tab bar; dates take over the full screen. */
 :root{
+  --desk:#d9e9f3; --bezel:#17232d;
   --paper:#eef6fb; --card:#fafdff; --ink:#142838; --muted:#5d7385; --line:#d2e3ee; --wash:#e1eff8;
-  --rose:#1f7fb8; --on-rose:#ffffff; --wolf:#a3122a; --wolf-wash:#fbe3e6; --good:#2f7d55; --skip:#5d6b80;
+  --bubble:#ffffff; --tabbar:#f6fbfe;
+  --rose:#1f7fb8; --on-rose:#ffffff; --wolf:#a3122a; --on-wolf:#ffffff; --wolf-wash:#fbe3e6; --good:#2f7d55; --skip:#5d6b80;
   --c-minato:#4c8760; --c-rei:#7351c0; --c-sakura:#cc4f77; --c-sou:#3d6898; --c-haruto:#a8682c;
-  --c-miya:#b07a12; --c-yanagi:#7a5a44; --c-nanase:#4f7186; --c-you:#b8492f;
+  --c-miya:#b07a12; --c-yanagi:#7a5a44; --c-nanase:#4f7186; --c-you:#b8492f; --c-news:#a3122a;
   --f-display:"Kaisei Decol","Hiragino Mincho ProN","Yu Mincho",serif;
   --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --paper:#0e1921; --card:#15232e; --ink:#e5f1f8; --muted:#9ab1c2; --line:#253a49; --wash:#1b2e3b;
-  --rose:#6cc4f0; --on-rose:#06202e; --wolf:#ff7084; --wolf-wash:#3a1820; --good:#7fd1a3; --skip:#a9b6c9;
+  --desk:#060d12; --bezel:#000000;
+  --paper:#0e1921; --card:#15232e; --ink:#e5f1f8; --muted:#9ab1c2; --line:#253a49; --wash:#122029;
+  --bubble:#1d2f3c; --tabbar:#111e27;
+  --rose:#6cc4f0; --on-rose:#06202e; --wolf:#ff7084; --on-wolf:#2a0a10; --wolf-wash:#3a1820; --good:#7fd1a3; --skip:#a9b6c9;
   --c-minato:#8cc59c; --c-rei:#b49cf2; --c-sakura:#f394ad; --c-sou:#90b4de; --c-haruto:#e3a96f;
-  --c-miya:#ebc060; --c-yanagi:#c9a68a; --c-nanase:#9cc0d4; --c-you:#f2907a;
+  --c-miya:#ebc060; --c-yanagi:#c9a68a; --c-nanase:#9cc0d4; --c-you:#f2907a; --c-news:#ff7084;
   color-scheme:dark }}
 :root[data-theme="dark"]{
-  --paper:#0e1921; --card:#15232e; --ink:#e5f1f8; --muted:#9ab1c2; --line:#253a49; --wash:#1b2e3b;
-  --rose:#6cc4f0; --on-rose:#06202e; --wolf:#ff7084; --wolf-wash:#3a1820; --good:#7fd1a3; --skip:#a9b6c9;
+  --desk:#060d12; --bezel:#000000;
+  --paper:#0e1921; --card:#15232e; --ink:#e5f1f8; --muted:#9ab1c2; --line:#253a49; --wash:#122029;
+  --bubble:#1d2f3c; --tabbar:#111e27;
+  --rose:#6cc4f0; --on-rose:#06202e; --wolf:#ff7084; --on-wolf:#2a0a10; --wolf-wash:#3a1820; --good:#7fd1a3; --skip:#a9b6c9;
   --c-minato:#8cc59c; --c-rei:#b49cf2; --c-sakura:#f394ad; --c-sou:#90b4de; --c-haruto:#e3a96f;
-  --c-miya:#ebc060; --c-yanagi:#c9a68a; --c-nanase:#9cc0d4; --c-you:#f2907a;
+  --c-miya:#ebc060; --c-yanagi:#c9a68a; --c-nanase:#9cc0d4; --c-you:#f2907a; --c-news:#ff7084;
   color-scheme:dark }
 
-html,body{background:var(--paper);color:var(--ink)}
-body{font-family:var(--f-body);font-size:16px;line-height:1.85;
-  background-image:radial-gradient(var(--line) 1px, transparent 1.2px);background-size:22px 22px}
-.wrap{max-width:720px;margin:0 auto;padding-block:20px 56px;
-  padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px));
-  display:flex;flex-direction:column;gap:18px}
+html{height:100%;box-sizing:border-box;background:var(--desk)}
+body{height:100%;margin:0;background:var(--desk);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.7}
+#app{height:100%}
 button{font:inherit;color:inherit;cursor:pointer}
 button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--rose);outline-offset:2px}
 .px{image-rendering:pixelated;image-rendering:crisp-edges;display:block}
 .pf{background:color-mix(in srgb,var(--who) 24%,var(--card));border-radius:10px;overflow:hidden;flex:none}
+.pf img{width:100%;height:100%}
 
-/* ---- title ---- */
-.hero{display:flex;flex-direction:column;gap:14px;padding-block:28px 8px}
-.eyebrow{font-size:12px;letter-spacing:.14em;color:var(--muted)}
-.logo{font-family:var(--f-display);font-weight:700;font-size:clamp(56px,16vw,104px);line-height:1;margin:0;letter-spacing:.02em}
-.ura{display:inline-block;transform:scaleX(-1);color:var(--rose)}
-.lead{font-family:var(--f-display);font-size:clamp(18px,4.6vw,22px);line-height:1.6;margin:0;text-wrap:balance}
-.lineup{display:flex;gap:8px;flex-wrap:wrap}
-.lineup .pf{width:64px;height:64px}
-.lineup .pf img{width:100%;height:100%}
-.rules{display:grid;gap:10px;margin:0;padding:0;list-style:none}
-.rules li{display:grid;grid-template-columns:4.5em 1fr;gap:12px;align-items:baseline}
-.rules b{font-family:var(--f-display);color:var(--rose);font-size:13px}
-.rules span{min-width:0}
-.start{display:flex;flex-wrap:wrap;gap:10px;align-items:end;padding:18px;border:1px solid var(--line);background:var(--card);border-radius:14px}
-.start label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted);flex:1 1 180px;min-width:0}
-.start input{font:inherit;font-size:16px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
-.btn-main{background:var(--rose);color:var(--on-rose);border:0;border-radius:999px;padding:12px 26px;font-weight:700}
-.btn-sub{background:transparent;border:1px solid var(--line);border-radius:999px;padding:10px 20px}
+/* ---- phone frame ---- */
+.stage{height:100%;box-sizing:border-box;display:flex;align-items:center;justify-content:center;padding:20px 16px}
+.phone{position:relative;width:100%;max-width:400px;height:min(860px,100%);background:var(--paper);border:10px solid var(--bezel);border-radius:46px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 60px color-mix(in srgb,var(--ink) 18%,transparent)}
+@media (max-width:520px){.stage{padding:0}.phone{max-width:none;height:100%;border:0;border-radius:0;box-shadow:none}}
+.sbar{display:flex;justify-content:space-between;align-items:center;padding:10px 24px 6px;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;flex:none}
+.sbar .bat{letter-spacing:.04em;color:var(--muted)}
+.view{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+.view.fill{overflow:hidden;display:flex;flex-direction:column}
+.pad{padding:8px 18px 24px;display:flex;flex-direction:column;gap:14px}
 
-/* ---- matching app ---- */
-.appbar{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
-.applogo{font-family:var(--f-display);font-weight:700;font-size:26px;color:var(--rose);letter-spacing:.04em}
-.appsub{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
-.deck{display:flex;justify-content:center;padding-block:4px}
-.pcard{position:relative;width:100%;max-width:360px;background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none;box-shadow:0 10px 30px color-mix(in srgb,var(--ink) 10%,transparent);transition:transform .2s ease}
-.photo{position:relative;aspect-ratio:1/1;max-width:100%;background:linear-gradient(180deg,color-mix(in srgb,var(--who) 30%,var(--card)),color-mix(in srgb,var(--who) 55%,var(--card)));display:flex;align-items:flex-end;justify-content:center}
-.photo img{width:84%;height:84%}
-.badges{position:absolute;top:12px;left:12px;display:flex;gap:6px;flex-wrap:wrap}
-.badge{font-size:11px;background:var(--card);color:var(--ink);border-radius:999px;padding:2px 10px}
-.badge.friend{background:var(--ink);color:var(--card)}
-.pinfo{padding:14px 18px 18px;display:flex;flex-direction:column;gap:6px}
-.pinfo h2{margin:0;font-family:var(--f-display);font-size:24px;line-height:1.2}
-.pinfo h2 small{font-family:var(--f-body);font-size:15px;color:var(--muted);font-weight:400;margin-left:6px}
-.pinfo .job{margin:0;font-size:13px;color:var(--muted)}
-.pinfo .bio{margin:0;font-size:14px}
-.tags{display:flex;flex-wrap:wrap;gap:6px}
-.tags span{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:0 10px;color:var(--muted)}
-.stamp{position:absolute;top:24px;font-family:var(--f-display);font-weight:700;font-size:28px;padding:2px 14px;border:3px solid;border-radius:10px;pointer-events:none}
-.stamp.yes{left:20px;color:var(--rose);transform:rotate(-12deg);opacity:var(--yes,0)}
-.stamp.no{right:20px;color:var(--skip);transform:rotate(12deg);opacity:var(--no,0)}
-.swbtns{display:flex;justify-content:center;gap:28px}
-.sw{width:64px;height:64px;border-radius:50%;border:2px solid;background:var(--card);font-size:26px;line-height:1;display:grid;place-items:center}
-.sw.no{color:var(--skip)}
-.sw.yes{color:var(--rose)}
-.center{text-align:center}
+/* ---- tab bar ---- */
+.tabs{flex:none;display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line);background:var(--tabbar);padding-bottom:max(4px,env(safe-area-inset-bottom,0px))}
+.tab{border:0;background:transparent;padding:8px 0 6px;font-size:10.5px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:1px;position:relative}
+.tab .ic{font-size:19px;line-height:1.2}
+.tab.on{color:var(--rose);font-weight:700}
+.dot{position:absolute;top:4px;left:calc(50% + 6px);min-width:16px;height:16px;border-radius:8px;background:var(--wolf);color:var(--on-wolf);font-size:10px;line-height:16px;padding:0 4px;box-sizing:border-box;font-weight:700}
 
-/* ---- status ---- */
-.bar{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline;justify-content:space-between}
-.bar .name{font-family:var(--f-display);font-weight:700;font-size:20px}
-.bar .meta{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
-.bar .meta strong{color:var(--ink);font-weight:700}
+/* ---- shared ---- */
+h1.apptitle{font-family:var(--f-display);font-size:24px;margin:0;padding:6px 0 2px}
+.muted{color:var(--muted);font-size:13px;margin:0}
+.btn-main{background:var(--rose);color:var(--on-rose);border:0;border-radius:999px;padding:12px 22px;font-weight:700}
+.btn-main:disabled{opacity:.4;cursor:not-allowed}
+.btn-sub{background:transparent;border:1px solid var(--line);border-radius:999px;padding:10px 18px}
+.btn-sub:disabled{opacity:.4;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 14px}
+.hearts{font-size:11px;letter-spacing:1px;color:var(--line);white-space:nowrap}
+.hearts span{color:var(--who)}
+.tagpill{font-size:10.5px;border:1px solid var(--line);border-radius:999px;padding:0 8px;color:var(--muted);white-space:nowrap}
+.tagpill.lover{border-color:var(--rose);color:var(--rose)}
 .days{display:grid;grid-template-columns:repeat(20,1fr);gap:3px}
 .days i{height:5px;border-radius:3px;background:var(--line)}
 .days i.past{background:color-mix(in srgb,var(--rose) 45%,var(--line))}
 .days i.now{background:var(--rose)}
 
-/* ---- cast ---- */
-.cast{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
-.member{display:flex;gap:10px;align-items:center;padding:8px;border-radius:12px;background:var(--card);border:1px solid var(--line);min-width:0}
-.member .pf{width:40px;height:40px}
-.member .pf img{width:100%;height:100%}
-.member .txt{min-width:0;display:flex;flex-direction:column;line-height:1.35}
-.member .nm{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hearts{font-size:12px;letter-spacing:1px;color:var(--line)}
-.hearts span{color:var(--who)}
-.hearts i{font-style:normal;color:var(--muted);letter-spacing:0;margin-left:4px;font-variant-numeric:tabular-nums}
+/* ---- lock screen (title) ---- */
+.lock{min-height:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:14px;padding:18px 22px 28px;background:linear-gradient(180deg,color-mix(in srgb,var(--rose) 16%,var(--paper)) 0%,var(--paper) 55%)}
+.lock .clock{font-family:var(--f-display);font-size:68px;font-weight:700;line-height:1;text-align:center;font-variant-numeric:tabular-nums}
+.lock .dateline{text-align:center;color:var(--muted);font-size:13px;margin-top:-6px}
+.logo{font-family:var(--f-display);font-weight:700;font-size:50px;line-height:1;margin:14px 0 0;letter-spacing:.02em}
+.ura{display:inline-block;transform:scaleX(-1);color:var(--rose)}
+.lead{font-family:var(--f-display);font-size:17px;line-height:1.6;margin:0;text-wrap:balance}
+.lock .lineup{display:flex;flex-wrap:wrap;gap:6px}
+.lock .lineup .pf{width:36px;height:36px;border-radius:50%}
+.lock details{font-size:13px}
+.lock summary{cursor:pointer;color:var(--muted)}
+.rules{display:grid;gap:8px;margin:8px 0 0;padding:0;list-style:none}
+.rules li{display:grid;grid-template-columns:3.6em 1fr;gap:10px;align-items:baseline}
+.rules b{font-family:var(--f-display);color:var(--rose);font-size:12px}
+.rules span{min-width:0}
+.start{display:flex;flex-wrap:wrap;gap:10px;align-items:end;padding:14px;border:1px solid var(--line);background:var(--card);border-radius:18px}
+.start label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted);flex:1 1 140px;min-width:0}
+.start input{font:inherit;font-size:16px;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
 
-/* ---- message window ---- */
-.window{position:relative;background:var(--card);border:1.5px solid var(--ink);border-radius:18px;padding:22px 18px 18px;display:flex;flex-direction:column;gap:14px;box-shadow:5px 5px 0 var(--wash)}
-.window .tag{position:absolute;top:-12px;left:18px;background:var(--ink);color:var(--card);font-size:11px;letter-spacing:.12em;padding:2px 12px;border-radius:999px}
-.lines{display:flex;flex-direction:column;gap:14px}
-.lines.story{max-height:min(66vh,640px);overflow-y:auto;padding-right:6px;cursor:pointer}
+/* ---- home ---- */
+.home .clock{font-family:var(--f-display);font-size:46px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.home .dateline{color:var(--muted);font-size:13px}
+.notes{display:flex;flex-direction:column;gap:8px}
+.ntf{display:grid;grid-template-columns:36px 1fr;gap:10px;align-items:start;text-align:left;width:100%;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px 12px;box-sizing:border-box}
+button.ntf:hover{border-color:var(--rose)}
+.ntf .ico{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--wash);font-weight:700;color:var(--muted)}
+.ntf .ico.pf{border-radius:50%}
+.ntf b{font-size:12px;display:block}
+.ntf .tx{font-size:13px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.plan b{display:block;font-size:12px;color:var(--muted);letter-spacing:.08em;font-weight:500}
+
+/* ---- talk list / lumi list ---- */
+.lrow{display:grid;grid-template-columns:46px 1fr auto;gap:12px;align-items:center;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:transparent;padding:10px 4px;box-sizing:border-box}
+.lrow .pf{width:46px;height:46px;border-radius:50%}
+.lrow .mid{min-width:0;display:flex;flex-direction:column;line-height:1.45}
+.lrow .nm{font-weight:700;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.lrow .pv{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.unread{min-width:20px;height:20px;border-radius:10px;background:var(--rose);color:var(--on-rose);font-size:11px;line-height:20px;text-align:center;padding:0 6px;box-sizing:border-box;font-weight:700}
+
+/* ---- thread ---- */
+.th-h{flex:none;display:flex;align-items:center;gap:10px;padding:6px 12px 8px;border-bottom:1px solid var(--line);background:var(--tabbar)}
+.th-h .pf{width:36px;height:36px;border-radius:50%}
+.th-h .who{min-width:0;display:flex;flex-direction:column;line-height:1.35}
+.th-h .who b{font-size:15px}
+.back{border:0;background:transparent;font-size:24px;line-height:1;color:var(--rose);padding:2px 6px}
+.th-body{flex:1;min-height:0;overflow-y:auto;padding:12px 12px 16px;display:flex;flex-direction:column;gap:8px;background:var(--wash)}
+.msg{display:flex;gap:8px;align-items:flex-end;max-width:86%}
+.msg .pf{width:28px;height:28px;border-radius:50%}
+.msg .b{background:var(--bubble);border-radius:18px 18px 18px 6px;padding:8px 12px;font-size:14px;line-height:1.6;min-width:0;overflow-wrap:anywhere}
+.msg.me{align-self:flex-end}
+.msg.me .b{background:var(--rose);color:var(--on-rose);border-radius:18px 18px 6px 18px}
+.mnar{align-self:center;max-width:90%;font-size:12px;color:var(--muted);text-align:center;line-height:1.6}
+.stamp{align-self:center;font-size:11px;color:var(--muted);background:var(--paper);border-radius:999px;padding:1px 12px}
+.th-opts{flex:none;border-top:1px solid var(--line);background:var(--tabbar);padding:10px 12px;display:flex;flex-direction:column;gap:6px;max-height:44%;overflow-y:auto}
+.opt{text-align:left;padding:10px 14px;border-radius:14px;border:1px solid var(--line);background:var(--card);display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:14px}
+.opt:hover:not(:disabled){border-color:var(--rose)}
+.opt:disabled{opacity:.45;cursor:not-allowed}
+.opt small{color:var(--muted);font-size:11px;white-space:nowrap}
+.th-hint{font-size:12px;color:var(--muted);text-align:center;margin:0}
+
+/* ---- story (dates, prologue) ---- */
+.story{flex:1;min-height:0;display:flex;flex-direction:column;background:linear-gradient(180deg,color-mix(in srgb,var(--rose) 9%,var(--paper)),var(--paper))}
+.story-h{flex:none;padding:6px 18px 4px;font-size:11px;letter-spacing:.16em;color:var(--muted)}
+.lines{display:flex;flex-direction:column;gap:12px}
+.story-log{flex:1;min-height:0;overflow-y:auto;padding:8px 16px 14px;cursor:pointer}
 .ln{display:grid;grid-template-columns:48px 1fr;gap:10px;align-items:start}
 .ln.new{animation:rise .35s ease both}
 .ln.old{opacity:.7}
 .ln .who{display:flex;flex-direction:column;align-items:center;gap:2px}
 .ln .who .pf{width:44px;height:44px}
-.ln .who .pf img{width:100%;height:100%}
 .ln .who b{font-size:11px;color:var(--who);white-space:nowrap}
-.ln .say{min-width:0;background:var(--paper);border:1px solid var(--line);border-radius:4px 16px 16px 16px;padding:8px 14px}
-.ln .say .msg{display:block;font-size:11px;color:var(--muted);letter-spacing:.08em;line-height:1.4}
-.ln.nar,.ln.me,.ln.sys,.ln.day{grid-template-columns:1fr}
+.ln .say{min-width:0;background:var(--card);border:1px solid var(--line);border-radius:4px 16px 16px 16px;padding:8px 14px}
+.ln.nar,.ln.me,.ln.news{grid-template-columns:1fr}
 .ln.nar .say{background:var(--wash);border:0;border-radius:10px;padding:10px 16px}
 .ln.me{justify-items:end}
 .ln.me .say{background:var(--rose);color:var(--on-rose);border:0;border-radius:16px 4px 16px 16px;max-width:85%;font-weight:500}
-.ln.sys{justify-items:center}
-.ln.sys .say{background:transparent;border:1px dashed var(--muted);color:var(--muted);font-size:12px;border-radius:999px;padding:1px 14px}
-.ln.day{justify-items:center;padding-top:2px}
-.ln.day .say{background:transparent;border:0;padding:0;font-family:var(--f-display);font-weight:700;color:var(--rose);letter-spacing:.06em}
-.adv{display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:6px;border-top:1px dashed var(--line)}
+.ln.news .say{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--wolf);border-radius:10px;font-size:13.5px}
+.ln.news .say small{display:block;font-size:10.5px;letter-spacing:.14em;color:var(--wolf);font-weight:700}
+.foot{flex:none;padding:10px 14px 14px;border-top:1px dashed var(--line);display:flex;flex-direction:column;gap:8px;max-height:46%;overflow-y:auto}
+.choice{text-align:left;padding:11px 16px;border-radius:14px;border:1px solid var(--line);background:var(--card);display:flex;justify-content:space-between;gap:12px;align-items:center}
+.choice:hover:not(:disabled){border-color:var(--rose)}
+.choice small{color:var(--muted);font-size:11px;white-space:nowrap}
+.adv{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .next{border:0;background:transparent;color:var(--rose);font-weight:700;padding:6px 2px;display:flex;gap:8px;align-items:center}
 .next .tri{display:inline-block;animation:bob 1s ease-in-out infinite}
 .skip{font-size:12px;color:var(--muted);background:transparent;border:0;text-decoration:underline;padding:6px 2px}
 @keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @keyframes bob{50%{transform:translateY(3px)}}
-@media (prefers-reduced-motion:reduce){.ln.new,.next .tri{animation:none}.pcard{transition:none}}
-.choices{display:flex;flex-direction:column;gap:8px;padding-top:6px;border-top:1px dashed var(--line)}
-.choice{text-align:left;padding:11px 16px;border-radius:12px;border:1px solid var(--line);background:var(--paper);display:flex;justify-content:space-between;gap:12px;align-items:center}
-.choice:hover:not(:disabled){border-color:var(--rose);background:var(--wash)}
-.choice:disabled{opacity:.45;cursor:not-allowed}
-.choice small{color:var(--muted);font-size:11px;white-space:nowrap}
 
-/* ---- notebook ---- */
-.note h2{font-family:var(--f-display);font-size:17px;margin:0 0 2px}
-.note p.hint{margin:0 0 10px;font-size:12px;color:var(--muted)}
+/* ---- swipe ---- */
+.deck{display:flex;justify-content:center}
+.pcard{position:relative;width:100%;max-width:340px;background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none;box-shadow:0 10px 26px color-mix(in srgb,var(--ink) 10%,transparent);transition:transform .2s ease}
+.photo{position:relative;aspect-ratio:1/1;max-width:100%;background:linear-gradient(180deg,color-mix(in srgb,var(--who) 30%,var(--card)),color-mix(in srgb,var(--who) 55%,var(--card)));display:flex;align-items:flex-end;justify-content:center}
+.photo img{width:80%;height:80%}
+.badges{position:absolute;top:12px;left:12px;display:flex;gap:6px;flex-wrap:wrap}
+.badge{font-size:11px;background:var(--card);color:var(--ink);border-radius:999px;padding:2px 10px}
+.badge.friend{background:var(--ink);color:var(--card)}
+.pinfo{padding:12px 16px 16px;display:flex;flex-direction:column;gap:4px}
+.pinfo h2{margin:0;font-family:var(--f-display);font-size:22px;line-height:1.2}
+.pinfo h2 small{font-family:var(--f-body);font-size:14px;color:var(--muted);font-weight:400;margin-left:6px}
+.pinfo .job{margin:0;font-size:12px;color:var(--muted)}
+.pinfo .bio{margin:0;font-size:13.5px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tags span{font-size:11.5px;border:1px solid var(--line);border-radius:999px;padding:0 10px;color:var(--muted)}
+.stamp-s{position:absolute;top:22px;font-family:var(--f-display);font-weight:700;font-size:26px;padding:2px 12px;border:3px solid;border-radius:10px;pointer-events:none}
+.stamp-s.yes{left:18px;color:var(--rose);transform:rotate(-12deg);opacity:var(--yes,0)}
+.stamp-s.no{right:18px;color:var(--skip);transform:rotate(12deg);opacity:var(--no,0)}
+.swbtns{display:flex;justify-content:center;gap:28px}
+.sw{width:60px;height:60px;border-radius:50%;border:2px solid;background:var(--card);font-size:24px;line-height:1;display:grid;place-items:center}
+.sw.no{color:var(--skip)}
+.sw.yes{color:var(--rose)}
+.center{text-align:center}
+
+/* ---- memo / bank ---- */
 .note details{border-top:1px solid var(--line);padding:8px 0}
 .note summary{cursor:pointer;font-weight:700;display:flex;gap:8px;align-items:center}
-.note summary .dot{width:10px;height:10px;border-radius:50%;background:var(--who)}
+.note summary .sdot{width:10px;height:10px;border-radius:50%;background:var(--who)}
 .note summary .count{font-weight:400;color:var(--muted);font-size:12px}
 .note ul{margin:8px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
 .note li{display:grid;grid-template-columns:auto 1fr;gap:10px;font-size:13px}
-.note li em{font-style:normal;font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:0 6px;height:fit-content;white-space:nowrap}
+.note li em{font-style:normal;font-size:10.5px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:0 6px;height:fit-content;white-space:nowrap}
 .note li span{min-width:0}
-.empty{font-size:13px;color:var(--muted);margin:0}
+.motif{border-left:4px solid var(--wolf)}
+.bal{font-family:var(--f-display);font-size:36px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+.txl{margin:0;padding:0;list-style:none}
+.txl li{display:grid;grid-template-columns:3.4em 1fr auto;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px;font-variant-numeric:tabular-nums}
+.txl .d{color:var(--muted)}
+.txl .plus{color:var(--good);font-weight:700}
 
 /* ---- endings ---- */
-.end{display:flex;flex-direction:column;gap:18px;padding-block:20px}
-.end .kicker{font-size:12px;letter-spacing:.16em;color:var(--muted)}
-.end h1{font-family:var(--f-display);font-size:clamp(32px,8.5vw,54px);line-height:1.2;margin:0;text-wrap:balance}
+.end{display:flex;flex-direction:column;gap:16px}
+.end .kicker{font-size:11px;letter-spacing:.18em;color:var(--muted)}
+.end h1{font-family:var(--f-display);font-size:30px;line-height:1.25;margin:0;text-wrap:balance}
 .end.over h1{color:var(--wolf)}
-.end.over .window{border-color:var(--wolf);box-shadow:5px 5px 0 var(--wolf-wash)}
-.reveal{display:flex;flex-direction:column;gap:8px;padding:16px 18px;border-radius:14px;background:var(--wash)}
-.reveal h3{margin:0;font-size:14px;letter-spacing:.06em}
-.reveal p{margin:0}
+.reveal{display:flex;flex-direction:column;gap:8px;padding:14px 16px;border-radius:16px;background:var(--wash)}
+.reveal h3{margin:0;font-size:13px;letter-spacing:.06em}
+.reveal p{margin:0;font-size:14px}
 .wolfmark{color:var(--wolf);font-weight:700}
+.okmark{color:var(--good);font-weight:700}
 .wolves{margin:0;padding:0;list-style:none;display:grid;gap:10px}
 .wolves li{display:grid;grid-template-columns:40px 1fr;gap:10px;align-items:center;font-size:14px;line-height:1.5}
-.wolves .pf{width:40px;height:40px}
-.wolves .pf img{width:100%;height:100%}
+.wolves .pf{width:40px;height:40px;border-radius:50%}
 .wolves span{min-width:0}
 .wolves small{color:var(--muted);font-size:12px}
-.okmark{color:var(--good);font-weight:700}
 .tally{display:grid;gap:6px;margin:0;padding:0;list-style:none}
-.tally li{display:grid;grid-template-columns:5em 1fr auto;gap:10px;align-items:center;font-size:14px}
+.tally li{display:grid;grid-template-columns:4.5em 1fr auto;gap:10px;align-items:center;font-size:13px}
 .tally .meter{height:6px;border-radius:3px;background:var(--line);overflow:hidden}
 .tally .meter b{display:block;height:100%;background:var(--who)}
 .tally .v{font-variant-numeric:tabular-nums;color:var(--muted);font-size:12px}
-.row{display:flex;flex-wrap:wrap;gap:10px}
+.endlines{display:flex;flex-direction:column;gap:10px}
+
+@media (prefers-reduced-motion:reduce){.ln.new,.next .tri{animation:none}.pcard{transition:none}}
 </style>
 
 <div id="app"></div>
@@ -191,7 +243,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid
 const ALL_IDS = ['minato','rei','sakura','sou','haruto','nanase','shizuma','gou','kai','iroha','shingo','nagi','ren','akira','shion'];
 const WOLF_COUNT = 5;
 let IDS = ALL_IDS;
-const SPK = {minato:'湊', rei:'レイ', sakura:'さくら', sou:'ソウ', haruto:'ハルト', nanase:'七瀬', you:'ヨウ', miya:'ミヤ', yanagi:'柳', nar:''};
+const SPK = {news:'ニュース', minato:'湊', rei:'レイ', sakura:'さくら', sou:'ソウ', haruto:'ハルト', nanase:'七瀬', you:'ヨウ', miya:'ミヤ', yanagi:'柳', nar:''};
 const LAST_DAY = 20, MAX_START = 4, MAX_TOTAL = 6, ADD_UNTIL = 14, PAYDAY = 15;
 
 /* ---------- pixel portraits (16x16) ---------- */
@@ -1231,46 +1283,7 @@ C.shion.lie = {
   }
 };
 
-let S = null;
 
-/* Characters defined after the core cast carry their own px / colors / after; register them here. */
-function registerCast() {
-  IDS = ALL_IDS.filter(id => C[id]);
-  let light = '', dark = '';
-  IDS.forEach(id => {
-    const c = C[id];
-    if (!PX[id] && c.px) PX[id] = c.px;
-    if (!SPK[id]) SPK[id] = c.short;
-    if (!AFTER[id] && c.after) AFTER[id] = c.after.map(m => (Array.isArray(m) ? m[m.length - 1] : m));
-    if (c.colors) { light += `--c-${id}:${c.colors.light};`; dark += `--c-${id}:${c.colors.dark};`; }
-  });
-  const st = document.createElement('style');
-  st.textContent = `:root{${light}}@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){${dark}}}:root[data-theme="dark"]{${dark}}`;
-  document.head.appendChild(st);
-}
-
-/* ---------- helpers ---------- */
-const clamp = x => Math.max(0, Math.min(100, x));
-const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
-const yen = n => n.toLocaleString('ja-JP') + '円';
-const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const fmt = t => t.split('{n}').join(S ? S.name : 'あなた');
-const v = id => (S.wolves.includes(id) ? 'wolf' : 'true');
-const addAff = (id, d) => { S.chars[id].aff = clamp(S.chars[id].aff + d); };
-const reduceMotion = () => window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-function dateLabel(day) { const d = new Date(2027, 3, day); return `4月${day}日（${'日月火水木金土'[d.getDay()]}）`; }
-function clue(id, src, text) { S.clues[id].push({ day: S.day, src, text: fmt(text) }); }
-/* The day's story accumulates in S.log; S.shown is how many lines are revealed so far. */
-function scene(tag, lines, choices) {
-  S.screen = 'play';
-  const before = S.log.length;
-  S.sceneStart = before - (S.meFlag ? 1 : 0);
-  S.meFlag = false;
-  S.log.push(...lines);
-  S.shown = Math.max(S.shown, before + 1);
-  S.scene = { tag, choices };
-  render();
-}
 const DAY_FLAVOR = [
   '新しい職場に通いはじめて3週間。満員電車にも、少しだけ慣れてきた',
   '駅のホームに、桜の花びらが舞っていた。スマホには、アプリの通知がいくつか届いている',
@@ -1363,14 +1376,84 @@ const CONFESS = {
   shion:{ask:[['shion','{n}さん。今日は、カードを引かずに言いますね'],['shion','占いなんかなくても、わかるんです。……あなたが好きです。お付き合いしてください']],
     yes:[['shion','……ありがとう。いまの私、きっと星のカードみたいな顔をしています']], no:[['shion','……そうですか。ふふ、未来は、まだ決まっていませんから']]},
 };
+
+let S = null;
+
+/* Characters defined after the core cast carry their own px / colors / after; register them here. */
+function registerCast() {
+  IDS = ALL_IDS.filter(id => C[id]);
+  let light = '', dark = '';
+  IDS.forEach(id => {
+    const c = C[id];
+    if (!PX[id] && c.px) PX[id] = c.px;
+    if (!SPK[id]) SPK[id] = c.short;
+    if (!AFTER[id] && c.after) AFTER[id] = c.after.map(m => (Array.isArray(m) ? m[m.length - 1] : m));
+    if (c.colors) { light += `--c-${id}:${c.colors.light};`; dark += `--c-${id}:${c.colors.dark};`; }
+  });
+  const st = document.createElement('style');
+  st.textContent = `:root{${light}}@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){${dark}}}:root[data-theme="dark"]{${dark}}`;
+  document.head.appendChild(st);
+}
+
+/* ---------- helpers ---------- */
+const clamp = x => Math.max(0, Math.min(100, x));
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const pick1 = a => a[Math.floor(Math.random() * a.length)];
+const yen = n => n.toLocaleString('ja-JP') + '円';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt = t => String(t).split('{n}').join(S ? S.name : 'あなた');
+const v = id => (S.wolves.includes(id) ? 'wolf' : 'true');
+const addAff = (id, d) => { S.chars[id].aff = clamp(S.chars[id].aff + d); };
+const reduceMotion = () => window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+function dateLabel(day) { const d = new Date(2027, 3, day); return `4月${day}日（${'日月火水木金土'[d.getDay()]}）`; }
+const pool = () => IDS.filter(id => !S.matched.includes(id));
+function clue(id, src, text) { S.clues[id].push({ day: S.day, src, text: fmt(text) }); S.newClues++; }
+function tx(amount, label) { S.money += amount; S.tx.unshift({ day: S.day, amount, label }); }
+const INVITES = ['今日、少しだけ会えたりする？', '仕事のあと、よかったら会えないかな', '今日ひま？　なんだか顔が見たくなって', '近くまで来てるんだけど、会えたりする？'];
+
+/* ---------- chat threads ---------- */
+const NPC = { miya: { name: 'ミヤ', sub: '幼なじみ', who: 'miya' }, kamome: { name: '喫茶かもめ', sub: 'マスター　柳', who: 'yanagi' } };
+const thName = tid => (NPC[tid] ? NPC[tid].name : C[tid].short);
+const thWho = tid => (NPC[tid] ? NPC[tid].who : tid);
+function thread(tid) { return S.threads[tid] || (S.threads[tid] = { msgs: [], unread: 0, last: 0, lastDay: 0, pending: null }); }
+function post(tid, from, text, who) {
+  const th = thread(tid);
+  if (th.lastDay !== S.day) { th.msgs.push({ from: 'stamp', text: dateLabel(S.day) }); th.lastDay = S.day; }
+  th.msgs.push({ from, text: fmt(text), who: who || thWho(tid) });
+  if (from === 'them' && !(S.view === 'thread' && S.open === tid)) th.unread++;
+  th.last = ++S.seq;
+}
+function postLines(tid, lines) {
+  for (const [w, t] of lines) {
+    if (w === 'nar') post(tid, 'nar', t);
+    else if (w === 'me') post(tid, 'me', t);
+    else post(tid, 'them', t, w);
+  }
+}
+function notify(kind, title, text, tid) { S.notes.unshift({ kind, title, text: fmt(text), tid }); }
+
+/* ---------- story scenes (prologue, dates) ---------- */
+function scene(tag, lines, choices, fresh) {
+  if (fresh || !S.story) S.story = { tag, log: [], shown: 0, start: 0, choices: [] };
+  const st = S.story;
+  st.tag = tag;
+  const before = st.log.length;
+  st.start = before - (S.meFlag ? 1 : 0);
+  S.meFlag = false;
+  st.log.push(...lines);
+  st.shown = Math.max(st.shown, before + 1);
+  st.choices = choices;
+  S.view = 'story';
+  render();
+}
 const confrontChoice = id => {
   const ch = S.chars[id];
   return C[id].lie && ch.claim && ch.evidence && !ch.confronted
     ? [{ label: '……ねえ、この前の話なんだけど', me: '……ねえ。この前言ってた話、ちょっと気になってて', act: 'confront', arg: id, note: '矛盾を問い詰める' }] : [];
 };
-const toDay = { label: '1日を終える', act: 'endDay' };
-const pool = () => IDS.filter(id => !S.matched.includes(id));
+const homeChoice = id => [{ label: '家に帰る', act: 'goHome', arg: id }];
 
+/* ---------- matching ---------- */
 function freeDays(lo, hi) { const r = []; for (let d = lo; d <= hi; d++) if (!S.schedule[d]) r.push(d); return r; }
 function pickDay(lo, hi) {
   if (lo > LAST_DAY) return null;
@@ -1385,32 +1468,41 @@ function match(id) {
   if (sd) S.schedule[sd] = { id, kind: 'small' };
   const bd = pickDay(Math.max(12, S.day + 5, (sd || 0) + 1), 18);
   if (bd) S.schedule[bd] = { id, kind: 'big' };
+  post(id, 'nar', `Lumi で${C[id].short}とマッチしました`);
 }
 
-/* ---------- flow ---------- */
 function newGame(name) {
-  S = { name: name || 'ミオ', day: 1, money: 60000, wolves: shuffle(IDS).slice(0, WOLF_COUNT), picks: [], outfit: 0, gift: false, shopped: 0, lastDateCost: 0,
-        schedule: {}, repay: [], chars: {}, clues: {}, matched: [], screen: 'play', scene: null,
-        swipe: null, guess: null, overBy: null, log: [], shown: 0, sceneStart: 0, meFlag: false,
-        twinNow: null, knowTwin: false, twinCaught: 0, motif: Math.floor(Math.random() * MOTIFS.length), motifKnown: false, decoy: {}, partner: null, v: 9 };
+  S = { name: name || 'ミオ', day: 1, money: 60000, wolves: shuffle(IDS).slice(0, WOLF_COUNT), picks: [], outfit: 0, gift: false, shopped: 0,
+        schedule: {}, repay: [], chars: {}, clues: {}, matched: [], view: 'story', story: null, swipe: null, guess: null, overBy: null,
+        meFlag: false, twinNow: null, knowTwin: false, twinCaught: 0, motif: Math.floor(Math.random() * MOTIFS.length), motifKnown: false,
+        decoy: {}, partner: null, threads: {}, notes: [], seq: 0, plan: null, tx: [], newClues: 0, open: null, finale: false, v: 10 };
   const decoys = shuffle(DECOYS.map((_, i) => i));
   IDS.forEach((id, i) => {
-    S.chars[id] = { aff: 20, sns: 0, obs: 0, tell: 0, used: [], dates: 0, hooked: false, bigDone: false, since: 0, claim: false, evidence: false, confronted: false, exposed: false };
+    S.chars[id] = { aff: 20, sns: 0, obs: 0, tell: 0, used: [], dates: 0, hooked: false, bigDone: false, since: 0, claim: false, evidence: false, confronted: false, exposed: false, confessed: false };
     S.clues[id] = []; S.decoy[id] = decoys[i % decoys.length];
   });
-  scene('はじまり', [
-    ['nar', '春。上京して3週間、まだ友達はひとりもいない'],
-    ['miya', '{n}、寂しいって言ってたじゃん。マッチングアプリ入れなよ。「Lumi」なら、恋人も友達も探せるから'],
-    ['miya', '……でも、気をつけてね。「好き」って言いながら、お金とか勧誘が目当ての人も混ざってるから'],
-    ['nar', `上京資金の残りは6万円。アプリを開くと、${IDS.length}人のプロフィールが届いていた`],
-  ], [{ label: 'アプリを開く', act: 'openSwipe', arg: 'start' }]);
+  S.tx.push({ day: 1, amount: 60000, label: '上京資金の残り' });
+  scene('プロローグ', [
+    ['nar', '春。上京して3週間。新しい職場にも、少しだけ慣れてきた'],
+    ['nar', 'でも、仕事から帰ると、部屋はいつも静かだ'],
+    ['nar', '……恋人がいたら、毎日はもっと楽しいのかな'],
+    ['nar', 'ベッドに寝転んだそのとき、スマホにニュースの通知が届いた'],
+    ['news', 'マッチングアプリで知り合った相手からの「投資」「副業」「勧誘」をめぐるトラブルの相談が増えています。「あなたにだけ」「今日中に」「誰にも言わないで」という言葉が出たら、いったん立ち止まって、身近な人に相談してください'],
+    ['nar', '……マッチングアプリ、か'],
+    ['nar', 'そのとき、幼なじみのミヤから電話がかかってきた'],
+    ['miya', 'もしもし、{n}？　元気してる？　……声、ちょっと元気ないじゃん'],
+    ['miya', '寂しいならさ、アプリやってみなよ。「Lumi」なら、恋人も友達も探せるし'],
+    ['miya', '……ただね。大学の友達のユキ、去年アプリで知り合った人に50万だまし取られたんだ。すっごく優しい人だと思ってたのに、って泣いてた'],
+    ['miya', 'だから、ちょっとでも変だと思ったら、すぐわたしに言って。SNSなら秒で調べてあげるから'],
+    ['nar', '電話を切ると、{n}は Lumi をインストールした'],
+  ], [{ label: 'Lumi を開く', act: 'openSwipe', arg: 'start' }], true);
 }
 
+/* ---------- actions ---------- */
 const ACT = {
   openSwipe(mode) {
-    const deck = mode === 'start' ? shuffle(IDS) : pool();
-    S.swipe = { mode, deck, pos: 0, added: [] };
-    S.screen = 'swipe'; render();
+    S.swipe = { mode, deck: mode === 'start' ? shuffle(IDS) : pool(), pos: 0, added: [] };
+    S.view = 'swipe'; render();
   },
 
   swipe(yes) {
@@ -1427,91 +1519,85 @@ const ACT = {
   },
 
   closeSwipe() {
-    const sw = S.swipe, names = sw.added.map(id => C[id].short).join('、');
+    const sw = S.swipe;
     S.swipe = null;
     if (sw.mode === 'start') {
-      scene('マッチ成立', [
-        ['nar', `${names}とマッチした！`],
-        ['miya', 'お、いい感じじゃん。デートするなら駅前の「喫茶かもめ」がおすすめ。マスターの柳さん、人を見る目だけは確かだから'],
-        ['miya', '怪しいと思ったら、わたしに言って。SNSなら秒で調べてあげる'],
-        ['nar', `いいねしなかった人とは、${ADD_UNTIL}日目までならアプリからマッチできる`],
-      ], [{ label: '1日目をはじめる', act: 'dayStart' }]);
+      post('miya', 'them', 'マッチおめでと！　デートするなら、駅前の「喫茶かもめ」がおすすめ。マスターの柳さん、人を見る目だけは確かだから');
+      post('miya', 'them', 'あやしいと思ったら、すぐここに相談してね。……ユキみたいには、なってほしくないから');
+      post('kamome', 'them', 'いらっしゃいませ、喫茶かもめです。デートのご利用、お待ちしております。気になることがあれば、こちらにどうぞ。——柳');
+      S.story = null;
+      ACT.morning();
     } else {
-      ACT.menu([['nar', sw.added.length ? `${names}とマッチした！` : 'アプリを閉じた']]);
+      if (sw.added.length) notify('lumi', 'Lumi', `${sw.added.map(i => C[i].short).join('、')}とマッチしました`);
+      S.view = 'lumi'; render();
     }
   },
 
-  menu(pre) {
-    const canAdd = S.day <= ADD_UNTIL && pool().length > 0 && S.matched.length < MAX_TOTAL;
-    const dated = S.matched.some(id => S.chars[id].dates > 0);
-    scene('今日の過ごし方', [...(Array.isArray(pre) ? pre : []), ['nar', 'さて、今日はどうしよう？']], [
-      ...S.matched.map(id => { const cost = dateCost(id), off = cost > S.money;
-        return { label: `${C[id].short}とデートする`, act: 'talk', arg: id, disabled: off, note: off ? 'お金が足りない' : `デート代 ${yen(cost)}` }; }),
-      { label: 'ミヤにSNSを調べてもらう', act: 'snsMenu', note: '1日を使う' },
-      { label: '喫茶かもめで柳さんに話を聞く', act: 'obsMenu', disabled: !dated, note: dated ? '1日を使う' : '誰かとデートしてから' },
-      ...(canAdd ? [{ label: 'アプリでほかの人を見る', act: 'openSwipe', arg: 'add', note: '1日を使わない' }] : []),
-      { label: '買い物に行く', act: 'shopMenu', disabled: S.shopped === S.day, note: S.shopped === S.day ? '今日はもう行った' : '1日を使わない' },
-    ]);
-  },
-
-  dayStart() {
-    S.log = [['day', `${S.day}日目　${dateLabel(S.day)}`], ['nar', DAY_FLAVOR[S.day - 1]]];
-    S.shown = 0; S.meFlag = false;
-    const pre = [];
+  morning() {
+    S.notes = []; S.plan = null;
+    notify('diary', `${S.day}日目のひとこと`, DAY_FLAVOR[S.day - 1]);
     S.repay = S.repay.filter(r => {
       if (r.day !== S.day) return true;
-      S.money += r.amount; addAff(r.id, 3);
-      pre.push(...r.lines, ['nar', `${C[r.id].short}から${yen(r.amount)}が返ってきた`]);
+      tx(r.amount, `${C[r.id].short}から返金`); addAff(r.id, 3); postLines(r.id, r.lines);
+      notify('bank', '銀行', `${C[r.id].short}から${yen(r.amount)}が振り込まれました`);
       return false;
     });
-    if (S.day === PAYDAY) { S.money += 50000; pre.push(['nar', '給料日！　初めてのお給料が振り込まれた'], ['sys', `所持金 +${yen(50000)}`]); }
+    if (S.day === PAYDAY) { tx(50000, '給与'); notify('bank', '銀行', `お給料 ${yen(50000)} が振り込まれました`); }
     else if (S.day >= 2 && Math.random() < 0.25) {
-      const [amt, text] = LIFE_EVENTS[Math.floor(Math.random() * LIFE_EVENTS.length)];
+      const [amt, text] = pick1(LIFE_EVENTS);
       const real = amt < 0 ? -Math.min(-amt, S.money) : amt;
-      S.money += real;
-      pre.push(['nar', text], ['sys', `所持金 ${real < 0 ? '−' : '+'}${yen(Math.abs(real))}`]);
+      tx(real, text.split('。')[0]);
+      notify('bank', '銀行', `${text}（${real < 0 ? '−' : '+'}${yen(Math.abs(real))}）`);
     }
     const ev = S.schedule[S.day];
-    if (ev) ACT.request({ id: ev.id, kind: ev.kind, pre });
-    else ACT.menu(pre);
+    if (ev && S.matched.includes(ev.id)) {
+      const R = C[ev.id].req[ev.kind];
+      postLines(ev.id, R.ask);
+      if (S.partner === ev.id) post(ev.id, 'nar', `恋人の${C[ev.id].short}からのお願い。断ったら、きっとすごく悲しませてしまう`);
+      thread(ev.id).pending = { kind: ev.kind, asked: false };
+      notify('talk', C[ev.id].short, R.ask[R.ask.length - 1][1], ev.id);
+    }
+    const free = shuffle(S.matched.filter(id => !thread(id).pending));
+    free.slice(0, Math.random() < 0.5 ? 2 : 1).forEach(id => {
+      const t = pick1(INVITES);
+      post(id, 'them', t); notify('talk', C[id].short, t, id);
+    });
+    S.view = 'home'; render();
   },
 
-  request({ id, kind, pre = [] }) {
-    const R = C[id].req[kind];
-    const lover = S.partner === id ? [['nar', `恋人の${C[id].short}が、あなたを頼るように見つめてくる。断ったら、きっとすごく悲しませてしまう`]] : [];
-    scene('お願い', [...pre, ['nar', `スマホが鳴った。${C[id].short}からだ`], ...R.ask, ...lover], [
-      { label: '引き受ける', me: 'うん、いいよ', act: 'answer', arg: { id, kind, yes: true } },
-      { label: '断る', me: 'ごめん、それはできない', act: 'answer', arg: { id, kind, yes: false } },
-      { label: '詳しく聞く', me: 'もう少し詳しく聞かせて', act: 'detail', arg: { id, kind } },
-    ]);
+  sleep() {
+    if (S.matched.some(id => thread(id).pending)) return;
+    if (S.day >= LAST_DAY) { ACT.finale(); return; }
+    S.day++; ACT.morning();
   },
 
-  detail({ id, kind }) {
-    const lines = C[id].req[kind].detail[v(id)];
-    addAff(id, -3);
-    clue(id, kind === 'big' ? '大きなお願い' : 'お願い', lines.map(l => l[1]).join(' '));
-    scene('お願い', [...lines, MEMO], [
-      { label: '引き受ける', me: 'わかった、引き受けるよ', act: 'answer', arg: { id, kind, yes: true, asked: true } },
-      { label: '断る', me: 'ごめん、やっぱりできない', act: 'answer', arg: { id, kind, yes: false, asked: true } },
-    ]);
+  /* requests arrive in chat */
+  reqDetail(id) {
+    const p = thread(id).pending, lines = C[id].req[p.kind].detail[v(id)];
+    post(id, 'me', 'もう少し詳しく聞かせてもらえる？');
+    addAff(id, -3); p.asked = true;
+    postLines(id, lines);
+    clue(id, p.kind === 'big' ? '大きなお願い' : 'お願い', lines.map(l => l[1]).join(' '));
+    render();
   },
 
   // Wolves react with the same heart changes as sincere people, so the numbers never give them away.
-  answer({ id, kind, yes, asked }) {
-    const R = C[id].req[kind], k = v(id), ch = S.chars[id];
-    let lines, d;
+  reqAnswer({ id, yes }) {
+    const th = thread(id), { kind, asked } = th.pending, R = C[id].req[kind], k = v(id), ch = S.chars[id];
+    th.pending = null;
+    post(id, 'me', yes ? (asked ? 'わかった、引き受けるよ' : 'うん、いいよ') : (asked ? 'ごめん、やっぱりできない' : 'ごめん、それはできない'));
     if (kind === 'big') ch.bigDone = true;
+    let lines, d;
     if (yes) {
-      if (kind === 'big' && k === 'wolf') { S.overBy = id; S.screen = 'over'; render(); return; }
+      if (kind === 'big' && k === 'wolf') { S.overBy = id; S.view = 'over'; render(); return; }
       const cost = R.cost[k] || 0;
       if (cost > S.money) {
-        lines = [['nar', `手持ちが${yen(S.money)}しかなくて、${yen(cost)}を用意できなかった`], ['nar', `${C[id].short}は「気にしないで」と言ったけれど、少しさみしそうだった`]];
-        d = -3;
+        lines = [['nar', `手持ちが${yen(S.money)}しかなくて、${yen(cost)}を用意できなかった`]]; d = -3;
       } else {
-        S.money -= cost; lines = [...R.accept[k]]; d = R.gain.true;
+        if (cost) tx(-cost, `${C[id].short}へ`);
+        lines = [...R.accept[k]]; d = R.gain.true;
         if (!asked) { d += 5; lines.push(['nar', `何も聞かずに信じてくれたことが、${C[id].short}にはうれしかったみたいだ`]); }
         if (k === 'wolf') ch.hooked = true;
-        if (cost) lines.push(['sys', `所持金 −${yen(cost)}`]);
         if (R.repay && R.repay[k]) S.repay.push({ day: S.day + 3, id, amount: R.repay[k].amount, lines: R.repay[k].lines });
       }
     } else {
@@ -1519,42 +1605,17 @@ const ACT = {
       if (kind === 'big' && k === 'wolf' && ch.aff + d >= 70) lines.push(...C[id].waver);
     }
     addAff(id, d);
-    lines.push(heart(id, d));
-    scene('お願い', lines, [{ label: 'この日の過ごし方を決める', act: 'menu' }]);
+    postLines(id, lines);
+    render();
   },
 
-  shopMenu() {
-    const c = (label, price, item, note) => ({ label: `${label}（${yen(price)}）`, act: 'buy', arg: item, disabled: price > S.money, note: price > S.money ? 'お金が足りない' : note });
-    scene('買い物', [['nar', '仕事帰りに、駅ビルに寄った']], [
-      c('新しい服を買う', 8000, 'outfit', '次の3回のデートで ♥ +3'),
-      c('ちょっとしたプレゼントを買う', 3000, 'gift', '次のデートの相手に ♥ +6'),
-      c('宝くじを1枚買う', 300, 'lottery', '当たるかも？'),
-      { label: 'やっぱりやめる', act: 'menu' },
-    ]);
-  },
-
-  buy(item) {
-    S.shopped = S.day;
-    let lines;
-    if (item === 'outfit') { S.money -= 8000; S.outfit = 3; lines = [['nar', '春らしい色の服を買った。鏡の前で、少しだけ背すじが伸びた'], ['sys', `所持金 −${yen(8000)}`]]; }
-    else if (item === 'gift') { S.money -= 3000; S.gift = true; lines = [['nar', '小さな紙袋に入ったプレゼントを買った。次に会う人に渡そう'], ['sys', `所持金 −${yen(3000)}`]]; }
-    else {
-      S.money -= 300;
-      const r = Math.random();
-      const win = r < 0.01 ? 100000 : r < 0.06 ? 10000 : r < 0.26 ? 300 : 0;
-      S.money += win;
-      lines = [['nar', 'その場でスクラッチを削ってみた'],
-        win === 100000 ? ['nar', '……1等!?　手がふるえて、もう一度数字を確かめた'] : win === 10000 ? ['nar', '3等が当たった！　思わず小さくガッツポーズをした'] : win === 300 ? ['nar', '末等。300円が戻ってきた'] : ['nar', 'はずれ。まあ、そんなものだ'],
-        ['sys', `所持金 ${win - 300 >= 0 ? '+' : '−'}${yen(Math.abs(win - 300))}`]];
-    }
-    ACT.menu(lines);
-  },
-
-  talk(id) {
-    const ch = S.chars[id];
+  /* the day's plan: a date */
+  date(id) {
+    const ch = S.chars[id], cost = dateCost(id);
+    S.plan = { type: 'date', id };
+    tx(-cost, `${C[id].short}とデート`);
+    post(id, 'me', '今日、会えるかな？');
     ch.dates++;
-    S.lastDateCost = dateCost(id);
-    S.money -= S.lastDateCost;
     if (C[id].twin) {
       const yo = ch.dates > 1 && Math.random() < (v(id) === 'wolf' ? 0.5 : 0.3);
       S.twinNow = yo ? 'yo' : 'yu';
@@ -1565,29 +1626,28 @@ const ACT = {
       const lines = [['nar', `待ち合わせ場所に、${C[id].short}くんの姿が見えた`], ...T.t[S.twinNow]];
       if (k === 1 && !yo && !S.knowTwin) {
         S.knowTwin = true;
-        lines.push(MEMO);
         clue(id, 'デート', '七瀬くんには、ヨウという双子の弟がいる。昔からよく間違えられるらしい');
       }
       const choices = T.c.map((c, ci) => ({ label: c[0], me: c[0], act: 'talkAns', arg: { id, idx: k, ci } }));
       if (S.knowTwin) choices.push({ label: '……もしかして、ヨウくん？', me: '……ねえ。もしかして、ヨウくん？', act: 'accuse', arg: id, note: '見破る' });
-      scene('デート', lines, [...choices, ...confrontChoice(id)]);
+      scene(`デート　${C[id].short}`, lines, [...choices, ...confrontChoice(id)], true);
       return;
     }
     const meet = ['nar', `待ち合わせ場所に、${C[id].short}の姿が見えた`];
     const idx = [0, 1, 2].find(i => !ch.used.includes(i));
     if (idx === undefined) {
-      scene('デート', [meet], [{ label: 'のんびり過ごす', act: 'talkAns', arg: { id, idx: -1 } }, ...confrontChoice(id)]);
+      scene(`デート　${C[id].short}`, [meet], [{ label: 'のんびり過ごす', act: 'talkAns', arg: { id, idx: -1 } }, ...confrontChoice(id)], true);
       return;
     }
     ch.used.push(idx);
     const T = C[id].talks[idx];
-    scene('デート', [meet, ...T.t], [...T.c.map((c, ci) => ({ label: c[0], me: c[0], act: 'talkAns', arg: { id, idx, ci } })), ...confrontChoice(id)]);
+    scene(`デート　${C[id].short}`, [meet, ...T.t], [...T.c.map((c, ci) => ({ label: c[0], me: c[0], act: 'talkAns', arg: { id, idx, ci } })), ...confrontChoice(id)], true);
   },
 
   talkAns({ id, idx, ci }) {
     const ch = S.chars[id];
     let lines, d;
-    if (idx === -1) { lines = [['nar', `${C[id].short}と、のんびりデートをした`]]; d = 5; }
+    if (idx === -1) { lines = [['nar', `${C[id].short}と、のんびりした時間を過ごした`]]; d = 5; }
     else if (C[id].twin) {
       const c = C[id].talks[idx].c[ci], yo = S.twinNow === 'yo';
       lines = [...(yo ? c[4] : c[2])]; d = yo ? c[3] : c[1];
@@ -1596,62 +1656,53 @@ const ACT = {
     if (S.outfit > 0) { S.outfit--; d += 3; lines.push(['nar', `${C[id].short}が、新しい服をほめてくれた`]); }
     if (S.gift) { S.gift = false; d += 6; lines.push(['nar', `${C[id].short}にプレゼントを渡すと、とても喜んでくれた`]); }
     addAff(id, d);
-    lines.push(heart(id, d), ['sys', `デート代 −${yen(S.lastDateCost)}`]);
     const tp = C[id].twin ? C[id].tells[S.twinNow === 'yo' && v(id) === 'wolf' ? 'wolf' : 'true'] : C[id].tells[v(id)];
     if (ch.tell < tp.length && Math.random() < 0.6) {
       const t = tp[ch.tell++];
-      lines.push(['nar', '別れぎわ、ふと思い出したように——'], [id, t], MEMO);
+      lines.push(['nar', '別れぎわ、ふと思い出したように——'], [id, t]);
       clue(id, 'デート', t);
-    }
-    if (C[id].lie && !ch.claim) {
-      ch.claim = true;
-      lines.push(['nar', '話の流れで、最近どう過ごしていたかの話になった'], ...C[id].lie.claim, MEMO);
-      clue(id, '本人の話', C[id].lie.claim.map(l => l[1]).join(' '));
     }
     const liar = v(id) === 'wolf' && (!C[id].twin || S.twinNow === 'yo');
     if (Math.random() < (liar ? 0.5 : 0.4)) {
       const t = (liar ? MOTIFS[S.motif].scene : DECOYS[S.decoy[id]]).split('{c}').join(C[id].short);
-      lines.push(['nar', t], MEMO);
+      lines.push(['nar', t]);
       clue(id, '持ち物', t);
     }
     if (CONFESS[id] && !S.partner && !ch.confessed && ch.aff >= 90) {
       ch.confessed = true;
       lines.push(['nar', '帰り道。ふいに、足が止まった'], ...CONFESS[id].ask);
-      scene('デート', lines, [
+      scene(S.story.tag, lines, [
         { label: '付き合う', me: 'うん。……よろしくお願いします', act: 'confessAns', arg: { id, yes: true } },
         { label: 'ごめん、まだ友達でいたい', me: 'ごめんね。……まだ、友達でいたいな', act: 'confessAns', arg: { id, yes: false } },
       ]);
       return;
     }
-    const msgs = C[id].twin && S.twinNow === 'yo' ? AFTER.you : AFTER[id];
-    lines.push(['nar', 'その夜、スマホが小さく鳴った'], [id, msgs[(ch.dates - 1) % 3], 'msg']);
-    scene('デート', lines, [toDay]);
+    scene(S.story.tag, lines, homeChoice(id));
   },
 
   confessAns({ id, yes }) {
     let lines;
     if (yes) {
       S.partner = id; addAff(id, 5);
-      lines = [...CONFESS[id].yes, ['sys', `${C[id].short}と付き合うことになった`], heart(id, 5)];
+      lines = [...CONFESS[id].yes, ['nar', `${C[id].short}と付き合うことになった`]];
       clue(id, 'デート', `${C[id].short}に告白されて、付き合うことにした`);
     } else {
       addAff(id, -8);
-      lines = [...CONFESS[id].no, heart(id, -8)];
+      lines = [...CONFESS[id].no];
     }
-    scene('デート', lines, [toDay]);
+    scene(S.story.tag, lines, homeChoice(id));
   },
 
   accuse(id) {
     let lines;
     if (S.twinNow === 'yo') {
       S.twinCaught++; addAff(id, 8);
-      lines = [...C[id].caught[v(id)], MEMO, heart(id, 8)];
+      lines = [...C[id].caught[v(id)]];
       clue(id, 'デート', 'この日デートに来ていたのは、ユウではなく双子の弟のヨウだった');
     } else {
-      addAff(id, -6); lines = [...C[id].wrong, heart(id, -6)];
+      addAff(id, -6); lines = [...C[id].wrong];
     }
-    lines.push(['sys', `デート代 −${yen(S.lastDateCost)}`]);
-    scene('デート', lines, [toDay]);
+    scene(S.story.tag, lines, homeChoice(id));
   },
 
   confront(id) {
@@ -1661,93 +1712,118 @@ const ACT = {
     if (v(id) === 'wolf' && C[id].twin && S.twinNow !== 'yo') {
       // The real ユウ knows nothing; the player can try again on a day ヨウ shows up.
       ch.confronted = false; S.knowTwin = true;
-      lines = [...L.confront.wolf_yu, MEMO];
+      lines = [...L.confront.wolf_yu];
       clue(id, '問い詰めた', 'ユウには心当たりがないようだった。食い違いの相手は、別の誰か……？');
     } else if (v(id) === 'wolf') {
       ch.exposed = true;
-      lines = [...L.confront.wolf, MEMO];
+      lines = [...L.confront.wolf];
       clue(id, '問い詰めた', '問い詰めると、言い訳がしどろもどろになった');
       if (!S.motifKnown) {
         S.motifKnown = true;
         const m = MOTIFS[S.motif].item;
-        lines.push(['nar', 'その夜、ミヤに今日のことを話した'],
-          ['miya', `……それ、ヤバいやつかも。最近アプリで出てる詐欺グループ、仲間うちで「${m}」を目印にしてるらしいよ`],
-          ['miya', '同じの持ってる人、ほかにもいなかった？　手がかりメモ、見返してみなよ'], MEMO);
+        post('miya', 'me', `今日、${C[id].short}に前の話を聞いてみたんだけど……なんか、すごく動揺してた`);
+        post('miya', 'them', `……それ、ヤバいやつかも。最近アプリで出てる詐欺グループ、仲間うちで「${m}」を目印にしてるらしいよ。ユキをだましたやつも、持ってたって`);
+        post('miya', 'them', '同じのを持ってる人、ほかにもいなかった？　メモ、見返してみなよ');
         clue(id, 'ミヤの話', `詐欺グループの目印は「${m}」らしい`);
       }
     } else {
       addAff(id, -4);
-      lines = [...L.confront.true, heart(id, -4)];
+      lines = [...L.confront.true];
       clue(id, '問い詰めた', '話を聞くと、ちゃんとした理由があった');
     }
-    lines.push(['sys', `デート代 −${yen(S.lastDateCost)}`]);
-    scene('デート', lines, [toDay]);
+    scene(S.story.tag, lines, homeChoice(id));
   },
 
-  snsMenu() {
-    scene('ミヤ', [['nar', 'ミヤに電話をかけると、3コールで出た'], ['miya', 'はいはーい。で、誰のSNSを見ればいいの？']], [
-      ...S.matched.map(id => { const ch = S.chars[id], n = ch.sns, pend = C[id].lie && ch.claim && !ch.evidence;
-        return { label: `${C[id].short}`, me: `${C[id].short}のこと、調べてもらえる？`, act: 'sns', arg: id, disabled: n >= 3 && !pend, note: pend ? '本人の話の裏を取る' : n >= 3 ? 'もう調べつくした' : `${n}/3回` }; }),
-      { label: 'やっぱりやめる', act: 'menu' },
-    ]);
+  goHome(id) {
+    const ch = S.chars[id];
+    const msgs = C[id].twin && S.twinNow === 'yo' ? AFTER.you : AFTER[id];
+    S.story = null; S.view = 'thread'; S.open = id;
+    post(id, 'them', msgs[(ch.dates - 1) % 3]);
+    if (C[id].lie && !ch.claim) {
+      ch.claim = true;
+      postLines(id, C[id].lie.claim);
+      clue(id, '本人の話', C[id].lie.claim.map(l => l[1]).join(' '));
+    }
+    thread(id).unread = 0;
+    render();
   },
 
+  /* the day's plan: asking around */
   sns(id) {
+    S.plan = { type: 'sns', id };
     const ch = S.chars[id], L = C[id].lie;
+    post('miya', 'me', `${C[id].short}のこと、調べてもらえる？`);
+    post('miya', 'them', 'オッケー、ちょっと待ってね……');
     if (L && ch.claim && !ch.evidence) {
       ch.evidence = true;
       const ev = L.evidence[v(id)];
+      post('miya', 'them', ev);
+      post('miya', 'them', 'これ、この前本人が言ってた話と違くない？　今度会ったとき、聞いてみたら？');
       clue(id, 'ミヤのSNS調査', ev);
-      scene('ミヤ', [['miya', 'ちょっと待ってね……ん？'], ['miya', ev], ['miya', 'これ、この前本人が言ってた話と違くない？'], MEMO, ['nar', '……今度会ったとき、聞いてみてもいいかもしれない']], [toDay]);
-      return;
+    } else {
+      const text = C[id].sns[v(id)][ch.sns++];
+      if (C[id].twin) S.knowTwin = true;
+      post('miya', 'them', text);
+      clue(id, 'ミヤのSNS調査', text);
     }
-    const text = C[id].sns[v(id)][S.chars[id].sns++];
-    if (C[id].twin) S.knowTwin = true;
-    clue(id, 'ミヤのSNS調査', text);
-    scene('ミヤ', [['miya', 'ちょっと待ってね……あ、出てきた'], ['miya', text], MEMO, ['nar', 'そのあと1時間くらい、ミヤとどうでもいい話で笑った。気づけば、日が暮れていた']], [toDay]);
-  },
-
-  obsMenu() {
-    scene('喫茶かもめ', [['nar', '喫茶かもめのドアを開けると、カランとベルが鳴った'], ['yanagi', 'いらっしゃい。今日はひとりかい。……誰のことが気になるのかな']], [
-      ...S.matched.map(id => { const ch = S.chars[id]; const off = ch.dates === 0 || ch.obs >= 2;
-        return { label: C[id].short, me: `${C[id].short}のこと、何か覚えていますか？`, act: 'obs', arg: id, disabled: off, note: ch.dates === 0 ? 'まだここに来ていない' : ch.obs >= 2 ? 'もう聞けることはない' : `${ch.obs}/2回` }; }),
-      { label: 'やっぱりやめる', act: 'menu' },
-    ]);
+    render();
   },
 
   obs(id) {
+    S.plan = { type: 'obs', id };
+    post('kamome', 'me', `${C[id].short}さんのこと、何か覚えていますか？`);
     const text = C[id].obs[v(id)][S.chars[id].obs++];
     if (C[id].twin) S.knowTwin = true;
+    post('kamome', 'them', text);
     clue(id, '柳さんの話', text);
-    scene('喫茶かもめ', [['nar', '柳さんは、カップを拭く手を止めた'], ['yanagi', text], MEMO, ['nar', '柳さんのいれたコーヒーは、少しだけ苦かった']], [toDay]);
+    render();
   },
 
-  endDay() { S.day++; if (S.day > LAST_DAY) ACT.finale(); else ACT.dayStart(); },
+  /* shopping */
+  buy(item) {
+    S.shopped = S.day;
+    let text;
+    if (item === 'outfit') { tx(-8000, '服'); S.outfit = 3; text = '春らしい色の服を買った。次のデートが楽しみになった'; }
+    else if (item === 'gift') { tx(-3000, 'プレゼント'); S.gift = true; text = '小さな紙袋に入ったプレゼントを買った。次に会う人に渡そう'; }
+    else {
+      tx(-300, '宝くじ');
+      const r = Math.random();
+      const win = r < 0.01 ? 100000 : r < 0.06 ? 10000 : r < 0.26 ? 300 : 0;
+      if (win) tx(win, '宝くじ当せん');
+      text = win === 100000 ? '宝くじが1等！　手がふるえて、何度も数字を確かめた' : win === 10000 ? '宝くじで3等が当たった！' : win === 300 ? '宝くじは末等。300円が戻ってきた' : '宝くじは、はずれだった';
+    }
+    notify('shop', '駅ビル', text);
+    S.view = 'home'; render();
+  },
 
+  /* finale */
   finale() {
-    S.day = LAST_DAY;
-    scene('最後の夜', [
-      ['nar', `${dateLabel(LAST_DAY)}、夜。アプリの通知が、ひとつずつ静かになっていく`],
-      ['miya', '20日間、おつかれ。……ねえ{n}'],
-      ['miya', 'マッチした人のなかで、嘘をついてたのは誰だったと思う？　何人選んでもいいよ'],
-    ], guessChoices());
+    S.finale = true; S.picks = []; S.plan = { type: 'end' };
+    post('miya', 'them', '20日間、おつかれ。……ねえ、{n}');
+    post('miya', 'them', 'マッチした人のなかで、嘘をついてたのは誰だったと思う？　何人選んでもいいよ');
+    S.view = 'thread'; S.open = 'miya'; thread('miya').unread = 0;
+    render();
+  },
+  pick(id) { const i = S.picks.indexOf(id); if (i < 0) S.picks.push(id); else S.picks.splice(i, 1); render(); },
+  guess() {
+    S.guess = S.picks.slice();
+    post('miya', 'me', S.guess.length ? `${S.guess.map(i => C[i].short).join('、')}……だと思う` : 'マッチした中には、いなかったと思う');
+    S.view = 'end'; render();
   },
 
-  pick(id) {
-    const i = S.picks.indexOf(id);
-    if (i < 0) S.picks.push(id); else S.picks.splice(i, 1);
-    S.scene.choices = guessChoices(); render();
-  },
-  guess() { S.guess = S.picks.slice(); S.screen = 'ending'; render(); },
+  /* navigation */
+  tab(view) { S.view = view; S.open = null; if (view === 'memo') S.newClues = 0; render(); },
+  openThread(tid) { S.view = 'thread'; S.open = tid; thread(tid).unread = 0; render(); },
+  shop() { S.view = 'shop'; render(); },
   restart() { const n = S ? S.name : ''; newGame(n); },
   toTitle() { S = null; render(); },
 };
 
 /* ---------- endings ---------- */
-function guessChoices() {
+function guessOptions() {
   return [
     ...S.matched.map(id => ({ label: `${S.picks.includes(id) ? '☑' : '☐'}　${C[id].full}`, act: 'pick', arg: id })),
-    { label: S.picks.length ? `この${S.picks.length}人で答える` : 'マッチした中に、嘘つきはいなかったと答える', act: 'guess' },
+    { label: S.picks.length ? `この${S.picks.length}人だと答える` : 'マッチした中には、いなかったと答える', act: 'guess' },
   ];
 }
 
@@ -1774,162 +1850,273 @@ function ending() {
   else { kicker = 'LONELY END'; title = 'ひとりぼっちエンド'; lines = [['nar', '疑いすぎたのかもしれない。誰にもだまされなかったけれど、誰とも近づけなかった'], ['nar', 'アプリの通知は、今夜も鳴らない']]; }
   return { metWolves, converted, title, lines, kicker };
 }
-// Only wolves the player matched are revealed, so unmatched characters keep their secret for the next run.
-const wolfListHTML = (fate) => {
-  const met = S.wolves.filter(id => S.matched.includes(id));
-  if (!met.length) return '<p>マッチした人のなかに、狼はいませんでした。</p>';
-  return `<p>マッチした人のなかの狼は、この${met.length}人でした。</p><ul class="wolves">${met.map(id => `<li ${who(id)}>${pfHTML(id)}<span><b class="wolfmark">${C[id].full}</b>　${esc(C[id].scam)}<br><small>${fate(id)}</small></span></li>`).join('')}</ul>`;
-};
 
-/* ---------- render ---------- */
+/* ---------- render helpers ---------- */
 const who = id => `style="--who:var(--c-${id})"`;
-const hearts = aff => { const n = Math.round(aff / 20); return `<span>${'♥'.repeat(n)}</span>${'♥'.repeat(5 - n)}`; };
+const hearts = aff => { const n = Math.round(aff / 20); return `<span class="hearts" aria-label="好感度"><span>${'♥'.repeat(n)}</span>${'♥'.repeat(5 - n)}</span>`; };
+const relTag = id => S.partner === id ? '<span class="tagpill lover">恋人</span>' : C[id].mode === '友達' ? '<span class="tagpill">友達</span>' : '';
+
 function lineHTML([w, t, kind], cls = '') {
   const say = esc(fmt(t));
-  if (w === 'nar' || w === 'me' || w === 'sys' || w === 'day') return `<div class="ln ${w} ${cls}"><div class="say">${say}</div></div>`;
-  return `<div class="ln ${cls}" ${who(w)}><div class="who">${pfHTML(w)}<b>${esc(SPK[w])}</b></div><div class="say">${kind === 'msg' ? '<span class="msg">メッセージ</span>' : ''}${say}</div></div>`;
+  if (w === 'news') return `<div class="ln news ${cls}"><div class="say"><small>NEWS　速報</small>${say}</div></div>`;
+  if (w === 'nar' || w === 'me') return `<div class="ln ${w} ${cls}"><div class="say">${say}</div></div>`;
+  return `<div class="ln ${cls}" ${who(w)}><div class="who">${pfHTML(w)}<b>${esc(SPK[w])}</b></div><div class="say">${say}</div></div>`;
 }
 const linesHTML = lines => lines.map(l => lineHTML(l)).join('');
 
-function titleHTML() {
-  return `<div class="wrap">
-  <section class="hero">
-    <div class="eyebrow">マッチングアプリ攻略シミュレーション</div>
-    <h1 class="logo">スキの<span class="ura">ウラ</span></h1>
-    <p class="lead">アプリで出会った${IDS.length}人のなかに、${WOLF_COUNT}人の嘘つきがまぎれている。</p>
-  </section>
-  <div class="lineup" aria-hidden="true">${IDS.map(pfHTML).join('')}</div>
-  <ul class="rules">
-    <li><b>スワイプ</b><span>最初に、${IDS.length}人のプロフィールから、デートしたい人を最大${MAX_START}人まで選びます。${ADD_UNTIL}日目までは、あとから追加でマッチできます（同時に${MAX_TOTAL}人まで）。</span></li>
-    <li><b>${LAST_DAY}日間</b><span>1日に1回、誰かとデートするか、手がかりを集めます。SNSは幼なじみのミヤが、デート中の様子は喫茶かもめの柳さんが教えてくれます。</span></li>
-    <li><b>お金</b><span>デートにはお金がかかります。服やプレゼントを買えば好感度が上がりやすくなり、宝くじで増えることも。${PAYDAY}日目は給料日です。</span></li>
-    <li><b>お願い</b><span>マッチした人はときどきお願いをしてきます。本当にあなたが好きな人も、だまそうとしている人も、同じ言葉で頼んできます。</span></li>
-    <li><b>矛盾</b><span>相手が話していたことと、ミヤの調べた情報が食い違ったら、デートで問い詰められます。本物ならちゃんと理由があり、狼なら言い訳がほころびます。狼どうしは仲間で、同じ目印を持っているかもしれません。</span></li>
-    <li><b>告白</b><span>恋人モードの相手は、好感度が90に届くと告白してきます。付き合えるのは1人だけ。恋人のお願いは断りにくくなります。狼も、本物と同じように告白してきます。</span></li>
-    <li><b>見抜く</b><span>狼の大きなお願いを引き受けると、その場でゲームオーバーです。狼は${IDS.length}人のうち${WOLF_COUNT}人で、毎回入れ替わります。最後に、誰が狼だったかを当てましょう。</span></li>
-    <li><b>改心</b><span>狼とも仲良くなって、誘いをはねのけ続ければ、心を変えられるかもしれません。</span></li>
-  </ul>
-  <form class="start" id="startForm">
-    <label for="pname">あなたの名前<input id="pname" maxlength="8" value="ミオ" autocomplete="off"></label>
-    <button class="btn-main" type="submit">はじめる</button>
-  </form>
-  <p class="empty">狼は毎回ランダムに決まります。何度でも遊べます。</p>
-</div>`;
+function wolfListHTML(fate) {
+  // Only wolves the player matched are revealed, so unmatched characters keep their secret for the next run.
+  const met = S.wolves.filter(id => S.matched.includes(id));
+  if (!met.length) return '<p>マッチした人のなかに、狼はいませんでした。</p>';
+  return `<p>マッチした人のなかの狼は、この${met.length}人でした。</p><ul class="wolves">${met.map(id => `<li ${who(id)}>${pfHTML(id)}<span><b class="wolfmark">${C[id].full}</b>　${esc(C[id].scam)}<br><small>${fate(id)}</small></span></li>`).join('')}</ul>`;
 }
-
-function swipeHTML() {
-  const sw = S.swipe, id = sw.deck[sw.pos], c = C[id];
-  const sub = sw.mode === 'start' ? `いいね ${S.matched.length}/${MAX_START}　・　${sw.pos + 1}/${sw.deck.length}枚目` : `${sw.pos + 1}/${sw.deck.length}枚目`;
-  return `<div class="wrap">
-  <div class="appbar"><span class="applogo">Lumi</span><span class="appsub">${sub}</span></div>
-  ${sw.retry ? `<p class="empty center">誰かひとりには、いいねしてみましょう。</p>` : ''}
-  <div class="deck">
-    <article class="pcard" id="swcard" ${who(id)}>
-      <div class="photo"><img class="px" src="${PORTRAIT[id]}" alt="${esc(c.short)}の写真">
-        <div class="badges"><span class="badge">本人確認済み</span>${c.mode === '友達' ? '<span class="badge friend">友達モード</span>' : ''}</div></div>
-      <div class="pinfo">
-        <h2>${esc(c.short)}<small>${c.age}歳</small></h2>
-        <p class="job">${esc(c.job)}　・　${esc(c.login)}</p>
-        <p class="bio">${esc(c.bio)}</p>
-        <div class="tags">${c.tags.map(t => `<span>#${esc(t)}</span>`).join('')}</div>
-      </div>
-      <div class="stamp yes">いいね</div><div class="stamp no">スキップ</div>
-    </article>
-  </div>
-  <div class="swbtns"><button class="sw no" data-sw="0" aria-label="スキップ">✕</button><button class="sw yes" data-sw="1" aria-label="いいね">♥</button></div>
-  <p class="empty center">カードを左右にスワイプするか、下のボタンで選んでください。</p>
-  ${sw.mode === 'add' ? `<div class="row" style="justify-content:center"><button class="btn-sub" data-sw="close">アプリを閉じる</button></div>` : ''}
-</div>`;
-}
-
-function barHTML() {
-  return `<div class="bar"><div class="name">スキの<span class="ura">ウラ</span></div>
-    <div class="meta"><span>${dateLabel(S.day)}　<strong>${S.day}</strong>/${LAST_DAY}日目</span><span>所持金 <strong>${yen(S.money)}</strong></span></div></div>
-    <div class="days" aria-hidden="true">${Array.from({ length: LAST_DAY }, (_, i) => `<i class="${i + 1 < S.day ? 'past' : i + 1 === S.day ? 'now' : ''}"></i>`).join('')}</div>`;
-}
-
-function castHTML() {
-  if (!S.matched.length) return '';
-  return `<div class="cast">${S.matched.map(id => `<div class="member" ${who(id)}>${pfHTML(id)}<div class="txt"><span class="nm">${C[id].short}${S.partner === id ? '（恋人）' : C[id].mode === '友達' ? '（友達）' : ''}</span><span class="hearts" aria-label="好感度 ${S.chars[id].aff}">${hearts(S.chars[id].aff)}<i>${S.chars[id].aff}</i></span></div></div>`).join('')}</div>`;
-}
-
-function noteHTML() {
-  const ids = IDS.filter(id => S.matched.includes(id) || S.clues[id].length);
-  if (!ids.length) return '';
-  return `<section class="note"><h2>手がかりメモ</h2><p class="hint">集めた言葉と情報は、ここに残ります。</p>
-  ${ids.map(id => `<details ${who(id)}><summary><span class="dot"></span>${C[id].full}<span class="count">${S.clues[id].length}件</span></summary>
-    ${S.clues[id].length ? `<ul>${S.clues[id].map(c => `<li><em>${c.day}日目・${esc(c.src)}</em><span>${esc(c.text)}</span></li>`).join('')}</ul>` : `<p class="empty">まだ手がかりがありません。</p>`}
-  </details>`).join('')}</section>`;
-}
-
-function playHTML() {
-  const sc = S.scene, done = S.shown >= S.log.length;
-  const shown = S.log.slice(0, S.shown).map((l, i) => lineHTML(l, i === S.shown - 1 ? 'new' : i < S.sceneStart ? 'old' : '')).join('');
-  return `<div class="wrap">${barHTML()}${castHTML()}
-  <section class="window"><span class="tag">${esc(sc.tag)}</span>
-    <div class="lines story" id="story" title="タップで次へ">${shown}</div>
-    ${done
-      ? `<div class="choices">${sc.choices.map((c, i) => `<button class="choice" data-i="${i}" ${c.disabled ? 'disabled' : ''}><span>${esc(c.label)}</span>${c.note ? `<small>${esc(c.note)}</small>` : ''}</button>`).join('')}</div>`
-      : `<div class="adv"><button class="skip" data-adv="all">スキップ</button><button class="next" data-adv="1">つぎへ<span class="tri" aria-hidden="true">▼</span></button></div>`}
-  </section>${noteHTML()}</div>`;
-}
-
 function tallyHTML() {
   return `<ul class="tally">${S.matched.map(id => `<li ${who(id)}><span>${C[id].short}</span><span class="meter"><b style="width:${S.chars[id].aff}%"></b></span><span class="v">${S.chars[id].aff}</span></li>`).join('')}</ul>`;
 }
 
+/* ---------- views ---------- */
+let OPTS = [];
+
+function clock() {
+  if (!S) return '7:30';
+  if (S.view === 'story' && S.story && S.story.tag === 'プロローグ') return '23:10';
+  if (S.view === 'story') return '18:30';
+  if (S.finale || S.view === 'end' || S.view === 'over') return '23:40';
+  return S.plan ? '21:40' : '7:30';
+}
+
+function titleHTML() {
+  const d = new Date(2027, 3, 1);
+  return `<div class="lock">
+    <div><div class="clock">7:30</div><div class="dateline">4月1日（${'日月火水木金土'[d.getDay()]}）</div></div>
+    <h1 class="logo">スキの<span class="ura">ウラ</span></h1>
+    <p class="lead">寂しくて始めたマッチングアプリ。「好き」と近づいてくる人のなかに、嘘つきがまぎれている。</p>
+    <div class="lineup" aria-hidden="true">${IDS.map(pfHTML).join('')}</div>
+    <form class="start" id="startForm">
+      <label for="pname">あなたの名前<input id="pname" maxlength="8" value="ミオ" autocomplete="off"></label>
+      <button class="btn-main" type="submit">はじめる</button>
+    </form>
+    <details><summary>遊び方</summary>
+      <ul class="rules">
+        <li><b>${LAST_DAY}日間</b><span>1日に1つ、予定を入れられます。トークからデートに誘うか、ミヤや喫茶かもめに相談しましょう。</span></li>
+        <li><b>お願い</b><span>相手はときどきお願いをしてきます。本当に好きでいてくれる人も、だまそうとしている人も、同じ言葉で頼んできます。</span></li>
+        <li><b>見抜く</b><span>${IDS.length}人のうち${WOLF_COUNT}人が「狼」です。狼の大きなお願いを引き受けると、そこで終わりです。話の食い違いや、持ち物に気をつけて。</span></li>
+        <li><b>告白</b><span>仲良くなると告白されることも。でも、その人が狼かもしれません。</span></li>
+      </ul>
+    </details>
+  </div>`;
+}
+
+function homeHTML() {
+  const pend = S.matched.filter(id => thread(id).pending);
+  const planText = !S.plan ? 'まだ予定はありません。トークからデートに誘うか、ミヤや喫茶かもめに相談できます。'
+    : S.plan.type === 'date' ? `${C[S.plan.id].short}とデートした`
+    : S.plan.type === 'end' ? '最後の夜。トークで、ミヤに答えよう'
+    : S.plan.type === 'sns' ? `ミヤに${C[S.plan.id].short}のことを調べてもらった`
+    : `喫茶かもめで、${C[S.plan.id].short}の話を聞いた`;
+  const icon = n => n.tid && C[n.tid] ? pfHTML(n.tid).replace('class="pf"', 'class="pf ico"')
+    : `<span class="ico">${{ diary: '☀', bank: '¥', shop: '◇', lumi: '♥' }[n.kind] || '・'}</span>`;
+  return `<div class="pad home">
+    <div><div class="clock">${clock()}</div><div class="dateline">${dateLabel(S.day)}　${S.day}/${LAST_DAY}日目　所持金 ${yen(S.money)}</div></div>
+    <div class="days" aria-hidden="true">${Array.from({ length: LAST_DAY }, (_, i) => `<i class="${i + 1 < S.day ? 'past' : i + 1 === S.day ? 'now' : ''}"></i>`).join('')}</div>
+    <div class="notes">${S.notes.map(n => n.tid
+      ? `<button class="ntf" data-thread="${n.tid}">${icon(n)}<span><b>${esc(n.title)}</b><span class="tx">${esc(n.text)}</span></span></button>`
+      : `<div class="ntf">${icon(n)}<span><b>${esc(n.title)}</b><span class="tx">${esc(n.text)}</span></span></div>`).join('')}</div>
+    <div class="card plan"><b>今日の予定</b>${esc(planText)}</div>
+    ${pend.length ? `<p class="muted">返事を待っている人がいます：${pend.map(id => C[id].short).join('、')}</p>` : ''}
+    <div class="row">
+      <button class="btn-sub" data-act="shop" ${S.shopped === S.day ? 'disabled' : ''}>${S.shopped === S.day ? '今日は買い物ずみ' : '駅ビルで買い物'}</button>
+      ${S.finale ? '<button class="btn-main" data-thread="miya">ミヤに答える</button>'
+        : `<button class="btn-main" data-act="sleep" ${pend.length ? 'disabled' : ''}>${S.day >= LAST_DAY ? '最後の夜をむかえる' : 'おやすみ'}</button>`}
+    </div>
+  </div>`;
+}
+
+function talkHTML() {
+  const tids = Object.keys(S.threads).filter(t => S.threads[t].msgs.length).sort((a, b) => S.threads[b].last - S.threads[a].last);
+  return `<div class="pad"><h1 class="apptitle">トーク</h1><div>${tids.map(tid => {
+    const th = S.threads[tid], lastMsg = [...th.msgs].reverse().find(m => m.from !== 'stamp');
+    const sub = NPC[tid] ? `<span class="pv">${esc(NPC[tid].sub)}</span>` : '';
+    return `<button class="lrow" data-thread="${tid}">${pfHTML(thWho(tid))}<span class="mid"><span class="nm">${esc(thName(tid))}${C[tid] ? relTag(tid) : ''}</span>${sub}<span class="pv">${lastMsg ? esc((lastMsg.from === 'me' ? 'あなた：' : '') + lastMsg.text) : ''}</span></span>${th.unread ? `<span class="unread">${th.unread}</span>` : '<span></span>'}</button>`;
+  }).join('')}</div></div>`;
+}
+
+function threadOptions(tid) {
+  if (S.finale) return tid === 'miya' ? guessOptions() : [];
+  if (C[tid]) {
+    const p = thread(tid).pending;
+    if (p) return [
+      { label: '引き受ける', act: 'reqAnswer', arg: { id: tid, yes: true } },
+      { label: '断る', act: 'reqAnswer', arg: { id: tid, yes: false } },
+      ...(p.asked ? [] : [{ label: '詳しく聞く', act: 'reqDetail', arg: tid }]),
+    ];
+    if (S.plan) return [];
+    const cost = dateCost(tid);
+    return [{ label: '会いに行く', act: 'date', arg: tid, disabled: cost > S.money, note: cost > S.money ? 'お金が足りない' : `デート代 ${yen(cost)}` }];
+  }
+  if (S.plan) return [];
+  if (tid === 'miya') return S.matched.map(id => {
+    const ch = S.chars[id], pend = C[id].lie && ch.claim && !ch.evidence;
+    return { label: `${C[id].short}のことを調べてもらう`, act: 'sns', arg: id, disabled: ch.sns >= 3 && !pend, note: pend ? '本人の話の裏を取る' : ch.sns >= 3 ? 'もう調べつくした' : `${ch.sns}/3回` };
+  });
+  return S.matched.map(id => {
+    const ch = S.chars[id];
+    return { label: `${C[id].short}のことを聞く`, act: 'obs', arg: id, disabled: !ch.dates || ch.obs >= 2, note: !ch.dates ? 'まだ一緒に来ていない' : ch.obs >= 2 ? 'もう聞けることはない' : `${ch.obs}/2回` };
+  });
+}
+
+function threadHTML() {
+  const tid = S.open, th = thread(tid);
+  OPTS = threadOptions(tid);
+  const head = C[tid]
+    ? `<span class="who"><b>${esc(C[tid].short)}</b><span>${hearts(S.chars[tid].aff)} ${relTag(tid)}</span></span>`
+    : `<span class="who"><b>${esc(thName(tid))}</b><span class="muted">${esc(NPC[tid].sub)}</span></span>`;
+  const body = th.msgs.map(m => m.from === 'stamp' ? `<span class="stamp">${esc(m.text)}</span>`
+    : m.from === 'nar' ? `<p class="mnar">${esc(m.text)}</p>`
+    : m.from === 'me' ? `<div class="msg me"><div class="b">${esc(m.text)}</div></div>`
+    : `<div class="msg">${pfHTML(m.who)}<div class="b">${esc(m.text)}</div></div>`).join('');
+  const hint = S.finale ? '' : S.plan && !(C[tid] && thread(tid).pending) ? '<p class="th-hint">今日の予定は、もう決まっている</p>' : '';
+  const opts = OPTS.map((o, i) => `<button class="opt" data-o="${i}" ${o.disabled ? 'disabled' : ''}><span>${esc(o.label)}</span>${o.note ? `<small>${esc(o.note)}</small>` : ''}</button>`).join('');
+  return `<div class="th-h"><button class="back" data-tab="talk" aria-label="トーク一覧へ">‹</button>${pfHTML(thWho(tid))}${head}</div>
+    <div class="th-body" id="scroller">${body}</div>
+    ${opts || hint ? `<div class="th-opts">${opts}${hint}</div>` : ''}`;
+}
+
+function storyHTML() {
+  const st = S.story, done = st.shown >= st.log.length;
+  const shown = st.log.slice(0, st.shown).map((l, i) => lineHTML(l, i === st.shown - 1 ? 'new' : i < st.start ? 'old' : '')).join('');
+  return `<div class="story"><div class="story-h">${esc(st.tag)}</div>
+    <div class="lines story-log" id="scroller" title="タップで次へ">${shown}</div>
+    <div class="foot">${done
+      ? st.choices.map((c, i) => `<button class="choice" data-i="${i}" ${c.disabled ? 'disabled' : ''}><span>${esc(c.label)}</span>${c.note ? `<small>${esc(c.note)}</small>` : ''}</button>`).join('')
+      : `<div class="adv"><button class="skip" data-adv="all">スキップ</button><button class="next" data-adv="1">つぎへ<span class="tri" aria-hidden="true">▼</span></button></div>`}</div></div>`;
+}
+
+function swipeHTML() {
+  const sw = S.swipe, id = sw.deck[sw.pos], c = C[id];
+  const sub = sw.mode === 'start' ? `いいね ${S.matched.length}/${MAX_START}　・　${sw.pos + 1}/${sw.deck.length}` : `${sw.pos + 1}/${sw.deck.length}`;
+  return `<div class="pad">
+    <div class="row" style="justify-content:space-between;align-items:baseline"><h1 class="apptitle" style="color:var(--rose)">Lumi</h1><span class="muted">${sub}</span></div>
+    ${sw.retry ? '<p class="muted center">誰かひとりには、いいねしてみましょう。</p>' : ''}
+    <div class="deck"><article class="pcard" id="swcard" ${who(id)}>
+      <div class="photo"><img class="px" src="${PORTRAIT[id]}" alt="${esc(c.short)}の写真">
+        <div class="badges"><span class="badge">本人確認済み</span>${c.mode === '友達' ? '<span class="badge friend">友達モード</span>' : ''}</div></div>
+      <div class="pinfo"><h2>${esc(c.short)}<small>${c.age}歳</small></h2>
+        <p class="job">${esc(c.job)}　・　${esc(c.login)}</p><p class="bio">${esc(c.bio)}</p>
+        <div class="tags">${c.tags.map(t => `<span>#${esc(t)}</span>`).join('')}</div></div>
+      <div class="stamp-s yes">いいね</div><div class="stamp-s no">スキップ</div>
+    </article></div>
+    <div class="swbtns"><button class="sw no" data-sw="0" aria-label="スキップ">✕</button><button class="sw yes" data-sw="1" aria-label="いいね">♥</button></div>
+    <p class="muted center">左右にスワイプするか、ボタンで選んでください。</p>
+    ${sw.mode === 'add' ? '<div class="row" style="justify-content:center"><button class="btn-sub" data-sw="close">アプリを閉じる</button></div>' : ''}
+  </div>`;
+}
+
+function lumiHTML() {
+  const canAdd = S.day <= ADD_UNTIL && pool().length > 0 && S.matched.length < MAX_TOTAL;
+  return `<div class="pad"><h1 class="apptitle" style="color:var(--rose)">Lumi</h1>
+    <p class="muted">マッチ中 ${S.matched.length}/${MAX_TOTAL}人</p>
+    <div>${S.matched.map(id => `<button class="lrow" data-thread="${id}">${pfHTML(id)}<span class="mid"><span class="nm">${esc(C[id].full)}${relTag(id)}</span><span class="pv">${C[id].age}歳・${esc(C[id].job)}</span>${hearts(S.chars[id].aff)}</span><span></span></button>`).join('')}</div>
+    ${canAdd ? `<button class="btn-main" data-act="openSwipe" data-arg="add">ほかの人をさがす</button><p class="muted">新しいマッチは${ADD_UNTIL}日目までです。</p>`
+      : `<p class="muted">${S.day > ADD_UNTIL ? '新しいマッチの受付は終わりました。' : 'いまはこれ以上マッチできません。'}</p>`}
+  </div>`;
+}
+
+function memoHTML() {
+  const ids = IDS.filter(id => S.matched.includes(id) || S.clues[id].length);
+  return `<div class="pad note"><h1 class="apptitle">メモ</h1><p class="muted">気になったことは、ここに残しておこう。</p>
+    ${S.motifKnown ? `<div class="card motif"><b>ミヤの話</b><br>詐欺グループの目印は「${esc(MOTIFS[S.motif].item)}」らしい。</div>` : ''}
+    ${ids.map(id => `<details ${who(id)}><summary><span class="sdot"></span>${esc(C[id].full)}<span class="count">${S.clues[id].length}件</span></summary>
+      ${S.clues[id].length ? `<ul>${S.clues[id].map(c => `<li><em>${c.day}日目・${esc(c.src)}</em><span>${esc(c.text)}</span></li>`).join('')}</ul>` : '<p class="muted">まだ何もない。</p>'}
+    </details>`).join('')}</div>`;
+}
+
+function bankHTML() {
+  return `<div class="pad"><h1 class="apptitle">銀行</h1>
+    <div class="card"><span class="muted">残高</span><div class="bal">${yen(S.money)}</div><span class="muted">${PAYDAY}日目は給料日</span></div>
+    <ul class="txl">${S.tx.map(t => `<li><span class="d">${t.day}日目</span><span>${esc(t.label)}</span><span class="${t.amount > 0 ? 'plus' : ''}">${t.amount > 0 ? '+' : '−'}${yen(Math.abs(t.amount))}</span></li>`).join('')}</ul></div>`;
+}
+
+function shopHTML() {
+  const item = (label, price, key, note) => `<button class="opt" data-act="buy" data-arg="${key}" ${price > S.money ? 'disabled' : ''}><span>${label}（${yen(price)}）</span><small>${price > S.money ? 'お金が足りない' : note}</small></button>`;
+  return `<div class="pad"><h1 class="apptitle">駅ビル</h1><p class="muted">仕事帰りに、少しだけ寄り道。</p>
+    ${item('新しい服', 8000, 'outfit', '次の3回のデートで喜ばれる')}
+    ${item('ちょっとしたプレゼント', 3000, 'gift', '次に会う人に渡せる')}
+    ${item('宝くじを1枚', 300, 'lottery', '当たるかも？')}
+    <button class="btn-sub" data-tab="home">ホームにもどる</button></div>`;
+}
+
 function overHTML() {
   const id = S.overBy;
-  return `<div class="wrap"><section class="end over">
+  return `<div class="pad end over">
     <div class="kicker">GAME OVER</div><h1>${C[id].over.title}</h1>
-    <div class="window"><span class="tag">${S.day}日目</span><div class="lines">${linesHTML(C[id].over.lines)}</div></div>
+    <div class="endlines lines">${linesHTML(C[id].over.lines)}</div>
     <div class="reveal"><h3>答え合わせ</h3>
       <p>あなたが信じた<span class="wolfmark">${C[id].full}</span>は、${esc(C[id].scam)}が目的の狼でした。</p>
       ${wolfListHTML(w => w === id ? 'あなたをだました' : 'まだ正体を見せていなかった')}</div>
     <div class="reveal"><h3>好感度</h3>${tallyHTML()}</div>
-    <div class="row"><button class="btn-main" data-go="restart">もう一度あそぶ</button><button class="btn-sub" data-go="toTitle">タイトルへ</button></div>
-  </section>${noteHTML()}</div>`;
+    <div class="row"><button class="btn-main" data-act="restart">もう一度あそぶ</button><button class="btn-sub" data-act="toTitle">タイトルへ</button></div>
+  </div>`;
 }
 
-function endingHTML() {
+function endHTML() {
   const e = ending();
   const hit = S.guess.filter(id => S.wolves.includes(id));
   const falsePicks = S.guess.filter(id => !S.wolves.includes(id));
   const missed = e.metWolves.filter(id => !S.guess.includes(id));
   const answer = S.guess.length ? S.guess.map(id => C[id].full).join('、') : '嘘つきはいなかった';
-  const guessLine = `あなたの答えは「${esc(answer)}」。` + (!falsePicks.length && !missed.length
-    ? '<span class="okmark">全問正解です。</span>'
-    : `当たりは${hit.length}人。${missed.length ? `見逃した狼が${missed.length}人、` : ''}${falsePicks.length ? `本当は狼ではなかった人が${falsePicks.length}人` : ''}いました。`.replace(/、いました。$/, 'いました。'));
-  const fate = id => !S.matched.includes(id) ? 'マッチしなかったので、近づかれずにすんだ'
-    : e.converted.includes(id) ? 'あなたのおかげで、狼をやめた' : esc(C[id].fate);
-  return `<div class="wrap"><section class="end">
+  const tail = [missed.length ? `見逃した狼が${missed.length}人` : '', falsePicks.length ? `本当は狼ではなかった人が${falsePicks.length}人` : ''].filter(Boolean).join('、');
+  const guessLine = `あなたの答えは「${esc(answer)}」。` + (!falsePicks.length && !missed.length ? '<span class="okmark">全問正解です。</span>' : `当たりは${hit.length}人。${tail}いました。`);
+  const fate = id => e.converted.includes(id) ? 'あなたのおかげで、狼をやめた' : esc(C[id].fate);
+  return `<div class="pad end">
     <div class="kicker">${e.kicker}</div><h1>${esc(e.title)}</h1>
-    <div class="window"><span class="tag">${dateLabel(LAST_DAY)}</span><div class="lines">${linesHTML(e.lines)}</div></div>
-    <div class="reveal"><h3>答え合わせ</h3>
-      <p>${guessLine}</p>
-      ${wolfListHTML(fate)}
-      ${e.metWolves.length > e.converted.length ? `<p class="empty">もっと距離を縮めていたら、狼の心も変えられたかもしれません。</p>` : ''}
-    </div>
+    <div class="endlines lines">${linesHTML(e.lines)}</div>
+    <div class="reveal"><h3>答え合わせ</h3><p>${guessLine}</p>${wolfListHTML(fate)}
+      ${e.metWolves.length > e.converted.length ? '<p class="muted">もっと距離を縮めていたら、狼の心も変えられたかもしれません。</p>' : ''}</div>
     <div class="reveal"><h3>好感度</h3>${tallyHTML()}</div>
-    <div class="row"><button class="btn-main" data-go="restart">もう一度あそぶ</button><button class="btn-sub" data-go="toTitle">タイトルへ</button></div>
-  </section>${noteHTML()}</div>`;
+    <div class="row"><button class="btn-main" data-act="restart">もう一度あそぶ</button><button class="btn-sub" data-act="toTitle">タイトルへ</button></div>
+  </div>`;
+}
+
+function tabsHTML() {
+  const unread = Object.values(S.threads).reduce((a, t) => a + t.unread, 0);
+  const tabs = [['home', '⌂', 'ホーム', 0], ['talk', '✉', 'トーク', unread], ['lumi', '♥', 'Lumi', 0], ['memo', '✎', 'メモ', S.newClues], ['bank', '¥', '銀行', 0]];
+  const cur = S.view === 'thread' ? 'talk' : S.view === 'shop' ? 'home' : S.view;
+  return `<nav class="tabs">${tabs.map(([k, ic, label, n]) => `<button class="tab ${cur === k ? 'on' : ''}" data-tab="${k}"><span class="ic" aria-hidden="true">${ic}</span>${label}${n ? `<span class="dot">${n}</span>` : ''}</button>`).join('')}</nav>`;
 }
 
 const app = document.getElementById('app');
 function render() {
-  if (!S) app.innerHTML = titleHTML();
-  else if (S.screen === 'swipe') { app.innerHTML = swipeHTML(); bindSwipe(); }
-  else if (S.screen === 'over') app.innerHTML = overHTML();
-  else if (S.screen === 'ending') app.innerHTML = endingHTML();
+  let inner, fill = false, tabs = false;
+  if (!S) inner = titleHTML();
   else {
-    app.innerHTML = playHTML();
-    const st = document.getElementById('story');
-    if (st) st.scrollTop = st.scrollHeight;
+    const vw = S.view;
+    tabs = ['home', 'talk', 'thread', 'lumi', 'memo', 'bank', 'shop'].includes(vw);
+    if (vw === 'story') { inner = storyHTML(); fill = true; }
+    else if (vw === 'thread') { inner = threadHTML(); fill = true; }
+    else if (vw === 'swipe') inner = swipeHTML();
+    else if (vw === 'talk') inner = talkHTML();
+    else if (vw === 'lumi') inner = lumiHTML();
+    else if (vw === 'memo') inner = memoHTML();
+    else if (vw === 'bank') inner = bankHTML();
+    else if (vw === 'shop') inner = shopHTML();
+    else if (vw === 'over') inner = overHTML();
+    else if (vw === 'end') inner = endHTML();
+    else inner = homeHTML();
   }
+  app.innerHTML = `<div class="stage"><div class="phone">
+    <div class="sbar"><span>${clock()}</span><span class="bat">${S && S.view !== 'story' ? 'Lumi　' : ''}▮▮▮ 82%</span></div>
+    <div class="view ${fill ? 'fill' : ''}" id="view">${inner}</div>
+    ${tabs ? tabsHTML() : ''}
+  </div></div>`;
+  const sc = document.getElementById('scroller');
+  if (sc) sc.scrollTop = sc.scrollHeight;
+  if (S && S.view === 'swipe') bindSwipe();
 }
 function advance(all) {
-  if (!S || S.screen !== 'play' || S.shown >= S.log.length) return;
-  S.shown = all ? S.log.length : S.shown + 1;
+  const st = S && S.view === 'story' && S.story;
+  if (!st || st.shown >= st.log.length) return;
+  st.shown = all ? st.log.length : st.shown + 1;
   render();
 }
 
@@ -1942,7 +2129,7 @@ function fly(yes) {
   flying = true;
   card.style.transition = 'transform .24s ease, opacity .24s ease';
   card.style.setProperty(yes ? '--yes' : '--no', 1);
-  card.style.transform = `translateX(${yes ? 520 : -520}px) rotate(${yes ? 18 : -18}deg)`;
+  card.style.transform = `translateX(${yes ? 480 : -480}px) rotate(${yes ? 18 : -18}deg)`;
   card.style.opacity = '0';
   setTimeout(() => { flying = false; ACT.swipe(yes); }, 220);
 }
@@ -1968,29 +2155,33 @@ function bindSwipe() {
   card.addEventListener('pointercancel', end);
 }
 
+/* ---------- input ---------- */
 app.addEventListener('submit', e => {
   if (e.target.id !== 'startForm') return;
   e.preventDefault();
   newGame(document.getElementById('pname').value.trim().slice(0, 8));
-  window.scrollTo({ top: 0 });
 });
 app.addEventListener('click', e => {
   const b = e.target.closest('button');
-  if (!b) { if (e.target.closest('#story')) advance(false); return; }
-  if (b.dataset.adv) { advance(b.dataset.adv === 'all'); return; }
-  if (b.dataset.go) { ACT[b.dataset.go](); window.scrollTo({ top: 0 }); return; }
-  if (b.dataset.sw !== undefined) { if (b.dataset.sw === 'close') ACT.closeSwipe(); else fly(b.dataset.sw === '1'); return; }
-  if (b.dataset.i !== undefined && S && S.scene) {
-    const c = S.scene.choices[+b.dataset.i];
+  if (!b) { if (e.target.closest('.story-log')) advance(false); return; }
+  const d = b.dataset;
+  if (d.adv) { advance(d.adv === 'all'); return; }
+  if (d.tab) { ACT.tab(d.tab); return; }
+  if (d.thread) { ACT.openThread(d.thread); return; }
+  if (d.sw !== undefined) { if (d.sw === 'close') ACT.closeSwipe(); else fly(d.sw === '1'); return; }
+  if (d.act) { ACT[d.act](d.arg); return; }
+  if (d.o !== undefined) { const o = OPTS[+d.o]; if (o && !o.disabled) ACT[o.act](o.arg); return; }
+  if (d.i !== undefined && S && S.story) {
+    const c = S.story.choices[+d.i];
     if (c && !c.disabled) {
-      if (c.me) { S.log.push(['me', c.me]); S.meFlag = true; }
+      if (c.me) { S.story.log.push(['me', c.me]); S.meFlag = true; }
       ACT[c.act](c.arg);
     }
   }
 });
 document.addEventListener('keydown', e => {
-  if (S && S.screen === 'play' && (e.key === 'Enter' || e.key === ' ') && !e.target.closest('button,input,summary')) { e.preventDefault(); advance(false); return; }
-  if (!S || S.screen !== 'swipe') return;
+  if (S && S.view === 'story' && (e.key === 'Enter' || e.key === ' ') && !e.target.closest('button,input,summary')) { e.preventDefault(); advance(false); return; }
+  if (!S || S.view !== 'swipe') return;
   if (e.key === 'ArrowRight') fly(true);
   if (e.key === 'ArrowLeft') fly(false);
 });
@@ -1998,7 +2189,7 @@ document.addEventListener('keydown', e => {
 registerCast();
 buildPortraits();
 window.claude?.hot?.snapshot?.(() => ({ S }));
-const boot = d => { if (d && d.S && d.S.v === 9) S = d.S; render(); };
+const boot = d => { if (d && d.S && d.S.v === 10) S = d.S; render(); };
 window.claude?.hot?.ready ? window.claude.hot.ready(boot) : boot(window.claude?.hot?.data ?? {});
 </script>
 
