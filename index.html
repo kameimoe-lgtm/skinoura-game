@@ -113,6 +113,37 @@ button.ntf:hover{border-color:var(--rose)}
 .ntf b{font-size:12px;display:block}
 .ntf .tx{font-size:13px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .plan b{display:block;font-size:12px;color:var(--muted);letter-spacing:.08em;font-weight:500}
+.home-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.help{flex:none;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--rose);font-weight:700}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:6px}
+.sec-h b{font-size:12px;color:var(--muted);letter-spacing:.08em;font-weight:500}
+.ppl{display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:8px}
+.pp{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border:1px solid var(--line);border-radius:14px;background:var(--card);min-width:0}
+.pp:hover{border-color:var(--rose)}
+.pp .pf{width:42px;height:42px;border-radius:50%}
+.pp .nm{font-size:12.5px;font-weight:700;line-height:1.3}
+.pp .st{font-size:10.5px;color:var(--muted);line-height:1.3;text-align:center}
+.pp .st.warn{color:var(--wolf);font-weight:700}
+.pp .st.new{color:var(--rose);font-weight:700}
+.pfbtn{border:0;background:transparent;padding:0;border-radius:50%;flex:none;display:block}
+
+/* ---- overlays (guide, profile) ---- */
+.sheet-wrap{position:absolute;inset:0;z-index:5;display:flex;align-items:flex-end;background:color-mix(in srgb,var(--ink) 45%,transparent)}
+.sheet{width:100%;box-sizing:border-box;max-height:90%;overflow-y:auto;background:var(--paper);border-radius:24px 24px 0 0;padding:18px 18px max(18px,env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:10px}
+.sheet.guide h2{font-family:var(--f-display);font-size:22px;margin:0;line-height:1.3}
+.sheet.guide p{margin:0;font-size:14px}
+.sheet .kicker{font-size:11px;letter-spacing:.14em;color:var(--muted)}
+.gdots{display:flex;justify-content:center;gap:6px;padding-top:4px}
+.gdots i{width:7px;height:7px;border-radius:50%;background:var(--line)}
+.gdots i.on{background:var(--rose)}
+.gbtns{justify-content:flex-end}
+.sheet.prof .pcard{max-width:none;box-shadow:none}
+.sheet.prof .photo{aspect-ratio:16/10}
+.sheet.prof .photo img{width:auto;height:90%}
+.rec{margin:0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.rec div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 10px}
+.rec dt{font-size:11px;color:var(--muted)}
+.rec dd{margin:0;font-weight:700;font-size:14px}
 
 /* ---- talk list / lumi list ---- */
 .lrow{display:grid;grid-template-columns:46px 1fr auto;gap:12px;align-items:center;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:transparent;padding:10px 4px;box-sizing:border-box}
@@ -1431,6 +1462,9 @@ function postLines(tid, lines) {
   }
 }
 function notify(kind, title, text, tid) { S.notes.unshift({ kind, title, text: fmt(text), tid }); }
+// Days since the heroine last met this person (or matched, if they have never met).
+const quietDays = id => S.day - (S.chars[id].lastDate ?? S.chars[id].since);
+const QUIET = 3;
 
 /* ---------- story scenes (prologue, dates) ---------- */
 function scene(tag, lines, choices, fresh) {
@@ -1475,7 +1509,7 @@ function newGame(name) {
   S = { name: name || 'ミオ', day: 1, money: 60000, wolves: shuffle(IDS).slice(0, WOLF_COUNT), picks: [], outfit: 0, gift: false, shopped: 0,
         schedule: {}, repay: [], chars: {}, clues: {}, matched: [], view: 'story', story: null, swipe: null, guess: null, overBy: null,
         meFlag: false, twinNow: null, knowTwin: false, twinCaught: 0, motif: Math.floor(Math.random() * MOTIFS.length), motifKnown: false,
-        decoy: {}, partner: null, threads: {}, notes: [], seq: 0, plan: null, tx: [], newClues: 0, open: null, finale: false, v: 10 };
+        decoy: {}, partner: null, threads: {}, notes: [], seq: 0, plan: null, guide: null, profile: null, tx: [], newClues: 0, open: null, finale: false, v: 10 };
   const decoys = shuffle(DECOYS.map((_, i) => i));
   IDS.forEach((id, i) => {
     S.chars[id] = { aff: 20, sns: 0, obs: 0, tell: 0, used: [], dates: 0, hooked: false, bigDone: false, since: 0, claim: false, evidence: false, confronted: false, exposed: false, confessed: false };
@@ -1525,7 +1559,7 @@ const ACT = {
       post('miya', 'them', 'マッチおめでと！　デートするなら、駅前の「喫茶かもめ」がおすすめ。マスターの柳さん、人を見る目だけは確かだから');
       post('miya', 'them', 'あやしいと思ったら、すぐここに相談してね。……ユキみたいには、なってほしくないから');
       post('kamome', 'them', 'いらっしゃいませ、喫茶かもめです。デートのご利用、お待ちしております。気になることがあれば、こちらにどうぞ。——柳');
-      S.story = null;
+      S.story = null; S.guide = 0;
       ACT.morning();
     } else {
       if (sw.added.length) notify('lumi', 'Lumi', `${sw.added.map(i => C[i].short).join('、')}とマッチしました`);
@@ -1558,10 +1592,14 @@ const ACT = {
       notify('talk', C[ev.id].short, R.ask[R.ask.length - 1][1], ev.id);
     }
     const free = shuffle(S.matched.filter(id => !thread(id).pending));
-    free.slice(0, Math.random() < 0.5 ? 2 : 1).forEach(id => {
+    const invited = free.slice(0, Math.random() < 0.5 ? 2 : 1);
+    invited.forEach(id => {
       const t = pick1(INVITES);
       post(id, 'them', t); notify('talk', C[id].short, t, id);
     });
+    // Quiet people never ping first, so remind the player about whoever has been left alone longest.
+    const lonely = free.filter(id => !invited.includes(id) && quietDays(id) >= QUIET + 1).sort((a, b) => quietDays(b) - quietDays(a))[0];
+    if (lonely) notify('lumi', 'Lumi', `${C[lonely].short}と${quietDays(lonely)}日会っていません。自分からは誘ってこない人もいます`, lonely);
     S.view = 'home'; render();
   },
 
@@ -1615,7 +1653,7 @@ const ACT = {
     S.plan = { type: 'date', id };
     tx(-cost, `${C[id].short}とデート`);
     post(id, 'me', '今日、会えるかな？');
-    ch.dates++;
+    ch.dates++; ch.lastDate = S.day;
     if (C[id].twin) {
       const yo = ch.dates > 1 && Math.random() < (v(id) === 'wolf' ? 0.5 : 0.3);
       S.twinNow = yo ? 'yo' : 'yu';
@@ -1812,8 +1850,11 @@ const ACT = {
   },
 
   /* navigation */
-  tab(view) { S.view = view; S.open = null; if (view === 'memo') S.newClues = 0; render(); },
-  openThread(tid) { S.view = 'thread'; S.open = tid; thread(tid).unread = 0; render(); },
+  tab(view) { S.view = view; S.open = null; S.profile = null; if (view === 'memo') S.newClues = 0; render(); },
+  openThread(tid) { S.profile = null; S.view = 'thread'; S.open = tid; thread(tid).unread = 0; render(); },
+  profile(id) { S.profile = id; render(); },
+  closeProfile() { S.profile = null; render(); },
+  guide(step) { S.guide = step === 'close' || +step >= GUIDE.length ? null : +step; render(); },
   shop() { S.view = 'shop'; render(); },
   restart() { const n = S ? S.name : ''; newGame(n); },
   toTitle() { S = null; render(); },
@@ -1898,7 +1939,7 @@ function titleHTML() {
     </form>
     <details><summary>遊び方</summary>
       <ul class="rules">
-        <li><b>${LAST_DAY}日間</b><span>1日に1つ、予定を入れられます。トークからデートに誘うか、ミヤや喫茶かもめに相談しましょう。</span></li>
+        <li><b>${LAST_DAY}日間</b><span>予定は1日に1つだけ。デートするか、ミヤや喫茶かもめに相談するかを毎日えらびます。誘ってこない人には、自分から会いに行きましょう。</span></li>
         <li><b>お願い</b><span>相手はときどきお願いをしてきます。本当に好きでいてくれる人も、だまそうとしている人も、同じ言葉で頼んできます。</span></li>
         <li><b>見抜く</b><span>${IDS.length}人のうち${WOLF_COUNT}人が「狼」です。狼の大きなお願いを引き受けると、そこで終わりです。話の食い違いや、持ち物に気をつけて。</span></li>
         <li><b>告白</b><span>仲良くなると告白されることも。でも、その人が狼かもしれません。</span></li>
@@ -1909,20 +1950,26 @@ function titleHTML() {
 
 function homeHTML() {
   const pend = S.matched.filter(id => thread(id).pending);
-  const planText = !S.plan ? 'まだ予定はありません。トークからデートに誘うか、ミヤや喫茶かもめに相談できます。'
+  const planText = !S.plan ? 'まだ空いています。デートする／ミヤに調べてもらう／喫茶かもめで聞く、のどれか1つを選べます。'
     : S.plan.type === 'date' ? `${C[S.plan.id].short}とデートした`
     : S.plan.type === 'end' ? '最後の夜。トークで、ミヤに答えよう'
     : S.plan.type === 'sns' ? `ミヤに${C[S.plan.id].short}のことを調べてもらった`
     : `喫茶かもめで、${C[S.plan.id].short}の話を聞いた`;
   const icon = n => n.tid && C[n.tid] ? pfHTML(n.tid).replace('class="pf"', 'class="pf ico"')
     : `<span class="ico">${{ diary: '☀', bank: '¥', shop: '◇', lumi: '♥' }[n.kind] || '・'}</span>`;
+  const state = id => thread(id).pending ? ['warn', '返事待ち'] : thread(id).unread ? ['new', '未読'] : S.plan && S.plan.id === id && S.plan.type === 'date' ? ['', '今日会った']
+    : !S.chars[id].dates ? ['warn', 'まだ会ってない'] : quietDays(id) >= QUIET ? ['warn', `${quietDays(id)}日会ってない`] : ['', `${S.chars[id].dates}回デート`];
+  const people = S.matched.length ? `<section class="people"><div class="sec-h"><b>マッチ中のみんな</b><span class="muted">タップでプロフィール</span></div>
+    <div class="ppl">${S.matched.map(id => { const [k, t] = state(id); return `<button class="pp" data-prof="${id}" ${who(id)}>${pfHTML(id)}<span class="nm">${esc(C[id].short)}</span><span class="st ${k}">${t}</span></button>`; }).join('')}</div></section>` : '';
   return `<div class="pad home">
-    <div><div class="clock">${clock()}</div><div class="dateline">${dateLabel(S.day)}　${S.day}/${LAST_DAY}日目　所持金 ${yen(S.money)}</div></div>
+    <div class="home-top"><div><div class="clock">${clock()}</div><div class="dateline">${dateLabel(S.day)}　${S.day}/${LAST_DAY}日目　所持金 ${yen(S.money)}</div></div>
+      <button class="help" data-act="guide" data-arg="0" aria-label="遊び方を見る">?</button></div>
     <div class="days" aria-hidden="true">${Array.from({ length: LAST_DAY }, (_, i) => `<i class="${i + 1 < S.day ? 'past' : i + 1 === S.day ? 'now' : ''}"></i>`).join('')}</div>
     <div class="notes">${S.notes.map(n => n.tid
       ? `<button class="ntf" data-thread="${n.tid}">${icon(n)}<span><b>${esc(n.title)}</b><span class="tx">${esc(n.text)}</span></span></button>`
       : `<div class="ntf">${icon(n)}<span><b>${esc(n.title)}</b><span class="tx">${esc(n.text)}</span></span></div>`).join('')}</div>
-    <div class="card plan"><b>今日の予定</b>${esc(planText)}</div>
+    <div class="card plan"><b>今日の予定（1日に1つ）</b>${esc(planText)}</div>
+    ${people}
     ${pend.length ? `<p class="muted">返事を待っている人がいます：${pend.map(id => C[id].short).join('、')}</p>` : ''}
     <div class="row">
       <button class="btn-sub" data-act="shop" ${S.shopped === S.day ? 'disabled' : ''}>${S.shopped === S.day ? '今日は買い物ずみ' : '駅ビルで買い物'}</button>
@@ -1952,7 +1999,7 @@ function threadOptions(tid) {
     ];
     if (S.plan) return [];
     const cost = dateCost(tid);
-    return [{ label: '会いに行く', act: 'date', arg: tid, disabled: cost > S.money, note: cost > S.money ? 'お金が足りない' : `デート代 ${yen(cost)}` }];
+    return [{ label: '会いに行く', act: 'date', arg: tid, disabled: cost > S.money, note: cost > S.money ? 'お金が足りない' : `今日の予定にする・${yen(cost)}` }];
   }
   if (S.plan) return [];
   if (tid === 'miya') return S.matched.map(id => {
@@ -1974,10 +2021,11 @@ function threadHTML() {
   const body = th.msgs.map(m => m.from === 'stamp' ? `<span class="stamp">${esc(m.text)}</span>`
     : m.from === 'nar' ? `<p class="mnar">${esc(m.text)}</p>`
     : m.from === 'me' ? `<div class="msg me"><div class="b">${esc(m.text)}</div></div>`
-    : `<div class="msg">${pfHTML(m.who)}<div class="b">${esc(m.text)}</div></div>`).join('');
-  const hint = S.finale ? '' : S.plan && !(C[tid] && thread(tid).pending) ? '<p class="th-hint">今日の予定は、もう決まっている</p>' : '';
+    : `<div class="msg">${C[m.who] ? `<button class="pfbtn" data-prof="${m.who}" aria-label="プロフィール">${pfHTML(m.who)}</button>` : pfHTML(m.who)}<div class="b">${esc(m.text)}</div></div>`).join('');
+  const hint = S.finale ? '' : S.plan && !(C[tid] && thread(tid).pending) ? '<p class="th-hint">予定は1日に1つまで。今日はもう埋まっています。ホームの「おやすみ」で次の日へ</p>' : '';
   const opts = OPTS.map((o, i) => `<button class="opt" data-o="${i}" ${o.disabled ? 'disabled' : ''}><span>${esc(o.label)}</span>${o.note ? `<small>${esc(o.note)}</small>` : ''}</button>`).join('');
-  return `<div class="th-h"><button class="back" data-tab="talk" aria-label="トーク一覧へ">‹</button>${pfHTML(thWho(tid))}${head}</div>
+  const face = C[tid] ? `<button class="pfbtn" data-prof="${tid}" aria-label="${esc(C[tid].short)}のプロフィール">${pfHTML(tid)}</button>` : pfHTML(thWho(tid));
+  return `<div class="th-h"><button class="back" data-tab="talk" aria-label="トーク一覧へ">‹</button>${face}${head}</div>
     <div class="th-body" id="scroller">${body}</div>
     ${opts || hint ? `<div class="th-opts">${opts}${hint}</div>` : ''}`;
 }
@@ -2015,8 +2063,8 @@ function swipeHTML() {
 function lumiHTML() {
   const canAdd = S.day <= ADD_UNTIL && pool().length > 0 && S.matched.length < MAX_TOTAL;
   return `<div class="pad"><h1 class="apptitle" style="color:var(--rose)">Lumi</h1>
-    <p class="muted">マッチ中 ${S.matched.length}/${MAX_TOTAL}人</p>
-    <div>${S.matched.map(id => `<button class="lrow" data-thread="${id}">${pfHTML(id)}<span class="mid"><span class="nm">${esc(C[id].full)}${relTag(id)}</span><span class="pv">${C[id].age}歳・${esc(C[id].job)}</span>${hearts(S.chars[id].aff)}</span><span></span></button>`).join('')}</div>
+    <p class="muted">マッチ中 ${S.matched.length}/${MAX_TOTAL}人　・　タップでプロフィール</p>
+    <div>${S.matched.map(id => `<button class="lrow" data-prof="${id}">${pfHTML(id)}<span class="mid"><span class="nm">${esc(C[id].full)}${relTag(id)}</span><span class="pv">${C[id].age}歳・${esc(C[id].job)}</span>${hearts(S.chars[id].aff)}</span><span></span></button>`).join('')}</div>
     ${canAdd ? `<button class="btn-main" data-act="openSwipe" data-arg="add">ほかの人をさがす</button><p class="muted">新しいマッチは${ADD_UNTIL}日目までです。</p>`
       : `<p class="muted">${S.day > ADD_UNTIL ? '新しいマッチの受付は終わりました。' : 'いまはこれ以上マッチできません。'}</p>`}
   </div>`;
@@ -2078,6 +2126,45 @@ function endHTML() {
   </div>`;
 }
 
+/* ---------- overlays: how-to guide, profile sheet ---------- */
+const GUIDE = [
+  ['1日の流れ', ['朝、スマホに通知が届きます。', 'その日の予定を1つ決めて、ホームの「おやすみ」で次の日へ進みます。', `全部で${LAST_DAY}日間です。`]],
+  ['予定は1日に1つだけ', ['次のどれか1つを選ぶと、その日の予定は埋まります。', '・トークから「会いに行く」（デート）', '・ミヤに SNS を調べてもらう', '・喫茶かもめで、柳さんに話を聞く', 'だれと会うか、毎日えらぶのがこのゲームです。']],
+  ['予定とは別にできること', ['・届いたお願いに返事をする（返事をしないと眠れません）', '・駅ビルで買い物（1日1回）', `・Lumi で新しい人をさがす（${ADD_UNTIL}日目まで）`]],
+  ['自分から連絡してこない人もいる', ['毎朝誘ってくれるのは、マッチした人のうち1〜2人だけです。', 'ホームの「マッチ中のみんな」で、しばらく会っていない人に印がつきます。', '通知が来なくても、トークから会いに行けます。']],
+  ['相手のことを知る', ['アイコンをタップすると、Lumi のプロフィールを見られます。', '気になる話は「メモ」に手がかりとして残ります。', '右上の「?」から、いつでもこの説明を見直せます。']],
+];
+function guideHTML() {
+  const i = S.guide, [title, lines] = GUIDE[i], last = i === GUIDE.length - 1;
+  return `<div class="sheet-wrap" role="dialog" aria-modal="true" aria-label="遊び方"><div class="sheet guide">
+    <span class="kicker">スマホの使い方　${i + 1}/${GUIDE.length}</span><h2>${esc(title)}</h2>
+    ${lines.map(l => `<p>${esc(l)}</p>`).join('')}
+    <div class="gdots" aria-hidden="true">${GUIDE.map((_, k) => `<i class="${k === i ? 'on' : ''}"></i>`).join('')}</div>
+    <div class="row gbtns">${i ? `<button class="btn-sub" data-act="guide" data-arg="${i - 1}">もどる</button>` : `<button class="btn-sub" data-act="guide" data-arg="close">とじる</button>`}
+      <button class="btn-main" data-act="guide" data-arg="${last ? 'close' : i + 1}">${last ? 'はじめる' : 'つぎへ'}</button></div>
+  </div></div>`;
+}
+function profileHTML() {
+  const id = S.profile, c = C[id], ch = S.chars[id], met = S.matched.includes(id);
+  const rec = met ? `<dl class="rec">
+      <div><dt>マッチ</dt><dd>${ch.since}日目</dd></div>
+      <div><dt>デート</dt><dd>${ch.dates}回</dd></div>
+      <div><dt>最後に会った日</dt><dd>${ch.lastDate ? `${ch.lastDate}日目` : 'まだ会っていない'}</dd></div>
+      <div><dt>好感度</dt><dd ${who(id)}>${hearts(ch.aff)}</dd></div>
+    </dl>` : '';
+  return `<div class="sheet-wrap" role="dialog" aria-modal="true" aria-label="${esc(c.short)}のプロフィール"><div class="sheet prof">
+    <article class="pcard" ${who(id)}>
+      <div class="photo"><img class="px" src="${PORTRAIT[id]}" alt="${esc(c.short)}の写真">
+        <div class="badges"><span class="badge">本人確認済み</span>${c.mode === '友達' ? '<span class="badge friend">友達モード</span>' : ''}${relTag(id)}</div></div>
+      <div class="pinfo"><h2>${esc(c.full)}<small>${c.age}歳</small></h2>
+        <p class="job">${esc(c.job)}</p><p class="bio">${esc(c.bio)}</p>
+        <div class="tags">${c.tags.map(t => `<span>#${esc(t)}</span>`).join('')}</div></div>
+    </article>
+    ${rec}
+    <div class="row gbtns"><button class="btn-sub" data-act="closeProfile">とじる</button>${met && !(S.view === 'thread' && S.open === id) ? `<button class="btn-main" data-thread="${id}">トークを開く</button>` : ''}</div>
+  </div></div>`;
+}
+
 function tabsHTML() {
   const unread = Object.values(S.threads).reduce((a, t) => a + t.unread, 0);
   const tabs = [['home', '⌂', 'ホーム', 0], ['talk', '✉', 'トーク', unread], ['lumi', '♥', 'Lumi', 0], ['memo', '✎', 'メモ', S.newClues], ['bank', '¥', '銀行', 0]];
@@ -2108,6 +2195,7 @@ function render() {
     <div class="sbar"><span>${clock()}</span><span class="bat">${S && S.view !== 'story' ? 'Lumi　' : ''}▮▮▮ 82%</span></div>
     <div class="view ${fill ? 'fill' : ''}" id="view">${inner}</div>
     ${tabs ? tabsHTML() : ''}
+    ${tabs && S.profile ? profileHTML() : ''}${tabs && S.guide != null ? guideHTML() : ''}
   </div></div>`;
   const sc = document.getElementById('scroller');
   if (sc) sc.scrollTop = sc.scrollHeight;
@@ -2168,6 +2256,7 @@ app.addEventListener('click', e => {
   if (d.adv) { advance(d.adv === 'all'); return; }
   if (d.tab) { ACT.tab(d.tab); return; }
   if (d.thread) { ACT.openThread(d.thread); return; }
+  if (d.prof) { ACT.profile(d.prof); return; }
   if (d.sw !== undefined) { if (d.sw === 'close') ACT.closeSwipe(); else fly(d.sw === '1'); return; }
   if (d.act) { ACT[d.act](d.arg); return; }
   if (d.o !== undefined) { const o = OPTS[+d.o]; if (o && !o.disabled) ACT[o.act](o.arg); return; }
@@ -2180,6 +2269,7 @@ app.addEventListener('click', e => {
   }
 });
 document.addEventListener('keydown', e => {
+  if (S && e.key === 'Escape' && (S.profile || S.guide != null)) { S.profile = null; S.guide = null; render(); return; }
   if (S && S.view === 'story' && (e.key === 'Enter' || e.key === ' ') && !e.target.closest('button,input,summary')) { e.preventDefault(); advance(false); return; }
   if (!S || S.view !== 'swipe') return;
   if (e.key === 'ArrowRight') fly(true);
