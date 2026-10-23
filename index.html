@@ -1,0 +1,1675 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>スキのウラ</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+/* Layout: one narrow column like a phone novel game — matching-app swipe deck first, then status bar, cast strip, message window, clue notebook. */
+:root{
+  --paper:#eef6fb; --card:#fafdff; --ink:#142838; --muted:#5d7385; --line:#d2e3ee; --wash:#e1eff8;
+  --rose:#1f7fb8; --on-rose:#ffffff; --wolf:#a3122a; --wolf-wash:#fbe3e6; --good:#2f7d55; --skip:#5d6b80;
+  --c-minato:#4c8760; --c-rei:#7351c0; --c-sakura:#cc4f77; --c-sou:#3d6898; --c-haruto:#a8682c;
+  --c-miya:#b07a12; --c-yanagi:#7a5a44; --c-nanase:#4f7186; --c-you:#b8492f;
+  --f-display:"Kaisei Decol","Hiragino Mincho ProN","Yu Mincho",serif;
+  --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0e1921; --card:#15232e; --ink:#e5f1f8; --muted:#9ab1c2; --line:#253a49; --wash:#1b2e3b;
+  --rose:#6cc4f0; --on-rose:#06202e; --wolf:#ff7084; --wolf-wash:#3a1820; --good:#7fd1a3; --skip:#a9b6c9;
+  --c-minato:#8cc59c; --c-rei:#b49cf2; --c-sakura:#f394ad; --c-sou:#90b4de; --c-haruto:#e3a96f;
+  --c-miya:#ebc060; --c-yanagi:#c9a68a; --c-nanase:#9cc0d4; --c-you:#f2907a;
+  color-scheme:dark }}
+:root[data-theme="dark"]{
+  --paper:#0e1921; --card:#15232e; --ink:#e5f1f8; --muted:#9ab1c2; --line:#253a49; --wash:#1b2e3b;
+  --rose:#6cc4f0; --on-rose:#06202e; --wolf:#ff7084; --wolf-wash:#3a1820; --good:#7fd1a3; --skip:#a9b6c9;
+  --c-minato:#8cc59c; --c-rei:#b49cf2; --c-sakura:#f394ad; --c-sou:#90b4de; --c-haruto:#e3a96f;
+  --c-miya:#ebc060; --c-yanagi:#c9a68a; --c-nanase:#9cc0d4; --c-you:#f2907a;
+  color-scheme:dark }
+
+html,body{background:var(--paper);color:var(--ink)}
+body{font-family:var(--f-body);font-size:16px;line-height:1.85;
+  background-image:radial-gradient(var(--line) 1px, transparent 1.2px);background-size:22px 22px}
+.wrap{max-width:720px;margin:0 auto;padding-block:20px 56px;
+  padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;gap:18px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--rose);outline-offset:2px}
+.px{image-rendering:pixelated;image-rendering:crisp-edges;display:block}
+.pf{background:color-mix(in srgb,var(--who) 24%,var(--card));border-radius:10px;overflow:hidden;flex:none}
+
+/* ---- title ---- */
+.hero{display:flex;flex-direction:column;gap:14px;padding-block:28px 8px}
+.eyebrow{font-size:12px;letter-spacing:.14em;color:var(--muted)}
+.logo{font-family:var(--f-display);font-weight:700;font-size:clamp(56px,16vw,104px);line-height:1;margin:0;letter-spacing:.02em}
+.ura{display:inline-block;transform:scaleX(-1);color:var(--rose)}
+.lead{font-family:var(--f-display);font-size:clamp(18px,4.6vw,22px);line-height:1.6;margin:0;text-wrap:balance}
+.lineup{display:flex;gap:8px;flex-wrap:wrap}
+.lineup .pf{width:64px;height:64px}
+.lineup .pf img{width:100%;height:100%}
+.rules{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.rules li{display:grid;grid-template-columns:4.5em 1fr;gap:12px;align-items:baseline}
+.rules b{font-family:var(--f-display);color:var(--rose);font-size:13px}
+.rules span{min-width:0}
+.start{display:flex;flex-wrap:wrap;gap:10px;align-items:end;padding:18px;border:1px solid var(--line);background:var(--card);border-radius:14px}
+.start label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted);flex:1 1 180px;min-width:0}
+.start input{font:inherit;font-size:16px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+.btn-main{background:var(--rose);color:var(--on-rose);border:0;border-radius:999px;padding:12px 26px;font-weight:700}
+.btn-sub{background:transparent;border:1px solid var(--line);border-radius:999px;padding:10px 20px}
+
+/* ---- matching app ---- */
+.appbar{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.applogo{font-family:var(--f-display);font-weight:700;font-size:26px;color:var(--rose);letter-spacing:.04em}
+.appsub{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.deck{display:flex;justify-content:center;padding-block:4px}
+.pcard{position:relative;width:100%;max-width:360px;background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none;box-shadow:0 10px 30px color-mix(in srgb,var(--ink) 10%,transparent);transition:transform .2s ease}
+.photo{position:relative;aspect-ratio:1/1;max-width:100%;background:linear-gradient(180deg,color-mix(in srgb,var(--who) 30%,var(--card)),color-mix(in srgb,var(--who) 55%,var(--card)));display:flex;align-items:flex-end;justify-content:center}
+.photo img{width:84%;height:84%}
+.badges{position:absolute;top:12px;left:12px;display:flex;gap:6px;flex-wrap:wrap}
+.badge{font-size:11px;background:var(--card);color:var(--ink);border-radius:999px;padding:2px 10px}
+.badge.friend{background:var(--ink);color:var(--card)}
+.pinfo{padding:14px 18px 18px;display:flex;flex-direction:column;gap:6px}
+.pinfo h2{margin:0;font-family:var(--f-display);font-size:24px;line-height:1.2}
+.pinfo h2 small{font-family:var(--f-body);font-size:15px;color:var(--muted);font-weight:400;margin-left:6px}
+.pinfo .job{margin:0;font-size:13px;color:var(--muted)}
+.pinfo .bio{margin:0;font-size:14px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tags span{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:0 10px;color:var(--muted)}
+.stamp{position:absolute;top:24px;font-family:var(--f-display);font-weight:700;font-size:28px;padding:2px 14px;border:3px solid;border-radius:10px;pointer-events:none}
+.stamp.yes{left:20px;color:var(--rose);transform:rotate(-12deg);opacity:var(--yes,0)}
+.stamp.no{right:20px;color:var(--skip);transform:rotate(12deg);opacity:var(--no,0)}
+.swbtns{display:flex;justify-content:center;gap:28px}
+.sw{width:64px;height:64px;border-radius:50%;border:2px solid;background:var(--card);font-size:26px;line-height:1;display:grid;place-items:center}
+.sw.no{color:var(--skip)}
+.sw.yes{color:var(--rose)}
+.center{text-align:center}
+
+/* ---- status ---- */
+.bar{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline;justify-content:space-between}
+.bar .name{font-family:var(--f-display);font-weight:700;font-size:20px}
+.bar .meta{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.bar .meta strong{color:var(--ink);font-weight:700}
+.days{display:grid;grid-template-columns:repeat(20,1fr);gap:3px}
+.days i{height:5px;border-radius:3px;background:var(--line)}
+.days i.past{background:color-mix(in srgb,var(--rose) 45%,var(--line))}
+.days i.now{background:var(--rose)}
+
+/* ---- cast ---- */
+.cast{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.member{display:flex;gap:10px;align-items:center;padding:8px;border-radius:12px;background:var(--card);border:1px solid var(--line);min-width:0}
+.member .pf{width:40px;height:40px}
+.member .pf img{width:100%;height:100%}
+.member .txt{min-width:0;display:flex;flex-direction:column;line-height:1.35}
+.member .nm{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hearts{font-size:12px;letter-spacing:1px;color:var(--line)}
+.hearts span{color:var(--who)}
+.hearts i{font-style:normal;color:var(--muted);letter-spacing:0;margin-left:4px;font-variant-numeric:tabular-nums}
+
+/* ---- message window ---- */
+.window{position:relative;background:var(--card);border:1.5px solid var(--ink);border-radius:18px;padding:22px 18px 18px;display:flex;flex-direction:column;gap:14px;box-shadow:5px 5px 0 var(--wash)}
+.window .tag{position:absolute;top:-12px;left:18px;background:var(--ink);color:var(--card);font-size:11px;letter-spacing:.12em;padding:2px 12px;border-radius:999px}
+.lines{display:flex;flex-direction:column;gap:14px}
+.lines.story{max-height:min(66vh,640px);overflow-y:auto;padding-right:6px;cursor:pointer}
+.ln{display:grid;grid-template-columns:48px 1fr;gap:10px;align-items:start}
+.ln.new{animation:rise .35s ease both}
+.ln.old{opacity:.7}
+.ln .who{display:flex;flex-direction:column;align-items:center;gap:2px}
+.ln .who .pf{width:44px;height:44px}
+.ln .who .pf img{width:100%;height:100%}
+.ln .who b{font-size:11px;color:var(--who);white-space:nowrap}
+.ln .say{min-width:0;background:var(--paper);border:1px solid var(--line);border-radius:4px 16px 16px 16px;padding:8px 14px}
+.ln .say .msg{display:block;font-size:11px;color:var(--muted);letter-spacing:.08em;line-height:1.4}
+.ln.nar,.ln.me,.ln.sys,.ln.day{grid-template-columns:1fr}
+.ln.nar .say{background:var(--wash);border:0;border-radius:10px;padding:10px 16px}
+.ln.me{justify-items:end}
+.ln.me .say{background:var(--rose);color:var(--on-rose);border:0;border-radius:16px 4px 16px 16px;max-width:85%;font-weight:500}
+.ln.sys{justify-items:center}
+.ln.sys .say{background:transparent;border:1px dashed var(--muted);color:var(--muted);font-size:12px;border-radius:999px;padding:1px 14px}
+.ln.day{justify-items:center;padding-top:2px}
+.ln.day .say{background:transparent;border:0;padding:0;font-family:var(--f-display);font-weight:700;color:var(--rose);letter-spacing:.06em}
+.adv{display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:6px;border-top:1px dashed var(--line)}
+.next{border:0;background:transparent;color:var(--rose);font-weight:700;padding:6px 2px;display:flex;gap:8px;align-items:center}
+.next .tri{display:inline-block;animation:bob 1s ease-in-out infinite}
+.skip{font-size:12px;color:var(--muted);background:transparent;border:0;text-decoration:underline;padding:6px 2px}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes bob{50%{transform:translateY(3px)}}
+@media (prefers-reduced-motion:reduce){.ln.new,.next .tri{animation:none}.pcard{transition:none}}
+.choices{display:flex;flex-direction:column;gap:8px;padding-top:6px;border-top:1px dashed var(--line)}
+.choice{text-align:left;padding:11px 16px;border-radius:12px;border:1px solid var(--line);background:var(--paper);display:flex;justify-content:space-between;gap:12px;align-items:center}
+.choice:hover:not(:disabled){border-color:var(--rose);background:var(--wash)}
+.choice:disabled{opacity:.45;cursor:not-allowed}
+.choice small{color:var(--muted);font-size:11px;white-space:nowrap}
+
+/* ---- notebook ---- */
+.note h2{font-family:var(--f-display);font-size:17px;margin:0 0 2px}
+.note p.hint{margin:0 0 10px;font-size:12px;color:var(--muted)}
+.note details{border-top:1px solid var(--line);padding:8px 0}
+.note summary{cursor:pointer;font-weight:700;display:flex;gap:8px;align-items:center}
+.note summary .dot{width:10px;height:10px;border-radius:50%;background:var(--who)}
+.note summary .count{font-weight:400;color:var(--muted);font-size:12px}
+.note ul{margin:8px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.note li{display:grid;grid-template-columns:auto 1fr;gap:10px;font-size:13px}
+.note li em{font-style:normal;font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:0 6px;height:fit-content;white-space:nowrap}
+.note li span{min-width:0}
+.empty{font-size:13px;color:var(--muted);margin:0}
+
+/* ---- endings ---- */
+.end{display:flex;flex-direction:column;gap:18px;padding-block:20px}
+.end .kicker{font-size:12px;letter-spacing:.16em;color:var(--muted)}
+.end h1{font-family:var(--f-display);font-size:clamp(32px,8.5vw,54px);line-height:1.2;margin:0;text-wrap:balance}
+.end.over h1{color:var(--wolf)}
+.end.over .window{border-color:var(--wolf);box-shadow:5px 5px 0 var(--wolf-wash)}
+.reveal{display:flex;flex-direction:column;gap:8px;padding:16px 18px;border-radius:14px;background:var(--wash)}
+.reveal h3{margin:0;font-size:14px;letter-spacing:.06em}
+.reveal p{margin:0}
+.wolfmark{color:var(--wolf);font-weight:700}
+.wolves{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.wolves li{display:grid;grid-template-columns:40px 1fr;gap:10px;align-items:center;font-size:14px;line-height:1.5}
+.wolves .pf{width:40px;height:40px}
+.wolves .pf img{width:100%;height:100%}
+.wolves span{min-width:0}
+.wolves small{color:var(--muted);font-size:12px}
+.okmark{color:var(--good);font-weight:700}
+.tally{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.tally li{display:grid;grid-template-columns:5em 1fr auto;gap:10px;align-items:center;font-size:14px}
+.tally .meter{height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.tally .meter b{display:block;height:100%;background:var(--who)}
+.tally .v{font-variant-numeric:tabular-nums;color:var(--muted);font-size:12px}
+.row{display:flex;flex-wrap:wrap;gap:10px}
+</style>
+
+<div id="app"></div>
+
+<script>
+const ALL_IDS = ['minato','rei','sakura','sou','haruto','nanase','shizuma','gou','kai','iroha','shingo','nagi','ren','akira','shion'];
+const WOLF_COUNT = 5;
+let IDS = ALL_IDS;
+const SPK = {minato:'湊', rei:'レイ', sakura:'さくら', sou:'ソウ', haruto:'ハルト', nanase:'七瀬', you:'ヨウ', miya:'ミヤ', yanagi:'柳', nar:''};
+const LAST_DAY = 20, MAX_START = 4, MAX_TOTAL = 6, ADD_UNTIL = 14, PAYDAY = 15;
+
+/* ---------- pixel portraits (16x16) ---------- */
+const BASE = [
+  '................','................','................','.....SSSSSS.....',
+  '....SSSSSSSS....','....SSSSSSSS....','....SESSSSES....','....SESSSSES....',
+  '....SBSSSSBS....','....SSSMMSSS....','.....SSSSSS.....','......SSSS......',
+  '....CCCWWCCC....','..CCCCCWWCCCCC..','.CCCCCCCCCCCCCC.','.CCCCCCCCCCCCCC.'];
+const PX = {
+  minato:{c:{H:'#4a3326',C:'#7fae8e',E:'#2b1d2f',G:'#3a2a36'}, h:[
+    '................','.....HHHHHH.....','....HHHHHHHH....','...HHHHHHHHHH...','...HHHHHHHHHH...',
+    '...HGGG..GGGH...','...HG.G..G.GH...']},
+  rei:{c:{H:'#e8c35a',C:'#5b3f9e',E:'#5a3a8a',A:'#f2f2f2'}, h:[
+    '................','....HHHHHHH.....','...HHHHHHHHHH...','..HHHHHHHHHHHH..','..HHHHHHHH..HH..',
+    '..HH........HH..','..H..........H..','..H..........H..','.............H..','............A...']},
+  sakura:{c:{H:'#d98a8f',C:'#f6c1cf',E:'#7a3a4a',A:'#ffd84a'}, h:[
+    '................','.....HHHHHH.....','....HHHHHHHH....','...HHHHHHHHAH...','...HHHHHHHHHH...',
+    '...HH......HH...','...H........H...','...H........H...','...H........H...','...HH......HH...',
+    '...HH......HH...','...HHH....HHH...','...HH......HH...','...HH......HH...']},
+  sou:{c:{H:'#1e1e2a',C:'#34445e',E:'#26324a'}, h:[
+    '....H..H..H.....','...HHHHHHHHHH...','..HHHHHHHHHHHH..','..HHHHHHHHHHHH..','..HHHHHHHHHHH...',
+    '..HHHHHH...HH...','..HHHHH.....H...','..HHH...........']},
+  haruto:{c:{H:'#b98a5a',C:'#e9dcc6',E:'#6b4a2a'}, h:[
+    '....HH.HH.HH....','...HHHHHHHHHH...','..HHHHHHHHHHHH..','..HHHHHHHHHHHH..','..HHH.HHH.HHHH..',
+    '..HH........HH..','...H........H...']},
+  miya:{c:{H:'#2a2228',C:'#e5a23b',E:'#2b1d2f'}, h:[
+    '................','.....HHHHHH.....','....HHHHHHHH....','...HHHHHHHHHH...','...HHHHHHHHHH...',
+    '...HH......HH...','...HH......HH...','...HH......HH...','...HH......HH...','...HHH....HHH...']},
+  yanagi:{c:{H:'#b9b4b0',C:'#6b4a33',E:'#2b1d2f',W:'#f4efe6'}, h:[
+    '................','................','....HHHHHHHH....','...HHHHHHHHHH...','...HH......HH...',
+    '...H........H...','................','................','................','.....HHHHHH.....']},
+  nanase:{c:{H:'#3b3f5c',C:'#a7b48a',E:'#2b2f45'}, h:[
+    '................','....HHHHHHH.....','...HHHHHHHHH....','...HHHHHHHHHH...','...HHHHHHH.HH...',
+    '...HH.......H...','...H............']},
+  you:{c:{H:'#3b3f5c',C:'#d0563f',E:'#2b2f45'}, h:[
+    '................','....HHHHHHH.....','...HHHHHHHHH....','...HHHHHHHHHH...','...HHHHHHH.HH...',
+    '...HH.......H...','...H............']},
+};
+const PAL = {S:'#f4d0b5', B:'#f3a1ae', M:'#c4566c', W:'#ffffff', E:'#2b1d2f'};
+const PORTRAIT = {};
+function buildPortraits() {
+  for (const id in PX) {
+    const cv = document.createElement('canvas'); cv.width = 16; cv.height = 16;
+    const g = cv.getContext('2d'), p = PX[id], col = { ...PAL, ...p.c };
+    for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) {
+      const o = (p.h[y] || '')[x];
+      const ch = o && o !== '.' ? o : BASE[y][x];
+      if (ch === '.' || !col[ch]) continue;
+      g.fillStyle = col[ch]; g.fillRect(x, y, 1, 1);
+    }
+    PORTRAIT[id] = cv.toDataURL();
+  }
+}
+const pfHTML = id => `<div class="pf" style="--who:var(--c-${id})"><img class="px" src="${PORTRAIT[id]}" alt=""></div>`;
+
+/* ---------- cast ---------- */
+const C = {
+minato:{ full:'朝霧 湊', short:'湊', age:28, job:'会社員（総務）', mode:'恋人', login:'ログイン：24時間以内',
+  bio:'料理と読書が好きです。休日は地域の活動に参加しています。穏やかに話せる方と出会えたら嬉しいです。', tags:['料理','読書','ボランティア'], scam:'宗教勧誘',
+  talks:[
+    {t:[['nar','公園でピクニックデート。湊さんがお弁当を作ってきてくれた'],['minato','作りすぎちゃったかな。{n}さん、好きなものから食べてね']],
+     c:[['いただきます！',8,[['minato','どうぞどうぞ。……うん、人と食べるご飯って、やっぱりおいしいね']]],
+        ['すごい、全部手作りですか？',12,[['minato','うん。朝5時に起きちゃった。……ふふ、ちょっと張りきりすぎたね']]],
+        ['朝ごはん食べすぎちゃって……',-2,[['minato','そっか。じゃあ、持って帰って夜に食べて']]]]},
+    {t:[['nar','喫茶かもめの窓ぎわの席。湊さんは紅茶のカップを両手で包んでいる'],['minato','{n}さん、仕事はどう？　春から新しい環境なんだよね']],
+     c:[['正直、けっこうしんどいです',11,[['minato','そっか。話してくれて嬉しいよ。しんどいって言える人は、ちゃんと強い人だから']]],
+        ['ぜんぜん平気です！',4,[['minato','そう？　それならいいんだけど。無理だけはしないでね']]],
+        ['湊さんこそ、どうなんですか？',9,[['minato','僕？　……そう聞かれるの、久しぶりだな。ありがとう']]]]},
+    {t:[['nar','夜の川沿いを、ふたりで歩いた。湊さんが、遠くの街の灯りを眺めている'],['minato','{n}さんは、将来こうなりたい、みたいなのってある？']],
+     c:[['まだ分からないです',7,[['minato','うん、それでいいと思う。分からないって正直に言えるの、いいね']]],
+        ['誰かの役に立つ人になりたい',11,[['minato','……素敵だね。僕も、ずっとそうなりたいと思ってるんだ']]],
+        ['とにかくお金持ちになりたい！',3,[['minato','あはは、正直だね。お金は大事だよ、うん']]]]}],
+  tells:{
+    wolf:['……ねえ、最近寝つきが悪かったりしない？　心が疲れてる人って、なんとなく分かるんだ','家族とはよく連絡とってる？　……そっか。離れてると、寂しいよね','いい話を聞かせてくれる人がいてね。今度、{n}さんにも紹介したいな'],
+    true:['週末はちょっと用事があって、いつも朝から出てるんだ','{n}さん、疲れた顔してる。今日は早く寝なね','いい本があるんだ。今度貸そうか？']},
+  sns:{
+    wolf:['湊さんのSNS、料理とボランティアの写真ばっかり。いい人そうだね','湊さんがフォローしてる人のプロフィール、みんな「ひかり」って言葉が入ってる……なんだろ','湊さんにそっくりな人が、宗教勧誘の被害ブログに出てきた。アプリで知り合った人を「合宿」に誘うんだって'],
+    true:['湊さんのSNS、料理とボランティアの写真ばっかり。いい人そうだね','地域の子ども食堂のアカウントに、湊さんがよく写ってる。スタッフさんなんだね','職場の植林ボランティアの活動報告に、湊さんの名前があった。もう5年も続けてるみたい']},
+  obs:{
+    wolf:['あの人は、きみが話しているあいだ、ずっとうなずいて聞いていたね。聞き上手だ','きみが帰ったあと、あの人は電話で「今週の新しい人です」と話していたよ。……気になる言い方だった'],
+    true:['あの人は、きみが話しているあいだ、ずっとうなずいて聞いていたね。聞き上手だ','きみが帰ったあと、あの人は隣の席のおばあさんの荷物を、駅まで運んであげていたよ']},
+  req:{
+    small:{ask:[['minato','{n}さん、今度の日曜って空いてる？'],['minato','ちょっとした集まりがあるんだ。話を聞くだけでいいから、一緒に来てくれないかな']],
+      detail:{true:[['minato','あ、ごめん、説明不足だったね。公民館でやってる読書会なんだ'],['minato','年配の人が多くて、ゆるい会だよ。合わなかったら途中で帰っても全然いいからね']],
+              wolf:[['minato','すごくいい先生が来るんだよ。話を聞くと、心がすっと軽くなるんだ'],['minato','参加費は3,000円だけど、最初の1回だけだから。……あ、席が少ないから、ほかの人には内緒でね']]},
+      cost:{true:0,wolf:3000}, gain:{true:10,wolf:4}, loss:{true:-6,wolf:-3},
+      accept:{true:[['nar','公民館の和室で、お茶を飲みながら本の話をした。湊さんは、いつもより少しだけよく笑った'],['minato','来てくれてありがとう。{n}さんの感想、すごく面白かったよ']],
+              wolf:[['nar','薄暗い会場で、前の人たちが同じ言葉を何度も唱えていた'],['minato','どうだった？　……次はね、もっと特別な会があるんだ。{n}さんなら、きっと選ばれるよ']]},
+      refuse:{true:[['minato','そっか、急に誘ってごめんね。また気が向いたら']],
+              wolf:[['minato','……そっか。残念だな。{n}さん、いますごく迷ってる顔してるのに'],['minato','気が変わったら、いつでも言ってね']]}},
+    big:{ask:[['minato','{n}さん、大事な話があるんだ'],['minato','来週、泊まりがけの合宿があって。……きっと人生が変わるよ。一緒に行かない？']],
+      detail:{true:[['minato','職場の有志でやってる、山の植林ボランティアなんだ。交通費は僕が出すよ'],['minato','でも体力を使うし、無理にとは言わない。{n}さんが決めて']],
+              wolf:[['minato','先生の特別合宿なんだ。費用は30万円なんだけど、分割でいいから'],['minato','ここで迷う人ほど、あとで後悔するんだよ。……今日中に、返事がほしいな']]},
+      cost:{true:0}, gain:{true:16}, loss:{true:-10,wolf:-3},
+      accept:{true:[['nar','山の空気は冷たくて、苗木は思ったより重かった。夜、焚き火の前で湊さんが言った'],['minato','{n}さんと来られてよかった。……本当に、そう思ってる']]},
+      refuse:{true:[['minato','そうだよね、急すぎたよね。……うん、大丈夫。お土産買ってくるから']],
+              wolf:[['minato','……どうして？　僕は、{n}さんのためを思って言ってるのに']]}}},
+  waver:[['minato','……いや。ごめん。いまのは、ちょっと僕らしくなかったね']],
+  over:{title:'入信エンド', lines:[['nar','合宿から戻ったあなたの手元には、分厚い教本と30万円の分割契約書が残っていた'],['nar','湊さんからの連絡は、もう来ない。アプリで、次の「新しい人」とマッチしたから']]},
+  convert:[['minato','……本当はね、{n}さんを「会」に連れていくのが、僕の役目だったんだ'],['minato','でも{n}さんは、誘いを断りながらも、僕のお弁当をおいしいって言ってくれた'],['minato','あそこは、もう辞めるよ。今度は本当の気持ちで、{n}さんとデートがしたい']],
+  fate:'数日後、湊さんのアカウントはアプリから消えていた。',
+  love:{title:'恋人エンド　朝霧 湊', lines:[['minato','{n}さん。これからも、僕の作ったご飯を一緒に食べてくれないかな'],['minato','……ずっと、って意味で']]},
+  friend:[['minato','{n}さん、またピクニックしようね']]},
+
+rei:{ full:'九条 レイ', short:'レイ', age:25, job:'バーテンダー', mode:'恋人', login:'ログイン：3時間以内',
+  bio:'バーで働いてます。いつか自分の店を持つのが夢！　一緒に飲みに行ける人、さがしてます。', tags:['お酒','夜景','夢を語りたい'], scam:'投資詐欺',
+  talks:[
+    {t:[['nar','閉店後のバー。カウンターの中で、レイがシェイカーを振っている'],['rei','お、{n}ちゃん来た来た。一杯つくろっか？　何がいい？']],
+     c:[['甘いのがいい！',8,[['rei','了解、とびきり甘いやつね。……はい、{n}ちゃん専用レシピ']]],
+        ['レイさんのおすすめで',12,[['rei','お、任せてくれる系？　そういうの一番燃えるんだよね']]],
+        ['お酒はちょっと苦手で',6,[['rei','じゃあノンアルでつくるよ。ちゃんと言ってくれるの、いいね']]]]},
+    {t:[['nar','喫茶かもめ。レイはコーヒーをひと口飲むと、急にまじめな顔になった'],['rei','俺さ、いつか自分の店を出すのが夢なんだよね。……って、こんな話つまんない？']],
+     c:[['素敵！　応援する',9,[['rei','マジ？　そう言われると、がんばれちゃうな']]],
+        ['どんなお店にしたいの？',12,[['rei','聞いてくれる？　カウンター8席だけの小さい店でさ。常連さんの好みを全部覚えて……']]],
+        ['お店って大変そう……',2,[['rei','……だよな。みんなそう言うんだ']]]]},
+    {t:[['nar','展望台で夜景を見ていると、レイがスマホを見つめたまま、大きくため息をついた'],['rei','……あ、ごめん。ちょっと考えごと']],
+     c:[['何かあったの？',10,[['rei','……ん、たいしたことじゃない。でも、聞いてくれてありがと']]],
+        ['そっとしておく',5,[['nar','しばらくして、レイが「……サンキュ」と小さく言った']]],
+        ['元気出して！',6,[['rei','ははっ、ストレートだな。……うん、出た出た']]]]}],
+  tells:{
+    wolf:['{n}ちゃんってさ、貯金とかしてる派？　いや、しっかりしてそうだなーって','最近ちょっといい話があってさ。お金が勝手に増えるの、マジで','俺の先輩、30で家買ったんだよ。やり方さえ知ってれば簡単なんだって'],
+    true:['今月ちょいピンチでさー、もやし生活！','店の資金、コツコツ貯めてんの。あと200万！　遠いわー','{n}ちゃんの話、もっと聞かせてよ。俺ばっか喋ってんじゃん']},
+  sns:{
+    wolf:['レイくんのSNS、お店とカクテルの写真ばっかり。おしゃれだね','高級車とか札束の写真もあげてる……「自由な働き方」ってタグつきで','レイくんの写真、投資詐欺の被害者の掲示板に出てた。アプリで知り合った子にお金を出させて消えるんだって'],
+    true:['レイくんのSNS、お店とカクテルの写真ばっかり。おしゃれだね','昼はカフェでもバイトしてるみたい。シフトがきついって愚痴ってる投稿があったよ','お店のクラウドファンディングのページ、ちゃんとあるよ。事業計画もすごく細かい。本気だね']},
+  obs:{
+    wolf:['あの青年は、注文のときに店員の名前を覚えていたよ。人の懐に入るのがうまいね','きみがお手洗いに立ったとき、あの青年は電話で「今月はあと二人」と話していた。商売の話かな'],
+    true:['あの青年は、注文のときに店員の名前を覚えていたよ。人の懐に入るのがうまいね','きみが帰ったあと、あの青年は「このブレンド、いつか自分の店でも出したい」と、豆の仕入れ先を熱心に聞いてきたよ']},
+  req:{
+    small:{ask:[['rei','{n}ちゃーん、ちょっとだけ頼みがあってさ'],['rei','5,000円、貸してくんない？　ほんっとにごめん！']],
+      detail:{true:[['rei','店の仕入れで立て替えが続いちゃってさ。給料日の25日に絶対返す'],['rei','……いや、ダサいよな。断られても、ぜんぜん恨まないから']],
+              wolf:[['rei','いやー、ちょっとね。すぐ倍にして返すから！'],['rei','ほんと、すぐ。{n}ちゃんにしか頼めないんだって。な？']]},
+      cost:{true:5000,wolf:5000}, gain:{true:8,wolf:4}, loss:{true:-5,wolf:-3},
+      repay:{true:{amount:5000,lines:[['rei','{n}ちゃん、これ！　こないだの5,000円。ほんとサンキュな']]}},
+      accept:{true:[['rei','マジ助かる！　{n}ちゃん、女神！'],['nar','レイはスマホのメモに「{n}ちゃん 5,000円」と書いて、画面を見せてくれた']],
+              wolf:[['rei','サンキュー！　やっぱ{n}ちゃんだわ'],['nar','レイはお札をポケットに押しこむと、すぐに誰かへ電話をかけはじめた']]},
+      refuse:{true:[['rei','だよなー！　いや、言ってみただけ！　ごめんな']],
+              wolf:[['rei','……ちぇっ。冷たいなあ'],['rei','ま、いっか。{n}ちゃんのそういうとこ、嫌いじゃないよ']]}},
+    big:{ask:[['rei','{n}ちゃん。真面目な話、していい？'],['rei','俺の夢に、乗ってくれない？　……お金の話なんだけど']],
+      detail:{true:[['rei','店のクラファンを始めたんだ。3万円のコースだと、オープンしてから1年飲み放題'],['rei','ページに事業計画も全部載せてる。読んでから決めて。読んでくれるだけでも嬉しいからさ']],
+              wolf:[['rei','店の資金を増やせる投資があってさ。30万入れたら、来月には倍になる'],['rei','枠が今週で締め切りなんだよ。{n}ちゃんにだけ声かけてるんだから、早めに決めて']]},
+      cost:{true:30000}, gain:{true:18}, loss:{true:-10,wolf:-3},
+      accept:{true:[['nar','支援完了の画面を見せると、レイはしばらく黙っていた'],['rei','……やべ。泣きそう。絶対、いい店にするから']]},
+      refuse:{true:[['rei','……そっか。うん、そうだよな。夢って、自分で叶えるもんだし'],['rei','聞いてくれてサンキュ']],
+              wolf:[['rei','は？　マジで言ってる？　こんないい話、二度とないって']]}}},
+  waver:[['rei','……いや、そうだよな。{n}ちゃんは、それでいいよ']],
+  over:{title:'投資詐欺エンド', lines:[['nar','振り込んだ翌日、レイのアカウントはアプリから消えていた。電話も、もうつながらない'],['nar','あの夜つくってくれた甘いカクテルの味だけが、まだ口に残っている']]},
+  convert:[['rei','……正直に言う。最初は、カモだと思ってた'],['rei','でも{n}ちゃん、俺の夢の話をちゃんと聞いてくれたの、お前だけなんだよ'],['rei','金は全部返す。ちゃんと働いて、いつか本物の店を出す。そのとき、最初の客になってくれる？']],
+  fate:'ある日、レイのアカウントはアプリから消えていた。働いていたはずのバーに聞いても、そんな人は知らないと言われた。',
+  love:{title:'恋人エンド　九条 レイ', lines:[['rei','店のオープン初日、カウンターの一番いい席は{n}ちゃんのだから'],['rei','……てか、隣にいてほしい。客じゃなくて']]},
+  friend:[['rei','{n}ちゃん、店ができたら絶対来いよ。親友枠で']]},
+
+sakura:{ full:'日向 さくら', short:'さくら', age:23, job:'美容部員', mode:'友達', login:'ログイン：1時間以内',
+  bio:'友達モードで使ってます！　上京したばかりで友達募集中〜。コスメとカフェ巡りが好きです。', tags:['コスメ','カフェ巡り','上京組'], scam:'マルチ商法',
+  talks:[
+    {t:[['sakura','ねえねえ{n}ちゃん！　喫茶かもめの新作パフェ、半分こしよ！']],
+     c:[['やった、食べる！',10,[['sakura','でしょ〜！　ほら、いちごが多いほう{n}ちゃんにあげる！']]],
+        ['ダイエット中で……',3,[['sakura','え〜えらい！　じゃあわたしが責任もって食べるね！']]],
+        ['お礼に今度はわたしがおごるね',12,[['sakura','ほんと!?　{n}ちゃんのそういうとこ大好き！']]]]},
+    {t:[['nar','ショッピングモールで、さくらがコスメを選んでくれている'],['sakura','ねえ{n}ちゃん、アプリでいい人いた〜？']],
+     c:[['まだ探し中',6,[['sakura','そっかそっか！　いい人いたら、わたしが審査してあげる！']]],
+        ['ひみつ！',8,[['sakura','あやしい〜！　絶対いつか聞き出すからね！']]],
+        ['さくらちゃんは？',10,[['sakura','わ、わたし!?　……えへへ、わたしは友達モードだもん。{n}ちゃんに会えたから、それで満足！']]]]},
+    {t:[['nar','夜の公園のベンチ。さくらが膝を抱えている'],['sakura','……職場の先輩とケンカしちゃってさ']],
+     c:[['話、聞くよ',12,[['sakura','……ありがと。{n}ちゃんに話すと、なんか落ち着く']]],
+        ['さくらちゃんは悪くないよ',7,[['sakura','……そうかな。そう言ってもらえると、ちょっと楽かも']]],
+        ['ちゃんと謝ったほうがいいかも',6,[['sakura','……だよね。正直に言ってくれて、ありがと']]]]}],
+  tells:{
+    wolf:['{n}ちゃんって、友達多い？　地元の子とか、まだ連絡とってる？','最近すっごくいいサプリ見つけたの！　飲みはじめてから人生変わった！','わたし、会社に頼らない生き方がしたいんだよね〜。自由が一番！'],
+    true:['仕事でもらった試供品、いっぱいあるからあげるね！','美容の話になると止まらなくなっちゃう、ごめん！','{n}ちゃんとマッチしてから、東京が楽しくなった！']},
+  sns:{
+    wolf:['さくらちゃんのSNS、コスメとカフェの写真ばっかり。かわいいね','最近、同じサプリの写真を毎日あげてる。「#人生変わった #自由な働き方」だって','さくらちゃんの地元の子っぽい人が「あの子に勧誘されて縁を切った」って書いてる。友達モードで人を集めてるみたい'],
+    true:['さくらちゃんのSNS、コスメとカフェの写真ばっかり。かわいいね','デパートのコスメカウンターのアカウントに、さくらちゃんが載ってる。売上1位なんだって','手作りアクセのアカウントもやってる。今度フリマに出す準備をしてるみたい']},
+  obs:{
+    wolf:['あの子は、よく笑う子だね。きみといると、いっそう楽しそうだ','あの子は先週、別の女の子とここに来ていたよ。テーブルに、同じパンフレットを広げてね'],
+    true:['あの子は、よく笑う子だね。きみといると、いっそう楽しそうだ','きみが帰ったあと、あの子は「東京で初めて友達ができたんです」と、わたしにまで嬉しそうに話してくれたよ']},
+  req:{
+    small:{ask:[['sakura','ねえねえ{n}ちゃん！　今度の土曜、お茶会するんだけど来ない？'],['sakura','{n}ちゃんに紹介したい人がいるの〜！']],
+      detail:{true:[['sakura','職場の同期の子たち！　みんな上京組だから、{n}ちゃんと話が合うと思う'],['sakura','パンケーキのお店、予約してあるんだ〜。あ、自分の分は自分で払ってね！']],
+              wolf:[['sakura','すっごく素敵な先輩が来るの！　20代で独立して、いまは好きなときだけ働いてるんだって'],['sakura','成功してる人の話って刺激になるよ〜。あ、ちょっとだけ商品の紹介もあるかも！']]},
+      cost:{true:1500,wolf:6000}, gain:{true:10,wolf:4}, loss:{true:-5,wolf:-3},
+      accept:{true:[['nar','同期の子たちは本当にいい子ばかりで、帰り道まで笑いっぱなしだった'],['sakura','{n}ちゃん連れてってよかった〜！　また行こうね！']],
+              wolf:[['nar','「先輩」の話は、最後はサプリの話になった。断りきれずに、お試しセットを買った'],['sakura','{n}ちゃん、センスあるって先輩がほめてたよ！　次は会員さんの集まりに行こ！']]},
+      refuse:{true:[['sakura','え〜ざんねん！　でも予定あるなら仕方ないね！　また誘う！']],
+              wolf:[['sakura','え〜、もったいないよぉ'],['sakura','……まあいっか！　また今度ね！']]}},
+    big:{ask:[['sakura','{n}ちゃん、お願いがあるの。一緒に始めてほしいことがあって'],['sakura','わたし一人じゃ心細くて……{n}ちゃんとなら、がんばれる気がするの']],
+      detail:{true:[['sakura','週末のフリマに、手作りアクセのお店を出したいの！'],['sakura','出店料が5,000円で……半分こしてくれたら嬉しいな。売り子も一緒にやってほしい！']],
+              wolf:[['sakura','このサプリの会員になるとね、友達に紹介するたびにお金が入るの！'],['sakura','最初に20万円分の在庫を買うだけ。ローンも組めるよ！　{n}ちゃんなら絶対できる！']]},
+      cost:{true:2500}, gain:{true:16}, loss:{true:-10,wolf:-3},
+      accept:{true:[['nar','手作りのイヤリングは、夕方までに半分以上売れた。片づけながら、さくらが小さく言った'],['sakura','{n}ちゃんがいてくれて、ほんとによかった。わたし、こういう友達がずっと欲しかったんだ']]},
+      refuse:{true:[['sakura','そっかぁ……うん、大丈夫！　ひとりでもやってみる！'],['sakura','……ちょっとだけ、さみしいけどね']],
+              wolf:[['sakura','なんで？　{n}ちゃん、わたしのこと信じてくれないの？']]}}},
+  waver:[['sakura','……ううん。ごめん。いまのは、なし']],
+  over:{title:'連鎖販売エンド', lines:[['nar','段ボール20箱のサプリが、部屋を埋めつくした。ローンの返済は、まだ3年残っている'],['nar','「友達に勧めれば、すぐ元が取れるよ」と笑ったさくらは、もうメッセージを既読にしない']]},
+  convert:[['sakura','……ごめんね。わたし、{n}ちゃんのことを「売上」だと思ってた時期がある'],['sakura','でも、断られても、{n}ちゃんはずっと隣にいてくれた'],['sakura','あの会社は、もう辞める。今度はただのさくらとして、友達になりたいな']],
+  fate:'さくらは「もっと稼げる場所に行く」と言い残して、アプリの友達リストから消えた。',
+  love:{title:'一生の親友エンド　日向 さくら', lines:[['sakura','{n}ちゃん、わたしたち、おばあちゃんになってもパフェ半分こしようね'],['sakura','約束だよ！']]},
+  friend:[['sakura','{n}ちゃん、これからもずーっと仲良しでいてね！']]},
+
+sou:{ full:'灰谷 颯', short:'ソウ', age:26, job:'バンドマン', mode:'恋人', login:'ログイン：2日以内',
+  bio:'バンドやってます。ライブハウスによくいます。話すのは得意じゃないです。', tags:['音楽','ライブ','夜型'], scam:'借金の持ち逃げ',
+  talks:[
+    {t:[['nar','夕暮れの河川敷。ソウがケースからギターを出した'],['sou','……聴いてく？']],
+     c:[['聴きたい',12,[['nar','ソウは何も言わずに、もう一曲弾いてくれた。さっきより、少しだけ優しい曲だった']]],
+        ['上手だね',6,[['sou','……別に。普通だろ']]],
+        ['人が見てて恥ずかしいかも',-4,[['sou','……悪い。しまう']]]]},
+    {t:[['nar','ソウに連れてこられたのは、路地裏の小さなラーメン屋だった'],['sou','……腹、減ってる？']],
+     c:[['ぺこぺこ！',9,[['sou','……ここ、チャーシューがうまい'],['nar','ソウは自分のチャーシューを1枚、黙ってこちらの丼にのせた']]],
+        ['少しだけ',4,[['sou','……そうか。じゃあ、半分ずつな']]],
+        ['ソウくんのおすすめで',12,[['sou','……ん。じゃあ、俺と同じやつ']]]]},
+    {t:[['nar','帰り道。ソウが足を止めた'],['sou','……なんで、俺に「いいね」したの']],
+     c:[['話してみたかったから',12,[['sou','……そうかよ'],['nar','ソウはそっぽを向いた。耳が少し赤い']]],
+        ['なんとなく',5,[['sou','……ふーん']]],
+        ['ソウくんこそ、なんで？',8,[['sou','……写真の顔が、なんか、ちゃんと笑ってたから']]]]}],
+  tells:{
+    wolf:['……お前さ、困ったとき頼れるやつ、いる？　……そう。俺しかいないなら、それでいいけど','……金ってさ、あるところにはあるんだよな','……俺、家族いないようなもんだから。お前だけだよ、こんな話するの'],
+    true:['……今月、ちょっとキツい。まあ、なんとかする','……次のライブ、来いよ。いや、無理にとは言わねえ','……お前、ちゃんと寝てる？　顔色わりいぞ']},
+  sns:{
+    wolf:['ソウくんのバンド、アカウントあるよ。ライブ動画、けっこうかっこいい','バンドのメンバーが「金返せ」って遠回しに書いてる投稿がある……','「アプリで出会ったバンドマンにお金を貸したら消えた」って投稿、何人も同じ写真を上げてる。ソウくんだよ、これ'],
+    true:['ソウくんのバンド、アカウントあるよ。ライブ動画、けっこうかっこいい','夜勤の工事現場のバイト仲間と写ってる写真があった。手が傷だらけだったよ','お母さんの誕生日に、地元の花屋さんから花を送ったって投稿があった。家族思いなんだね']},
+  obs:{
+    wolf:['あの青年は口数が少ないが、きみの話はちゃんと聞いていたね','あの青年、会計のとき財布を出すふりだけして、きみが払うのを待っていたよ'],
+    true:['あの青年は口数が少ないが、きみの話はちゃんと聞いていたね','きみが帰ったあと、あの青年が戻ってきてね。「次にあいつが来たら、これで」と、コーヒー代を置いていったよ']},
+  req:{
+    small:{ask:[['sou','……悪い。ちょっといいか'],['sou','少しだけ、金を貸してくんねえか。……1万']],
+      detail:{true:[['sou','……弦が切れたのと、スタジオ代。来週のバイト代で返す'],['sou','……借用書、書くか？　書くよ']],
+              wolf:[['sou','……理由は、聞かないでほしい'],['sou','お前にしか頼めねえんだ。……ほかのやつには、言うなよ']]},
+      cost:{true:10000,wolf:10000}, gain:{true:8,wolf:4}, loss:{true:-5,wolf:-3},
+      repay:{true:{amount:10000,lines:[['sou','……これ。先週の1万。助かった']]}},
+      accept:{true:[['sou','……助かる'],['nar','その夜、丁寧な字の借用書の写真がメッセージで届いた']],
+              wolf:[['sou','……サンキュ'],['nar','ソウは目も合わせずに受け取ると、そのまま夜の町へ消えていった']]},
+      refuse:{true:[['sou','……だよな。悪い、忘れてくれ']],
+              wolf:[['sou','……そうかよ'],['sou','まあ、いい。……お前は、そういうやつだよな']]}},
+    big:{ask:[['sou','……大事な話がある。お前にしか頼めない'],['sou','5万。……なんとか、ならないか']],
+      detail:{true:[['sou','実家の母さんが倒れた。新幹線代と、当面の分'],['sou','毎月、必ず返す。……これ、病院の名前と連絡先。嘘だと思うなら電話していい']],
+              wolf:[['sou','……詳しいことは言えない。今日中に要るんだ'],['sou','……俺のこと、好きなんだろ。なら、頼むよ']]},
+      cost:{true:50000}, gain:{true:18}, loss:{true:-12,wolf:-3},
+      repay:{true:{amount:20000,lines:[['sou','……まず2万。残りも、必ず返す']]}},
+      accept:{true:[['nar','ソウはその夜のうちに新幹線に乗った。翌朝、短いメッセージが届いた'],['sou','「母さん、無事だった。……ありがとう。お前がいてよかった」']]},
+      refuse:{true:[['sou','……いや。いいんだ。急に悪かった'],['nar','その夜、ソウからのメッセージは来なかった']],
+              wolf:[['sou','……チッ']]}}},
+  waver:[['sou','……お前、ほんとに、俺のことちゃんと見てんだな']],
+  over:{title:'借金エンド', lines:[['nar','消費者金融で借りた5万円を渡した夜から、ソウのメッセージに既読がつかなくなった'],['nar','「お前だけだよ」という声が、ずっと耳に残っている']]},
+  convert:[['sou','……お前から金を引っぱるつもりだった。昔から、そうやって生きてきた'],['sou','でもお前、断ったくせに、何回もギターを聴きに来ただろ'],['sou','……もう、ああいうのはやめる。お前の前では、ちゃんとした人間でいたい']],
+  fate:'その週の終わり、ソウのアカウントはアプリから消えていた。',
+  love:{title:'恋人エンド　灰谷 颯', lines:[['sou','……新曲、できた。タイトルは、お前の名前'],['sou','……聴いてくれるか。一番前で']]},
+  friend:[['sou','……また河川敷、来いよ。お前なら、いつでもいい']]},
+
+haruto:{ full:'早瀬 ハルト', short:'ハルト', age:22, job:'ジュエリー工房の見習い', mode:'恋人', login:'ログイン：30分以内',
+  bio:'ジュエリーをつくる工房で修行中です。年上の方とお話しするのが好きです。作品を見てくれる人がいたら、うれしいな。', tags:['ものづくり','美術館','年上が好き'], scam:'デート商法',
+  talks:[
+    {t:[['nar','美術館の静かな展示室。ハルトは、古い指輪のケースの前から動かない'],['haruto','見てください、この細工。100年前の職人さんの手仕事なんですよ']],
+     c:[['きれい……',8,[['haruto','ですよね！　……あ、すみません、つい声が大きくなっちゃった']]],
+        ['ハルトくんも、こういうの作れるの？',12,[['haruto','まだまだです。でも、いつかこんなふうに、誰かの一生に残るものを作りたいんです']]],
+        ['正直、よくわからないかも',4,[['haruto','あはは、正直ですね。でも、そういう人にも伝わるものを作るのが目標なんです']]]]},
+    {t:[['nar','喫茶かもめ。ハルトはクリームソーダのさくらんぼを、なかなか食べない'],['haruto','{n}さんって、年下ってどうですか？']],
+     c:[['ぜんぜんアリだよ',10,[['haruto','……！　よかったぁ。いま、すごくほっとしました']]],
+        ['考えたことなかったな',5,[['haruto','じゃあ、これから考えてもらえるように、がんばります']]],
+        ['ハルトくんは、なんで年上が好きなの？',9,[['haruto','うーん……ちゃんと話を聞いてくれる人が多いから、かな']]]]},
+    {t:[['nar','帰り道、急に雨が降りだした。ハルトが、あわてて折りたたみ傘を広げる'],['haruto','{n}さん、濡れちゃいますよ。こっちです']],
+     c:[['ありがとう',8,[['haruto','いえ。……僕の肩が濡れるのは、全然いいんで']]],
+        ['一緒に入ろう',12,[['nar','小さな傘の下で、肩がふれた。ハルトは駅まで、ひとことも喋らなかった']]],
+        ['大丈夫、走ろう！',6,[['haruto','あはは！　待ってください、{n}さん！']]]]}],
+  tells:{
+    wolf:['{n}さんって、一人暮らしですか？　ご実家は遠いんですか？','ボーナスって、いつ出るんですか？　あ、ただの興味です！','僕の先生がつくる指輪、ほんとうに一生ものなんです。値段以上の価値があるんですよ'],
+    true:['今月、材料費で生活ギリギリで。でも好きなことだから、いいんです','{n}さんの指、細くてきれいですね。……あ、職業病です、すみません','いつか自分の名前で、ブランドを出したいんです']},
+  sns:{
+    wolf:['ハルトくんのSNS、作品の写真ばっかりだね。けっこう上手そう','同じ指輪の写真を、毎回ちがう女の人とのデート写真と一緒に上げてる……','あの子の工房の名前で検索したら、消費生活センターの注意情報が出てきた。アプリで知り合った人に高額ローンで指輪を売るんだって'],
+    true:['ハルトくんのSNS、作品の写真ばっかりだね。けっこう上手そう','工房の先輩たちとの写真が多いね。徹夜で作業してる投稿とか','去年、学生のジュエリーコンペで賞をとってる。インタビュー記事もあったよ。ちゃんとした子だね']},
+  obs:{
+    wolf:['あの青年は、きみが席を立ったとき、手帳に何か書きこんでいたよ','先月も、あの青年は別の女性とここに来ていた。同じ指輪のカタログを広げてね'],
+    true:['あの青年は、きみが席を立ったとき、手帳に何か書きこんでいたよ','あの手帳をのぞいたら、指輪のデザイン画だった。きみの手の大きさを、目で測っていたんだろうね']},
+  req:{
+    small:{ask:[['haruto','{n}さん、今度の土曜、展示会があるんです'],['haruto','……一緒に来てくれませんか？']],
+      detail:{true:[['haruto','工房の合同展示なんです。僕の作品も1点だけ置いてもらえることになって'],['haruto','入場は無料です。……{n}さんに、一番に見てほしくて']],
+              wolf:[['haruto','先生の特別な展示会で、招待された人しか入れないんです'],['haruto','気に入ったものがあったら、見るだけでも……あ、その場でローンも組めるらしいですよ']]},
+      cost:{true:0,wolf:0}, gain:{true:10,wolf:4}, loss:{true:-6,wolf:-3},
+      accept:{true:[['nar','ハルトの作品は、小さな銀の指輪だった。値札には「非売品」とあった'],['haruto','……来てくれて、ありがとうございます。それだけで、作ってよかったです']],
+              wolf:[['nar','会場では、スタッフに囲まれて3時間、指輪をすすめられた。なんとか断ったけれど、アンケートに住所と勤務先を書かされた'],['haruto','{n}さん、先生も気に入ってましたよ！　次はもっといい話ができるって']]},
+      refuse:{true:[['haruto','そうですよね、急でしたよね。……写真、あとで送ります']],
+              wolf:[['haruto','えー、もったいないなあ'],['haruto','……でも、また誘いますね']]}},
+    big:{ask:[['haruto','{n}さん。……僕たちの記念になるものを、作りたいんです'],['haruto','指輪の話、なんですけど']],
+      detail:{true:[['haruto','ペアリング、僕に作らせてください。材料費だけ、半分出してもらえたら……8,000円くらいです'],['haruto','重かったら、ほんとうに断ってください。僕、待てるので']],
+              wolf:[['haruto','先生のブランドの指輪なんですけど、僕の紹介だと特別価格で48万円なんです'],['haruto','月々1万円のローンで大丈夫です。今日契約すれば、刻印も無料で']]},
+      cost:{true:8000}, gain:{true:18}, loss:{true:-10,wolf:-3},
+      accept:{true:[['nar','ハルトは工房に3日こもって、小さな箱を差し出した。内側に、ふたりが出会った日付が彫ってあった'],['haruto','……一生ものにしてくださいね']]},
+      refuse:{true:[['haruto','……そうですよね。まだ早いですよね'],['haruto','じゃあ、それまでにもっと上手くなっておきます']],
+              wolf:[['haruto','え……？　こんなチャンス、もう来ないかもしれないんですよ？']]}}},
+  waver:[['haruto','……すみません。いまの、先生の言葉そのままでした']],
+  over:{title:'デート商法エンド', lines:[['nar','契約書にサインした翌週から、ハルトの返信は途絶えた'],['nar','手元には、48万円の指輪と、5年分のローンが残った。アプリのプロフィールは、もう消えていた']]},
+  convert:[['haruto','……ほんとうは僕、先生に言われて、{n}さんに指輪を売るつもりでした'],['haruto','でも{n}さんは断るたびに、僕の話をちゃんと聞いてくれた'],['haruto','工房は辞めます。今度は自分の手で、{n}さんに似合うものを作りたいんです']],
+  fate:'ハルトのアカウントは、ある日アプリから消えていた。',
+  love:{title:'恋人エンド　早瀬 ハルト', lines:[['haruto','{n}さん、指、貸してください。……サイズ、ぴったりだ'],['haruto','これ、売り物じゃありません。{n}さんのためだけに作ったんです']]},
+  friend:[['haruto','{n}さん、僕の初めての個展、絶対来てくださいね']]},
+
+/* Twin: dates are sometimes attended by the younger twin ヨウ pretending to be ユウ.
+   talks: t = {yu, yo}; c = [label, dYu, rYu, dYo, rYo]. Index 3 is the repeatable fallback. */
+nanase:{ full:'七瀬 ユウ', short:'七瀬', age:24, job:'図書館司書', mode:'恋人', login:'ログイン：12時間以内', twin:true,
+  bio:'本と珈琲が好きです。休日は古本屋めぐりをしています。のんびり話せる人と出会えたら嬉しいです。', tags:['読書','古本屋','珈琲'], scam:'兄になりすました示談金詐欺',
+  talks:[
+    {t:{yu:[['nar','古本屋の狭い通路。七瀬くんは、背表紙を指でなぞりながら歩いている'],['nanase','{n}さん、この作家知ってる？　僕、この人の本を読んで司書になろうって決めたんだ']],
+        yo:[['nar','古本屋の狭い通路。七瀬くんは棚をざっと眺めると、すぐにこっちを振り返った'],['nanase','{n}ちゃん、本好きなんだっけ？　俺……じゃなくて、僕もさ、うん、好きだよ']]},
+     c:[['知ってる！　好きな作家',10,[['nanase','ほんと？　……どの話が好き？　今日はずっと話せそうだ']],4,[['nanase','へえ、そうなんだ。……あ、そっちの棚も見る？']]],
+        ['知らない、教えて',12,[['nanase','いいよ。まずはこの短編から。……僕のを貸してあげる']],5,[['nanase','あー……えっと、なんか、いい感じの話だよ。たしか']]],
+        ['本より、カフェに行きたいな',3,[['nanase','あ、そうだよね。ごめん、夢中になっちゃった']],10,[['nanase','だよね！　実は俺……僕も、そっちのほうがいい']]]]},
+    {t:{yu:[['nar','喫茶かもめ。七瀬くんはブラックコーヒーを、右手でゆっくり飲んでいる'],['nanase','……僕、双子なんだ。弟のヨウは、僕と正反対で、明るくて誰とでもすぐ仲良くなれる'],['nanase','昔から、よく間違えられてさ。……変な話してごめん。{n}さんは、休みの日って何してるの？']],
+        yo:[['nar','喫茶かもめ。七瀬くんはコーヒーに砂糖を3つ入れて、左手でかき混ぜている'],['nanase','{n}ちゃんってさ、休みの日なにしてんの？　……あ、何してるの？']]},
+     c:[['家でのんびり',8,[['nanase','いいね、僕も。……今度、一緒にのんびりしようか']],4,[['nanase','ふーん。俺……僕は、じっとしてられないタイプだからなあ']]],
+        ['カフェ巡り',10,[['nanase','じゃあ、僕の好きな店も教えるね。静かで、本が読める店なんだ']],10,[['nanase','いいじゃん！　今度、うまいパンケーキの店つれてくよ']]],
+        ['七瀬くんと会ってる',12,[['nanase','……っ。そ、そうだね。……うん。うれしい']],8,[['nanase','あはは、言うねえ！　……兄貴が聞いたら喜ぶな']]]]},
+    {t:{yu:[['nar','夜の帰り道。七瀬くんが、鞄から一冊の本を取り出した'],['nanase','これ、約束してた本。……{n}さん、前に続きが気になるって言ってたから']],
+        yo:[['nar','夜の帰り道。前のデートの話になると、七瀬くんは少しだけ黙った'],['nanase','……あー、あの本の話？　ごめん、なんだっけ。{n}ちゃん、もう一回教えて？']]},
+     c:[['覚えててくれたんだ',12,[['nanase','忘れないよ。{n}さんの話は、全部覚えてる']],2,[['nanase','……えっ？　あ、うん。もちろん']]],
+        ['ありがとう',8,[['nanase','どういたしまして。返すのは、いつでもいいからね']],5,[['nanase','うん、まあね！']]],
+        ['今日はなんだか、いつもと違うね',4,[['nanase','そう？　……ちょっと、緊張してるのかも']],6,[['nanase','……へえ。鋭いじゃん']]]]},
+    {t:{yu:[['nanase','{n}さん、今日はどこに行こうか']],
+        yo:[['nanase','{n}ちゃん、今日どこ行く？　俺、どこでもいいよ']]},
+     c:[['おまかせで',5,[['nanase','じゃあ、川沿いを歩こう。風が気持ちいいから']],5,[['nanase','おっけー！　ゲーセン行こ、ゲーセン']]],
+        ['この前の続きの話がしたいな',7,[['nanase','うん、僕も。あのあと、ずっと考えてたんだ']],2,[['nanase','この前の……あー、うん。なんだっけ？']]]]}],
+  tells:{
+    wolf:['……{n}ちゃんって、実家お金持ちだったりする？　いや、なんとなく','最近ちょっと、まとまったお金が要るんだよね……あ、なんでもない','兄……いや、なんでもない。僕の話はいいよ'],
+    true:['弟がね、{n}さんに会ってみたいって言ってた','図書館の新刊に、{n}さんの好きそうな本が入ったよ','……今日のこと、日記に書いておこうかな']},
+  sns:{
+    wolf:['七瀬くん、双子なんだね。弟のヨウくんのアカウントも見つけた。顔そっくり！','ヨウくんのほう、最近「金欠」「誰か助けて」ばっかり投稿してる……','ヨウくん、兄のふりをしてアプリの女の子からお金を借りてたって、被害を書いた投稿があった。本物の七瀬くんは知らないみたい'],
+    true:['七瀬くん、双子なんだね。弟のヨウくんのアカウントも見つけた。顔そっくり！','ヨウくん、お兄ちゃんのことが大好きみたい。「兄貴に彼女できたらマジで泣く」って投稿してた','ふたりで実家のパン屋を手伝ってる写真があったよ。仲のいい兄弟だね']},
+  obs:{
+    wolf:['この前の七瀬くんは、カップを左手で持っていたね。その前は、右手だったはずだが','左手のほうの七瀬くんは、きみが席を外したとき、きみの鞄をじっと見ていたよ'],
+    true:['この前の七瀬くんは、カップを左手で持っていたね。その前は、右手だったはずだが','左手のほうの七瀬くんは、帰りぎわにわたしに「兄貴をよろしく」と言っていったよ。兄思いの子だね']},
+  caught:{
+    true:[['you','……うわ、バレた。初めてだよ、見分けられたの'],['you','兄貴に変な人が近づいてないか、確かめたかっただけ。……あんた、合格'],['nar','ヨウはいたずらっぽく笑った。「次は本物とデートしてやって」']],
+    wolf:[['you','……チッ。なんでわかった？'],['you','兄貴には言うなよ。言ったら、困るのはあんたのほうだから'],['nar','ヨウは笑っていたけれど、目は笑っていなかった']]},
+  wrong:[['nanase','……え？　僕だよ、ユウ。……ヨウと間違えたの？'],['nanase','……ちょっと、ショックかも']],
+  req:{
+    small:{ask:[['nanase','{n}さん、ほんとうに申し訳ないんだけど……'],['nanase','今日だけ、1万円貸してもらえないかな']],
+      detail:{true:[['nanase','定期と財布を、まとめて落としちゃって。交番には届けてある'],['nanase','弟に借りて、すぐ返すね。……情けないなあ']],
+              wolf:[['nanase','理由は……まあ、いいじゃん'],['nanase','{n}ちゃんなら、わかってくれるでしょ？　……あ、{n}さん、だった']]},
+      cost:{true:10000,wolf:10000}, gain:{true:8,wolf:4}, loss:{true:-5,wolf:-3},
+      repay:{true:{amount:10000,lines:[['nanase','{n}さん、このあいだはありがとう。1万円、返すね。手紙も入れておいた']]}},
+      accept:{true:[['nanase','ありがとう。……ほんとに助かる'],['nar','その夜、「必ず返すね」と丁寧なメッセージが届いた']],
+              wolf:[['nanase','サンキュー！　……あ、ありがとう'],['nar','七瀬くんは受け取ったお札を、左手でポケットに押しこんだ']]},
+      refuse:{true:[['nanase','そうだよね。ごめん、変なこと頼んで']],
+              wolf:[['nanase','……ちぇっ。……あ、いや。うん、わかった']]}},
+    big:{ask:[['nanase','{n}さん、大変なことになった'],['nanase','……ヨウのことで、どうしても助けてほしいんだ']],
+      detail:{true:[['nanase','来週、ヨウの誕生日なんだ。あいつの好きなバンドのライブ、サプライズでチケットを取りたくて'],['nanase','2枚で12,000円。……半分出してもらえたら嬉しい。当日は、3人でご飯に行こう']],
+              wolf:[['nanase','ヨウが車で事故を起こした。相手に示談金を30万、今日中に払わないと警察に行くって'],['nanase','親には言えない。……{n}ちゃんしか、頼れないんだ']]},
+      cost:{true:6000}, gain:{true:16}, loss:{true:-10,wolf:-3},
+      accept:{true:[['nar','誕生日の夜、ヨウは本気で泣いて喜んでいたらしい。七瀬くんから、ふたりで写った写真が届いた'],['nanase','「{n}さんのおかげ。……ヨウが、今度ちゃんとお礼したいって」']]},
+      refuse:{true:[['nanase','そっか。……うん、僕ひとりでなんとかするよ'],['nanase','話を聞いてくれただけで、ありがとう']],
+              wolf:[['nanase','……は？　ヨウがどうなってもいいの？']]}}},
+  waver:[['you','……もういいよ。兄貴のふりは、やめる']],
+  over:{title:'なりすましエンド', lines:[['nar','30万円を振り込んだ翌日、図書館で七瀬くんに会った'],['nanase','……事故？　ヨウが？　……ごめん、何の話？'],['nar','お金を受け取ったのは、七瀬くんの顔をした、別の誰かだった']]},
+  convert:[['you','……兄貴の顔で、何人もだましてきた。兄貴は優しいから、誰も疑わない'],['you','でも{n}ちゃんは、俺を見分けた。俺を「ヨウ」って呼んだの、家族以外で初めてなんだよ'],['you','……全部やめる。兄貴にも謝る。今度は俺の顔で、あんたに会いに来てもいい？']],
+  fate:'ヨウは兄のふりをするのをやめて、どこかへ消えた。七瀬くんは、最後まで何も知らなかった。',
+  love:{title:'恋人エンド　七瀬 ユウ', lines:[['nanase','{n}さん。……僕を、僕として見てくれてありがとう'],['nanase','これからも、隣で本を読んでいてほしいな']]},
+  friend:[['nanase','{n}さん、また古本屋に行こうね。……今度はヨウも一緒に']]}
+};
+
+/* ---------- added cast (2026-10-23) ---------- */
+C.shizuma = { full:'御堂 静真', short:'静真', age:30, job:'ホテルのコンシェルジュ', mode:'恋人', login:'ログイン：6時間以内',
+  bio:'ホテルでコンシェルジュをしております。お相手の「ちょっと困った」を先回りするのが得意です。落ち着いたお付き合いができる方を探しております。', tags:['紅茶','ホテル巡り','おもてなし'], scam:'投資用マンション勧誘',
+  talks:[
+    {t:[['nar','老舗ホテルのティーラウンジ。静真さんは、運ばれてきた紅茶をそっとこちらへ寄せた'],['shizuma','{n}様、ミルクとお砂糖は、こちらにご用意しております。……温度は、少しぬるめにしていただきました']],
+     c:[['ありがとうございます！',8,[['shizuma','とんでもございません。{n}様が笑ってくださるのが、何よりのお礼でございます']]],
+        ['どうして、ぬるめが好きって分かったんですか？',12,[['shizuma','前回、熱いお茶を少し冷ましてから召し上がっていらしたので。……覚えておりました']]],
+        ['そこまでしなくても大丈夫ですよ',5,[['shizuma','……失礼いたしました。つい、職業病でございます']]]]},
+    {t:[['nar','喫茶かもめ。静真さんは背筋をのばしたまま、カップを音も立てずに置いた'],['shizuma','{n}様は、お休みの日は、どのようにお過ごしでいらっしゃいますか？']],
+     c:[['家でごろごろしてます',10,[['shizuma','それは何よりでございます。……実は、わたくしもでございます']]],
+        ['静真さんは、何してるんですか？',12,[['shizuma','わたくしでございますか。……ホテルの外に出ると、何をすればよいのか、少々迷ってしまいます']]],
+        ['敬語、やめてもいいですよ',6,[['shizuma','……ありがとうございます。ですが、まだ少し、勇気が足りないようでございます']]]]},
+    {t:[['nar','夜の駅前。冷たい風が吹くと、静真さんはすっと自分のマフラーを外した'],['shizuma','{n}様、どうぞ。お風邪を召されては大変でございますから']],
+     c:[['静真さんが寒くなっちゃう',10,[['shizuma','わたくしは慣れておりますので。……と申しますか、{n}様が温かいほうが、嬉しいのです']]],
+        ['ありがとう、借ります',8,[['shizuma','はい。お返しは、次にお会いするときで結構でございます']]],
+        ['たまには甘えてください',12,[['shizuma','……甘える、でございますか'],['shizuma','では、少しだけ。駅まで、ゆっくり歩いていただけますか？']]]]}],
+  tells:{
+    wolf:['{n}様は、老後の資金について、お考えになったことはございますか？','年金だけでは足りない時代でございますから。……いえ、独り言でございます','{n}様のお勤め先、とても安定したところでいらっしゃいますよね。……審査も、通りやすいかと'],
+    true:['本日は少し冷えますので、ひざ掛けをお持ちいたしました','夜勤明けで、少々眠たそうに見えましたら、申し訳ございません','{n}様のお好きなものを、もっと存じ上げたいのです']},
+  sns:{
+    wolf:['静真さんのSNS、ホテルのロビーの花とか、朝ごはんの写真ばっかり。上品〜','投稿に毎回「#資産形成 #不労所得 #将来の安心」ってタグがついてる……ホテルの人っぽくなくない？','静真さんの写真、「アプリで知り合った人にマンションを買わされた」って相談の書きこみに出てきた。勤め先のホテルにも、そんな名前の人はいないんだって'],
+    true:['静真さんのSNS、ホテルのロビーの花とか、朝ごはんの写真ばっかり。上品〜','ホテルの公式アカウントに静真さん出てた！　お客さんの感想で、名指しでほめられてるよ','最近「部屋探し中」って投稿してる。見てるのは全部賃貸で、「ソファの色で三日迷っております」だって。かわいい']},
+  obs:{
+    wolf:['あの紳士は、きみのコートを預かって、椅子まで引いていたね。ずいぶん気が利く人だ','きみが帰ったあと、あの紳士は奥の席で書類を広げてね。電話で「今月の契約、あと一件です」と話していたよ'],
+    true:['あの紳士は、きみのコートを預かって、椅子まで引いていたね。ずいぶん気が利く人だ','きみが帰ったあと、あの紳士はわたしに「あの方のお好きな紅茶を教えていただけますか」と聞いてきたよ。手帳にメモまでしていた']},
+  req:{
+    small:{ask:[['shizuma','{n}様、今度の日曜日、少しお時間をいただけないでしょうか？'],['shizuma','ぜひ、ご一緒していただきたい場所がございます']],
+      detail:{true:[['shizuma','わたくしの勤めるホテルで、ティーラウンジの新作の試食会がございまして。スタッフの招待枠で、お代はかかりません'],['shizuma','……同僚に見られるのは少々照れますので、皆には内緒にしていただけますと助かります']],
+              wolf:[['shizuma','ホテルの会議室で、将来のお金についての勉強会がございます。講師の先生が、とても良い方でして'],['shizuma','参加費は5,000円でございますが、{n}様の将来のためでございます。……席に限りがございますので、ほかの方にはご内密に']]},
+      cost:{true:0,wolf:5000}, gain:{true:10,wolf:4}, loss:{true:-6,wolf:-3},
+      accept:{true:[['nar','新作のスコーンは、まだ温かかった。静真さんは、こちらの感想をひとつずつ手帳に書きとめていた'],['shizuma','{n}様のご意見、料理長に必ずお伝えいたします。……本日は、本当にありがとうございました']],
+              wolf:[['nar','勉強会のあと、別室に通された。年収と勤務先と貯金の額を、やさしい声で一つずつ聞かれた'],['shizuma','{n}様、先生がとても褒めていらっしゃいましたよ。次は、もっと具体的なお話ができるそうです']]},
+      refuse:{true:[['shizuma','さようでございますか。急なお誘い、失礼いたしました'],['shizuma','スコーンは、おみやげにお包みしておきますね']],
+              wolf:[['shizuma','……さようでございますか。残念でございます'],['shizuma','早く始めた方ほど、得をするのですが。……また、お声がけいたしますね']]}},
+    big:{ask:[['shizuma','{n}様。わたくしたちの将来について、真剣にお話ししたいことがございます'],['shizuma','お住まいのことなのですが']],
+      detail:{true:[['shizuma','わたくし、引っ越しを考えておりまして。新しい部屋に、ふたりがけのソファを置きたいのです'],['shizuma','{n}様がいらしたときに座っていただくものなので、一緒に選んでいただけませんか。お代は半分、15,000円ほど……重荷でしたら、遠慮なくお断りくださいませ']],
+              wolf:[['shizuma','知人の会社が扱う、都心のワンルームマンションでございます。家賃収入でローンが払えて、将来は年金代わりになります。節税にもなりますし、絶対に損はさせません'],['shizuma','頭金は30万円、残りは提携の銀行でローンを組めます。今月中なら特別価格で、{n}様にだけ。……ご家族には、決まってからお話しになるほうがよろしいかと。本日、こちらにご署名だけいただければ']]},
+      cost:{true:15000}, gain:{true:17}, loss:{true:-10,wolf:-3},
+      accept:{true:[['nar','家具屋をめぐって三軒目。並んで座ったソファは、くすんだ若草色だった'],['shizuma','……決まりでございますね。この席は、これから{n}様の指定席でございます']]},
+      refuse:{true:[['shizuma','さようでございますね。わたくし、少し先走りすぎました'],['shizuma','ソファがなくても、いらしてくださいね。座布団は、とびきりのものをご用意いたします']],
+              wolf:[['shizuma','……{n}様。このお話を断るのは、将来を捨てるのと同じでございますよ？']]}}},
+  waver:[['shizuma','……失礼いたしました。いまのは、わたくしの言葉ではございませんでした']],
+  over:{title:'投資用マンションエンド', lines:[['nar','契約したワンルームは、駅から徒歩25分、築30年の部屋だった。家賃の保証は、半年で打ち切られた'],['nar','残ったのは35年のローンと、毎月の赤字。静真さんの番号は、もうつながらない']]},
+  convert:[['shizuma','……白状いたします。わたくし、ホテルの人間ではございません。マンションを売る営業でございました'],['shizuma','{n}様は何度お断りになっても、わたくしの淹れた紅茶を、おいしいと言ってくださいました'],['shizuma','会社は辞めます。今度こそ本物のコンシェルジュになって、{n}様をお迎えしたいのです']],
+  fate:'静真さんのアカウントは、ある日アプリから消えていた。勤めているはずのホテルに問い合わせると、「そのような者はおりません」と丁寧に言われた。',
+  love:{title:'恋人エンド　御堂 静真', lines:[['shizuma','{n}様。……いえ、{n}さん。これからは敬語なしで……努力いたします'],['shizuma','ずっと、あなたのお世話をさせてください。一生、でございます']]},
+  friend:[['shizuma','{n}様、またティーラウンジでお待ちしております。お好きな紅茶をご用意して']],
+  after:['本日はありがとうございました。お足元、お気をつけてお帰りくださいませ','ご自宅に着かれましたら、ひと言いただけますと安心いたします。……出すぎた真似でしたら、申し訳ございません','今夜は冷えるそうです。温かくしてお休みくださいませ。{n}様の夢に、わたくしが出られましたら光栄です'],
+  colors:{light:'#8c2f39', dark:'#e8919a'},
+  px:{c:{H:'#1f1c22',C:'#26304a',E:'#2b2333',A:'#c9a24a'}, h:[
+    '................','.....HHHHHH.....','...HHHHHHHHHH...','...HHHHHHHHHHH..','...HHHHHHHHHHH..',
+    '...HHH...HHHHH..','...H........HH..','................','................','................',
+    '................','................','.......AA.......']}
+};
+
+C.gou = { full:'楠 ゴウ', short:'ゴウ', age:24, job:'定食屋の跡取り', mode:'恋人', login:'ログイン：1時間以内',
+  bio:'商店街で、親父の定食屋を手伝ってます。腹が減ると無口になるけど、食えば治ります。うまいもん一緒に食える人がいいな。', tags:['食べ歩き','料理','商店街'], scam:'連帯保証人の依頼',
+  talks:[
+    {t:[['nar','昼すぎの商店街。ゴウは、さっきから眉間にしわを寄せたまま歩いている'],['gou','……腹減った。……いや、{n}に怒ってるわけじゃねえから']],
+     c:[['コロッケ買ってこようか？',12,[['nar','ゴウはコロッケをひと口でほおばると、急に顔が明るくなった'],['gou','うっま！　{n}、天才かよ。……さっきはごめんな']]],
+        ['大丈夫？',5,[['gou','……大丈夫じゃない。腹が減ってるときの俺は、ほぼ別人だから']]],
+        ['じゃあ今日は帰る？',-3,[['gou','えっ、待って待って！　食えば治るから！']]]]},
+    {t:[['nar','喫茶かもめ。ゴウはナポリタンを3分で平らげて、満足そうに息をついた'],['gou','……かもめのナポリタン、うちの店でも出してえな。{n}は、何食ってるときが一番幸せ？']],
+     c:[['甘いもの！',8,[['gou','わかる。じゃあ今度、俺が白玉ぜんざいつくってやるよ']]],
+        ['ゴウくんがつくったご飯',12,[['gou','……まだ食わせたことねえだろ'],['gou','でも、絶対うまいって言わせるからな']]],
+        ['あんまり食べ物に興味なくて',3,[['gou','マジか……人生の半分、損してるぞ、それ']]]]},
+    {t:[['nar','夜の公園。ゴウは自販機のおしるこを両手で持って、しばらく黙っていた'],['gou','……俺さ、店を継ぐって決めたの、つい最近なんだよ。親父みたいにやれる気、ぜんぜんしなくて']],
+     c:[['話してくれてうれしい',10,[['gou','……こういう話、腹いっぱいのときしかできねえんだ。いまで、よかった']]],
+        ['ゴウくんなら、できるよ',8,[['gou','……軽く言うなよ。……でも、ありがと']]],
+        ['無理に継がなくてもいいんじゃない？',7,[['gou','……そう言ってくれたの、{n}が初めてかも']]]]}],
+  tells:{
+    wolf:['{n}ってさ、ちゃんとした会社に勤めてるよな。……いや、信用ありそうだなって','最近、スーツの人がよく店に来るんだよな。……あ、なんでもない','親父には、店のこと何も聞かないでくれよ。頼むから'],
+    true:['腹減った……あ、ごめん。機嫌が悪いんじゃなくて、腹が減ってるだけ','親父の味、まだ全然越えられねえんだよな','{n}、ちゃんと朝メシ食ってる？　顔に書いてあるぞ']},
+  sns:{
+    wolf:['ゴウくんちの定食屋、口コミ見つけた！　生姜焼きがおいしいって評判だよ','ゴウくん、夜はよく繁華街で飲んでる写真あげてる。お店は「最近閉まってる日が多い」って口コミもあった……','ゴウくんの店、去年からずっと休業中なんだって。近所の人の投稿に「あそこの息子、保証人を探して女の子に声をかけてる」って書いてあった'],
+    true:['ゴウくんちの定食屋、口コミ見つけた！　生姜焼きがおいしいって評判だよ','お店の公式アカウント、ゴウくんが更新してるみたい。毎朝5時に仕込みの写真あげてるよ','お父さん、もうすぐ還暦なんだって。常連さんたちが、お祝いの準備してる投稿があった']},
+  obs:{
+    wolf:['あの青年は、ナポリタンが来るまで、ずっと難しい顔をしていたね。食べ終わったら、別人のようだった','きみが席を外したとき、あの青年は電話で「あと一人、保証人さえ見つかれば」と話していたよ'],
+    true:['あの青年は、ナポリタンが来るまで、ずっと難しい顔をしていたね。食べ終わったら、別人のようだった','帰りぎわに、あの青年はうちの厨房をのぞいてね。「この火加減、どうやってるんですか」と、深々と頭を下げていったよ']},
+  req:{
+    small:{ask:[['gou','{n}、ちょっと店のことで頼みがあってさ'],['gou','今度の日曜、うちの店に来てくんない？']],
+      detail:{true:[['gou','バイトが急に休んでさ。昼の3時間だけ、皿洗いとレジを手伝ってほしい。まかない、腹いっぱい出すから'],['gou','……あ、親父には内緒な。客に手伝わせたってバレたら、ゲンコツだから']],
+              wolf:[['gou','新メニューの試食会やるんだ。……で、その日に業者へ払う金が、ちょっと足りなくて'],['gou','5,000円だけ、今日中に立て替えてくんない？　親父には言わないでほしいんだ。すぐ返すから']]},
+      cost:{true:0,wolf:5000}, gain:{true:10,wolf:4}, loss:{true:-6,wolf:-3},
+      accept:{true:[['nar','皿洗いは思ったより大変だった。閉店後、ゴウが山盛りの生姜焼き定食を出してくれた'],['gou','{n}がいてくれて助かった。……ほら、食え。俺の自信作']],
+              wolf:[['nar','お金を渡すと、ゴウはすぐにスマホを取り出した。試食会の日、店のシャッターは下りたままだった'],['gou','{n}、ごめん！　試食会、延期になってさ。また連絡する']]},
+      refuse:{true:[['gou','だよな、休みの日に悪い。なんとか回してみる'],['gou','今度、ちゃんと客として来てくれよな']],
+              wolf:[['gou','……そっか。まあ、いいけど'],['gou','腹減ってイライラしてるだけだから。気にすんな']]}},
+    big:{ask:[['gou','{n}。大事な話、してもいい？'],['gou','店のことで、{n}にしか頼めないことがあるんだ']],
+      detail:{true:[['gou','来月、親父の還暦祝いを店でやるんだ。料理は俺がつくる。花と記念品のお金、1万円だけ一緒に出してもらえないか'],['gou','それと、寄せ書きの色紙に名前を書いてほしい。……{n}のこと、親父にちゃんと紹介したいんだ']],
+              wolf:[['gou','店に借金があってさ。銀行から追加で500万借りるのに、保証人が要るんだ。名前書いて、ハンコ押すだけ。{n}には絶対に迷惑かけない'],['gou','今日中に書類を出さないと、店が潰れる。……親父には言えないから、誰にも内緒で頼む。{n}しかいないんだよ']]},
+      cost:{true:10000}, gain:{true:17}, loss:{true:-10,wolf:-3},
+      accept:{true:[['nar','還暦祝いの夜、店は常連さんでいっぱいになった。ゴウのお父さんは、色紙を見て目をうるませていた'],['gou','親父が「いい人を連れてきたな」だって。……{n}、来てくれてありがとな']]},
+      refuse:{true:[['gou','そっか。……うん、急だったよな。ごめん'],['gou','でも、お祝いには来てくれよ。メシは食わせるから']],
+              wolf:[['gou','……は？　俺の店がどうなってもいいのかよ']]}}},
+  waver:[['gou','……腹減ってると、ろくなこと言わねえな、俺']],
+  over:{title:'連帯保証人エンド', lines:[['nar','サインから3か月後、知らない金融会社から督促状が届いた。請求額は、500万円'],['nar','商店街の店はシャッターを下ろしたまま。ゴウのアカウントも、もう見つからない']]},
+  convert:[['gou','……店の借金、ほんとはあるんだ。親父に内緒で、俺がつくった。それで、{n}を保証人にしようとしてた'],['gou','でも{n}は、断ったくせに、俺が腹減ってるときにコロッケ買ってきてくれただろ'],['gou','借金は、自分で働いて返す。親父にも全部話す。……そしたら、店の一番いい席でメシ食ってくれる？']],
+  fate:'ゴウのアカウントは、ある日アプリから消えていた。商店街の定食屋には、「閉店」の貼り紙だけが残っていた。',
+  love:{title:'恋人エンド　楠 ゴウ', lines:[['gou','{n}。俺がつくったメシ、これから毎日食ってくれない？'],['gou','……あ、いや、プロポーズとかじゃなくて。……いや、プロポーズかも']]},
+  friend:[['gou','{n}、腹減ったらいつでも店に来いよ。大盛りにしとくから']],
+  after:['今日はありがとな！　帰りにラーメン食った。腹いっぱいで、いま最高の気分','昼間、腹減ってて感じ悪かったらごめん。あれ、本当の俺じゃないから','{n}、ちゃんと晩メシ食った？　食ってないなら、なんか食ってから寝ろよ。おやすみ'],
+  colors:{light:'#6b7420', dark:'#c6d17a'},
+  px:{c:{H:'#3a2a20',C:'#3b4f86',E:'#3a2418',A:'#ece6d6'}, h:[
+    '................','................','....H.HH.HH.H...','...HHHHHHHHHH...','...AAAAAAAAAAA..',
+    '...HH......HHA..','...H..........A.']}
+};
+
+C.kai = { full:'篠原 カイ', short:'カイ', age:29, job:'イベント会社 代表', mode:'恋人', login:'ログイン：30分以内',
+  bio:'イベント会社やってます！　人を楽しませるのが生きがい。おいしいもの食べに行きましょう、もちろん俺のおごりで！', tags:['イベント','グルメ','おごりたい派'], scam:'副業・情報商材詐欺',
+  talks:[
+    {t:[['nar','予約の取れない焼肉店。カイが慣れた様子でメニューを閉じた'],['kai','{n}ちゃん、今日は全部俺のおごり！　好きなだけ頼んで！']],
+     c:[['じゃあ、遠慮なく！',8,[['kai','いいねいいね！　そういう子、大好き！　すみませーん、特上タン2つ！']]],
+        ['半分は払わせて',12,[['kai','え、マジ？　……そっか。そういうの、ちょっとグッときた']]],
+        ['こんな高いお店、緊張する',5,[['kai','大丈夫大丈夫！　肉は値段じゃなくて、誰と食べるかだから！']]]]},
+    {t:[['nar','喫茶かもめ。カイは三つ目のスマホの通知を切って、ようやくこちらを向いた'],['kai','ごめん、バタバタで！　……俺さ、人が笑ってるの見るのが一番好きなんだよね']],
+     c:[['だからイベントの仕事なんだね',12,[['kai','そう！　{n}ちゃん、わかってくれる？　最初のお客さん、たった12人だったんだけどさ……']]],
+        ['スマホ三つもあるの？',6,[['kai','仕事用と、プライベートと、あともう一個！　……ははっ、社長っぽいっしょ？']]],
+        ['少しは休んだら？',9,[['kai','……それ言われたの、久しぶりかも。うん、今日はもう電源切る！']]]]},
+    {t:[['nar','夜の海沿い。にぎやかだったカイが、ふと黙りこんだ'],['kai','……俺さ、昔はぜんぜん金なくてさ。こういうとこ来るの、夢だったんだよね']],
+     c:[['いまは夢が叶ったんだね',8,[['kai','……どうかな。叶ったのか、まだ途中なのか。でも、隣に{n}ちゃんがいるのは、本当']]],
+        ['昔の話、聞かせて',12,[['kai','ほんと？　……つまんないよ？　でも、{n}ちゃんになら話してもいいかな']]],
+        ['お金がなくても楽しいよ',6,[['kai','ははっ、それ、昔の俺に聞かせてやりたいわ']]]]}],
+  tells:{
+    wolf:['{n}ちゃんってさ、いまの仕事でずっといくつもり？　いや、もったいないなーって','俺、25までは借金だらけだったんだよ。スマホ1台で人生ひっくり返ったの','時間とお金の自由、ほしくない？　会社に縛られる人生って、正直しんどくない？'],
+    true:['今月イベント4本！　寝てない！　でも最高に楽しい！','社長っていっても、社員3人の小さい会社だけどね！　ははっ','おごらせてよ。俺が楽しいんだから、それでいいの']},
+  sns:{
+    wolf:['カイくんのSNS、イベントの写真ばっか。人めっちゃ集まってるじゃん','高級ホテルのラウンジとか、タワマンからの夜景ばっか。「#スマホ1台で自由に #月収公開」ってタグついてる','カイくんの会社名で検索したら、そんな会社どこにもなかった。代わりに副業塾の被害の書き込みに、同じ顔写真が出てきたよ。ヤバいって'],
+    true:['カイくんのSNS、イベントの写真ばっか。人めっちゃ集まってるじゃん','裏方の写真もあげてる。会場設営で汗だくのやつ。社長が一番走り回ってるっぽい','会社のホームページ見つけた。商店街のお祭りとか地域のイベントの実績がずらっと。代表あいさつ、ちゃんとカイくん本人だったよ']},
+  obs:{
+    wolf:['あの青年は、会計を全部持っていったよ。気前がいいね。少し、よすぎるくらいだ','きみがお手洗いに立ったとき、あの青年は電話で「今月の成約、あと一件」と話していたよ。手帳には、女性の名前がずらりと並んでいた'],
+    true:['あの青年は、会計を全部持っていったよ。気前がいいね。少し、よすぎるくらいだ','先週、あの青年は商店街の会長さんとここで打ち合わせをしていたよ。何度も頭を下げて、手書きの企画書を直していたね']},
+  req:{
+    small:{ask:[['kai','{n}ちゃん！　今度の金曜、パーティーやるんだけど来てよ！'],['kai','ちょっとだけ参加費かかるんだけど、絶対楽しいから！']],
+      detail:{true:[['kai','うちが仕切ってる、商店街のお店の周年パーティー！　参加費はケータリング代だけ'],['kai','……あ、正直に言うと人数がちょっと足りなくてさ。友達も連れてきてくれたら、めちゃくちゃ助かる！']],
+              wolf:[['kai','成功してる人ばっかり集まる交流会なんだ。みんなスマホで稼いでて、働く時間は1日2時間とか'],['kai','最後にちょっとだけ、ビジネスの説明会もあるかな。あ、会社の人とかには内緒ね！　{n}ちゃんだから誘ってるんだから']]},
+      cost:{true:3000,wolf:10000}, gain:{true:10,wolf:4}, loss:{true:-5,wolf:-3},
+      accept:{true:[['nar','商店街のお店の人たちはみんな気さくで、カイは一晩じゅう、裏で走り回っていた'],['kai','{n}ちゃん、来てくれてありがと！　店長さんたち、すげー喜んでた！']],
+              wolf:[['nar','乾杯のあとは、「月収100万」の体験談が延々と続いた。帰りぎわ、入会申込書を渡された'],['kai','{n}ちゃん、絶対向いてるって先輩も言ってたよ！　次は個別相談、予約しとくね！']]},
+      refuse:{true:[['kai','そっかー、残念！　でも気にしないで！　また別のイベントで呼ぶね！']],
+              wolf:[['kai','えー、マジ？　チャンスって、二回は来ないよ？'],['kai','……ま、いっか！　気が変わったら言ってね！']]}},
+    big:{ask:[['kai','{n}ちゃん、ちょっと真面目な話してもいい？'],['kai','俺と一緒に、新しいこと始めてみない？　……お金の話になっちゃうんだけど']],
+      detail:{true:[['kai','10年前になくなった地元の夏祭りを、うちの会社で復活させたいんだ。協賛チケットが1口2万円で、会場の看板に名前が載る'],['kai','……ただ、会社の口座をつくるのが間に合ってなくて、振込先がしばらく俺の個人口座なんだ。領収書はちゃんと出すから。怪しかったら、断っていいよ']],
+              wolf:[['kai','スマホだけで月50万いける副業の塾があってさ。教材とツールで、普通は98万円'],['kai','今日中に申し込めば{n}ちゃんだけ特別枠で49万。ローンなら月々ちょっとだよ。審査は年収を少し多めに書いとけば通るから'],['kai','あ、家族とか友達には言わないでね。反対する人って、結局稼げない人だから']]},
+      cost:{true:20000}, gain:{true:18}, loss:{true:-10,wolf:-3},
+      accept:{true:[['nar','カイはその場で手書きの領収書を書き、何度も頭を下げた'],['kai','……ありがと。{n}ちゃんの名前、看板の一番目立つとこに載せるから。絶対、いい祭りにする']]},
+      refuse:{true:[['kai','……そっか。うん、そうだよな。2万円って大金だもん'],['kai','話、聞いてくれただけで嬉しい！　祭りの日は、ちゃんと遊びに来てよ！']],
+              wolf:[['kai','は？　今日だけなんだって。{n}ちゃん、一生このままでいいの？']]}}},
+  waver:[['kai','……ははっ、冗談！　{n}ちゃんは、そのままでいいよ']],
+  over:{title:'副業詐欺エンド', lines:[['nar','届いたのは、数本の動画と、どこにでもある内容の教材だけだった。ローンの請求は、毎月きちんと届く'],['nar','「月50万は最低ライン」と笑ったカイの番号は、もう使われていない']]},
+  convert:[['kai','……正直に言う。最初は、{n}ちゃんのこと「見込み客」だと思ってた'],['kai','でも、俺のつまんない昔話を、最後まで聞いてくれたの、{n}ちゃんだけだった'],['kai','あの塾からは抜ける。今度こそ、ちゃんと人を笑わせる仕事がしたい。……いちから、やり直していい？']],
+  fate:'ある日、カイのアカウントはアプリから消えていた。名刺にあった会社の住所には、レンタルオフィスの看板があるだけだった。',
+  love:{title:'恋人エンド　篠原 カイ', lines:[['nar','復活した夏祭りの夜。看板のいちばん上に、{n}の名前があった'],['kai','来年も、再来年も、ずっとこの祭り、隣で見てよ'],['kai','……今日だけは、おごるとかじゃなくてさ。{n}ちゃんと一緒にいたいんだ']]},
+  friend:[['kai','{n}ちゃん、イベントやるときは絶対呼ぶから！　VIP席、ずっと空けとく！']],
+  after:['{n}ちゃん、今日ありがと！　めっちゃ楽しかった！　次はどこ行きたい？　どこでも連れてく！','家ついた？　ちゃんと鍵しめて寝るんだよー！　おやすみ！','いま会社戻って仕事中！　でも{n}ちゃんの笑った顔思い出して、元気100倍！'],
+  colors:{light:'#1f6fb5', dark:'#86bdf0'},
+  px:{c:{H:'#5a3a22',C:'#e2703a',E:'#3a2416',A:'#262626'}, h:[
+    '....H.HH.HH.H...','...HHHHHHHHHHH..','..HHHHHHHHHHHH..','..HAAAHHHHAAAH..','..HHHHHHHHHHHH..',
+    '...H........H...','...H............']}
+};
+
+C.iroha = { full:'春野 イロハ', short:'イロハ', age:20, job:'美大生', mode:'友達', login:'ログイン：1時間以内',
+  bio:'美大で油絵を描いてます！　人の声や音に色が見えます。いろんな色の人と友達になりたいです！', tags:['絵','美術館','色が見える'], scam:'エステ・美容契約の勧誘',
+  talks:[
+    {t:[['nar','美大のアトリエ。イロハが絵の具だらけの手をぶんぶん振っている'],['iroha','{n}さん！　来てくれたんだ！　……わあ、{n}さんの声、やっぱり若草色だ！']],
+     c:[['若草色ってどんな色？',12,[['iroha','春のはじめの、やわらかい緑！　聞いてると、なんか安心する色なの']]],
+        ['素敵な才能だね',9,[['iroha','ほんと？　……えへへ、そう言ってもらえたの、はじめてかも']]],
+        ['ほんとに見えるの？',4,[['iroha','……うん。みんな、そう言うんだ。でも、ほんとに見えるんだよ']]]]},
+    {t:[['nar','喫茶かもめ。マスターがカップを置くと、イロハが目をまるくした'],['iroha','いまの音、こはく色！　……ねえ{n}さん、わたし、絵でごはん食べていけると思う？']],
+     c:[['イロハちゃんならいける！',8,[['iroha','わ、即答！　{n}さんの声、いまピカピカの黄色だった！']]],
+        ['どんな絵を描きたいの？',12,[['iroha','聞いてくれる？　音を、色にして描きたいの。雨の音とか、友達の笑い声とか……']]],
+        ['厳しい世界だよね',4,[['iroha','……うん。知ってる。だから、ちょっとこわいんだ']]]]},
+    {t:[['nar','美術館の帰り道。歩道橋の上で、イロハが立ち止まった'],['iroha','……わたしね、高校のとき、ずっとひとりだったの。色の話をしたら、変な子って言われて']],
+     c:[['話してくれてありがとう',12,[['iroha','……{n}さんは、笑わないんだね。それだけで、すごく嬉しい']]],
+        ['変じゃないよ',8,[['iroha','……うん。{n}さんがそう言うなら、変じゃないって思える']]],
+        ['いまは友達いるでしょ',6,[['iroha','……えへへ。いるよ。いま、目の前に']]]]}],
+  tells:{
+    wolf:['{n}さんって、肌きれい！　どこのサロン行ってるの？','最近通ってるサロンの先生がすごいの！　人生観まで変わっちゃった！','{n}さんのお友達も、きっときれいな色の人たちなんだろうな。会ってみたいなあ！'],
+    true:['画材代で今月ピンチ！　パンの耳で生きてます！','{n}さんの声、今日はちょっと青い。……疲れてない？','課題の締め切り明後日なのに、キャンバスがまだ真っ白！']},
+  sns:{
+    wolf:['イロハちゃんのSNS、絵とか空の写真ばっか。色がきれいだね','最近、エステのビフォーアフター写真ばっか。「#紹介で無料に #学生でも稼げる」ってタグついてる','同じ大学っぽい子が「あの子に誘われたエステで50万のローン組まされた」って書いてる。紹介するたびにお金もらってるっぽいよ、イロハちゃん'],
+    true:['イロハちゃんのSNS、絵とか空の写真ばっか。色がきれいだね','大学のグループ展のお知らせあげてる。搬入でへとへとの写真もあったよ','イロハちゃんの絵、小さい公募展で入選してた！　審査員のコメント「音が聞こえる色彩」だって。本物じゃん']},
+  obs:{
+    wolf:['あの子は、カップを置く音を「こはく色」と言っていたよ。おもしろい子だね','あの子は先週、別のお嬢さんとここに来ていたよ。手鏡を見せて「この肌、放っておくともったいない」と、パンフレットを広げていた'],
+    true:['あの子は、カップを置く音を「こはく色」と言っていたよ。おもしろい子だね','きみが帰ったあと、あの子は「{n}さんの笑い声の色」だと言って、ナプキンに黄緑の絵を描いていったよ。置いていったから、取ってあるんだ']},
+  req:{
+    small:{ask:[['iroha','{n}さん、今度の日曜ってひま？'],['iroha','一緒に行ってほしいところがあるの！']],
+      detail:{true:[['iroha','大学のグループ展！　わたしの絵も3枚飾ってもらえるの。入場料とカタログで1,500円かかっちゃうんだけど……'],['iroha','あとね、ほんとは集客ノルマがあって……お友達も連れてきてくれたら、すっごく助かる！']],
+              wolf:[['iroha','わたしが通ってるサロンの無料体験！　お友達と一緒だと、ふたりとも無料になるの'],['iroha','体験のあと、ちょっとだけ説明があるかも。あ、ほかの子には言わないでね。{n}さんにだけの特別招待だから！']]},
+      cost:{true:1500,wolf:8000}, gain:{true:10,wolf:4}, loss:{true:-5,wolf:-3},
+      accept:{true:[['nar','イロハの絵は、雨の音を描いたという青と銀の大きな一枚だった。しばらく、目が離せなかった'],['iroha','{n}さん、ずっと見ててくれたね！　……わたし、今日のこと、絶対描く！']],
+              wolf:[['nar','無料のはずの体験のあと、個室で2時間、肌の悩みを聞かれた。断りきれず、美容液を一本買った'],['iroha','{n}さん、先生にほめられてたよ！　次はコースの説明、一緒に聞こ！']]},
+      refuse:{true:[['iroha','そっかあ、残念！　でも予定あるなら仕方ないね！　写真いっぱい送るね！']],
+              wolf:[['iroha','えー、もったいないよぉ。無料なのに'],['iroha','……でも、いっか！　また誘うね！']]}},
+    big:{ask:[['iroha','{n}さん、聞いてほしいことがあるんだ'],['iroha','わたしと一緒に、始めてほしいことがあるの。……ちょっと、お金がかかるんだけど']],
+      detail:{true:[['iroha','卒業前に、友達と二人展をやりたいの！　小さいギャラリーなんだけど、借りるのに3万円かかって……半分出してくれたら嬉しいな'],['iroha','……あ、でも、仮押さえが今週までで、それまでに入金しないと取られちゃうの。急がせてごめんね']],
+              wolf:[['iroha','サロンの会員コース！　普通は96万円なんだけど、今日契約すれば{n}さんだけ半額の48万円'],['iroha','学生でも分割のローンが組めるよ！　お友達を3人紹介すれば紹介料が入るから、実質タダなの'],['iroha','あ、親には内緒にしてね。大人って、こういうの絶対反対するから']]},
+      cost:{true:15000}, gain:{true:16}, loss:{true:-10,wolf:-3},
+      accept:{true:[['nar','二人展の初日。入口に、イロハの手書きで「春野イロハ・{n}　二人展」と書いてあった'],['iroha','えへへ、勝手に名前入れちゃった！　だって、{n}さんがいなかったら、できなかったもん']]},
+      refuse:{true:[['iroha','そっか……うん、そうだよね。1万5千円って大きいもん'],['iroha','バイトもっと入れて、がんばってみる！　……見に来てくれたら、それで十分だよ']],
+              wolf:[['iroha','なんで？　{n}さん、きれいになりたくないの？　わたしのこと、信じてくれないの？']]}}},
+  waver:[['iroha','……ううん。ごめんね。いまの、忘れて']],
+  over:{title:'エステ勧誘エンド', lines:[['nar','クローゼットには、使いきれない美容液の箱が積み上がっている。分割の請求は、あと4年残っている'],['nar','「友達を紹介すれば元が取れるよ」と笑ったイロハの声は、もう何色にも見えない']]},
+  convert:[['iroha','……ごめんなさい。わたし、{n}さんを紹介料で見てた時期がある'],['iroha','サロンの先生に「友達をつくれば稼げる」って言われて、ずっとそうしてた。でも{n}さんは、断っても、わたしの絵の話を聞いてくれた'],['iroha','サロンはもうやめる。今度は、ただのイロハとして、{n}さんの友達でいたい']],
+  fate:'イロハは「もっと上のランクに行く」とだけ言い残して、アプリの友達リストから消えた。',
+  love:{title:'一生の親友エンド　春野 イロハ', lines:[['nar','イロハの卒業制作は、若草色を基調にした、大きな一枚の絵だった'],['iroha','タイトルは「{n}さんの声」。……{n}さんの色、一生描き続けるからね'],['iroha','おばあちゃんになっても、ずっと親友だよ！']]},
+  friend:[['iroha','{n}さん、これからも、いろんな色の話しようね！']],
+  after:['{n}さん、今日ありがとう！　帰り道、空がずっと{n}さんの声の色だった！','家ついたよ！　今日の{n}さん、スケッチブックに描いちゃった。今度見せるね！','おやすみなさい！　{n}さんの「またね」、オレンジ色でぽかぽかしてた！'],
+  colors:{light:'#c25a1a', dark:'#f5a26e'},
+  px:{c:{H:'#7d9fd6',C:'#efe3c4',E:'#2f3a5c',A:'#c4473a'}, h:[
+    '.....AAAAAA.....','...AAAAAAAAAA...','...HHHHHHHHHHA..','..HHHHHHHHHHHH..','..HHHHHHHHHHHH..',
+    '..HH.H....H.HH..','..HH........HH..','..HH........HH..','..HH........HH..','..HHH......HHH..',
+    '...HH......HH...']}
+};
+
+C.shingo = { full:'深山 慎吾', short:'深山', age:31, job:'市役所職員', mode:'恋人', login:'ログイン：6時間以内',
+  bio:'市役所で働いています。実家は小さなお寺です。散歩と読書が好きで、話しはじめると少し長くなります。誠実なお付き合いができる方を探しています。', tags:['散歩','読書','誠実'], scam:'自己啓発セミナー商法',
+  talks:[
+    {t:[['nar','古い商店街を、ふたりで歩いた。深山さんは、角の和菓子屋の前で足を止める'],['shingo','この店、明治の終わりからあるんです。もとは米屋で、戦後に和菓子屋になって……'],['nar','説明は、そこから10分続いた']],
+     c:[['くわしいですね！',8,[['shingo','あ……すみません、また長くなりました。でも、聞いてもらえるとうれしいです']]],
+        ['その話、もっと聞きたい',12,[['shingo','本当ですか？　……そう言われたのは、生まれて初めてかもしれません']]],
+        ['おなか空いてきちゃった',5,[['shingo','あっ、そうですよね。気がきかなくてすみません。豆大福、買いましょう']]]]},
+    {t:[['nar','喫茶かもめ。深山さんは、背すじを伸ばしてブレンドを飲んでいる'],['shingo','{n}さんは、休みの日をどう過ごしていますか？'],['shingo','いえ、責めているわけではないんです。時間は、使い方で意味が変わりますから']],
+     c:[['ほとんど寝てます',6,[['shingo','それも大事です。……いや、本当に。疲れているときは、休むのがいちばんの仕事です']]],
+        ['深山さんはどうしてるんですか？',10,[['shingo','朝5時に起きて、実家の掃除を手伝っています。……地味ですみません']]],
+        ['ちょっと説教くさいです',9,[['shingo','……よく言われます。父にそっくりだと。直します、少しずつ']]]]},
+    {t:[['nar','夜の帰り道。小さなお寺の前を通ると、門の灯りがともっていた'],['shingo','ここ、僕の実家なんです。……{n}さんを連れてくるつもりは、なかったんですけど']],
+     c:[['素敵なところですね',10,[['shingo','ありがとうございます。古いだけですよ。でも、ここの夜の静けさは好きなんです']]],
+        ['どうして連れてきたの？',12,[['shingo','……自分のことを、ちゃんと知ってほしかったから、だと思います']]],
+        ['ちょっと、緊張します',6,[['shingo','大丈夫です。今日は、門の前を通るだけですから']]]]}],
+  tells:{
+    wolf:['{n}さんは、いまの自分に満足していますか？　……僕は前、まったくしていなかったんです','年収は、自分にいくら投資したかで決まるんですよ。これは本当です','周りに反対されることって、だいたい正しいことなんです。反対する人は、変わるのが怖いだけで'],
+    true:['すみません、また話が長くなりました。父に似てしまって','窓口でおばあさんの書類を一緒に書いていたら、昼休みが終わっていました','{n}さん、今日は顔色がいいですね。……あ、変な意味ではなく']},
+  sns:{
+    wolf:['深山さんのSNS、朝の散歩と本の写真ばっかり。投稿の文章がめっちゃ長い（笑）','最近の投稿、ぜんぶ「人生は選択で決まる」「環境を変えろ」みたいな言葉。同じ言い回しの人と、やたらつながってる……','深山さんが「紹介者」として出てるセミナーの体験談を見つけた。アプリで知り合った人を無料の体験会に誘って、高い講座をローンで契約させるんだって'],
+    true:['深山さんのSNS、朝の散歩と本の写真ばっかり。投稿の文章がめっちゃ長い（笑）','市の広報誌に深山さんが載ってた！　防災訓練の担当で、お年寄りの家を一軒ずつ回ってるんだって','実家のお寺の掲示板の言葉、毎月深山さんが書いてるっぽい。近所の子に宿題を教えてる写真もあったよ。地元で慕われてるね']},
+  obs:{
+    wolf:['あの人は、ずいぶん長く話していたね。きみは途中から、うなずくだけになっていたよ','きみが帰ったあと、あの人は電話で「今日はまだ温まっていません。次で押します」と話していたよ。……商売の言葉だったね'],
+    true:['あの人は、ずいぶん長く話していたね。きみは途中から、うなずくだけになっていたよ','きみが帰ったあと、あの人はわたしに「また話しすぎました。嫌われていないでしょうか」と聞いてきたよ。不器用だが、まっすぐな人だね']},
+  req:{
+    small:{ask:[['shingo','{n}さん、今度の土曜日、少しお時間をいただけませんか'],['shingo','知人が講師をしている勉強会があるんです。……一緒に聞いてほしくて']],
+      detail:{true:[['shingo','市の生涯学習センターでやっている、家計の講座なんです。講師は、大学の先生です'],['shingo','資料代で500円かかります。最後に感想を書く紙が配られますけど、名前は書かなくて大丈夫です']],
+              wolf:[['shingo','人生を変えるメソッドを教えている先生なんです。体験会は、今回だけ特別に5,000円で受けられて'],['shingo','あ、ほかの人には言わないでくださいね。先入観を持たれると、効果が薄れてしまうので']]},
+      cost:{true:500,wolf:5000}, gain:{true:10,wolf:4}, loss:{true:-6,wolf:-3},
+      accept:{true:[['nar','講座は思ったより実用的だった。深山さんは、誰よりも細かくメモをとっていた'],['shingo','来てくれてありがとうございました。……帰りに、今日の復習をしてもいいですか？　冗談です']],
+              wolf:[['nar','会場は熱気に包まれていた。「変わりたい人は手を挙げて」と言われ、周りの全員が手を挙げた'],['shingo','{n}さん、目が変わりましたね。先生も、{n}さんには素質があるって言っていましたよ']]},
+      refuse:{true:[['shingo','そうですよね。土曜日にまで勉強なんて、僕くらいですよね'],['shingo','資料、あとでお見せします']],
+              wolf:[['shingo','……そうですか。変わるチャンスは、待っていてはくれないんですけどね'],['shingo','いえ、また誘います']]}},
+    big:{ask:[['shingo','{n}さん。僕たちの将来のために、一緒に学びたいことがあるんです'],['shingo','少し、お金のかかる話なんですけど……聞いてもらえますか']],
+      detail:{true:[['shingo','市でやっている手話講座です。全10回で、受講料とテキスト代で12,000円かかります'],['shingo','窓口で、耳の不自由な方とうまく話せなくて。……申し込みは今週までなんです。ひとりだと、続かない気がして']],
+              wolf:[['shingo','先生の本講座です。半年で人生が変わるコースで、58万円なんですけど、ローンなら月々1万円台です'],['shingo','今日申し込めば特待生価格になるんです。受講生を3人紹介すれば、受講料もほとんど戻ってきます'],['shingo','家族や友達には、まだ言わないでください。反対する人は、{n}さんの成長を止めようとするだけですから']]},
+      cost:{true:12000}, gain:{true:18}, loss:{true:-10,wolf:-3},
+      accept:{true:[['nar','講座の最終日、深山さんは窓口で覚えた手話を、ゆっくりと{n}に見せた'],['shingo','「ありがとう」です。……最初に使う相手は、{n}さんがいいと思っていました']]},
+      refuse:{true:[['shingo','そうですよね。お金のことですから、慎重なのは正しいです'],['shingo','僕ひとりで、がんばってみます。覚えたら、教えますね']],
+              wolf:[['shingo','……{n}さん。いま断る人は、一生変われないんですよ。それでもいいんですか？']]}}},
+  waver:[['shingo','……すみません。いまのは、講師の受け売りでした。僕の言葉じゃなかった']],
+  over:{title:'セミナー商法エンド', lines:[['nar','ローン契約にサインした翌日、深山さんから届いたのは「紹介できる人を3人リストにしてください」という一文だけだった'],['nar','手元には、分厚いワークブックと、36回払いの支払い明細が残った。アプリのプロフィールは、もう消えていた']]},
+  convert:[['shingo','……本当は、{n}さんを講座に勧誘するのが、僕の「課題」でした'],['shingo','僕自身も受講生で、ローンを返すために、紹介する人を探していたんです'],['shingo','でも{n}さんは、僕の長い話を、最後まで聞いてくれた。誰かに売り込むためじゃなく、ただ聞いてくれた'],['shingo','もう辞めます。消費生活センターにも、相談に行きます。……今度は、自分の言葉で話したいんです']],
+  fate:'深山さんのアカウントは、ある日アプリから消えていた。',
+  love:{title:'恋人エンド　深山 慎吾', lines:[['shingo','{n}さん。僕は話が長いので、一度しか言いません。……いえ、たぶん何度も言います'],['shingo','これから先の休みの日を、全部、{n}さんと過ごしたいです']]},
+  friend:[['shingo','{n}さん、また商店街を歩きましょう。今度は話を短くします。……努力します']],
+  after:[
+    ['shingo','{n}さん、今日はありがとうございました。無事に帰れましたか？　商店街の話、長くなってすみません。和菓子屋の続きは、また今度にします'],
+    ['shingo','寝る前に一言だけ。今日の{n}さんの笑い方が、とても良かったです。……一言では済みませんでした。おやすみなさい'],
+    ['shingo','明日は朝が早いので、もう寝ます。{n}さんも、夜ふかしはほどほどに。説教ではありません。心配です']],
+  colors:{light:'#3a3f9e', dark:'#9ea4f0'},
+  px:{c:{H:'#22201e',C:'#4a5570',E:'#2b1d2f'}, h:[
+    '................','................','.....HHHHHH.....','....HHHHHHHH....','....HHHHHHHH....',
+    '....H......H....']}
+};
+
+C.nagi = { full:'水瀬 ナギ', short:'ナギ', age:21, job:'ゲーム実況の配信者', mode:'恋人', login:'ログイン：5分以内',
+  bio:'ゲーム実況してます。人見知りなので、会うとあんまり喋れないかもです。チャットなら無限に喋れます。一緒にゲームしてくれる人、うれしいです。', tags:['ゲーム','配信','夜型'], scam:'NFTゲーム投資詐欺',
+  talks:[
+    {t:[['nar','駅前のゲームセンター。ナギはクレーンゲームの前で、黙って百円玉を一枚入れた'],['nar','アームが一度で、うさぎのぬいぐるみをつかみ上げる'],['nagi','……あの。これ。{n}さんに']],
+     c:[['すごい、一回で！',8,[['nagi','……配信で、千回くらいやってるので。……えへ']]],
+        ['ありがとう、大事にする',12,[['nagi','……っ。う、うん。……よかった']]],
+        ['自分でも取ってみたい',6,[['nagi','……アームの、右の爪。そこ、見て。……あ、惜しい。もう一回']]]]},
+    {t:[['nar','喫茶かもめ。ナギは向かいの席で、ずっとうつむいている'],['nar','{n}のスマホが鳴った。ナギからのメッセージだ'],['nagi','「ごめん　目の前だと声が出ない　でもめっちゃ楽しい　ほんとに」']],
+     c:[['（声に出して）わたしも楽しいよ',10,[['nagi','……！　……うん。……声、ちょっと出た']]],
+        ['（メッセージで返す）こっちでもいいよ',12,[['nagi','「天才？　好き　あ　いまのなし　なしじゃない」'],['nar','顔を上げると、ナギは耳まで真っ赤だった']]],
+        ['ちゃんと顔見て話そうよ',5,[['nagi','……がんばる。……3秒だけ。……むり']]]]},
+    {t:[['nar','夜。{n}は、ナギの配信を開いた。画面の中のナギは、別人のようによく喋る'],['nagi','はい、今日もやっていきましょー！　……え、コメントで「デートどうだった」？　内緒でーす！']],
+     c:[['コメントする',10,[['nagi','あ、{n}さん……じゃなくて、えーと、そこの常連さん！　いらっしゃい！'],['nar','画面の中のナギが、一瞬だけ素の顔で笑った']]],
+        ['黙って見守る',8,[['nar','配信が終わる直前、ナギは小さく「今日、楽しかった」とつぶやいた']]],
+        ['もう寝る',4,[['nar','翌朝、「昨日来てなかったね　さみしかった」とメッセージが届いていた']]]]}],
+  tells:{
+    wolf:['{n}さん、仮想通貨のウォレットって、持ってる……？','配信だけじゃ、正直食べていけない。……でも最近、いい稼ぎ方を見つけた','お金って、置いとくだけだと、減っていくんだって。……先輩が言ってた'],
+    true:['昨日の配信、同接が過去最高だった。……{n}さん、見てた？','……対面だと、うまく喋れなくて、ごめん。チャットだと、いけるのに','コンビニの店員さんにも、まだ目を見て話せない。……{n}さんは、ちょっとだけ、見れる']},
+  sns:{
+    wolf:['ナギくんの配信アーカイブ見た！　画面の中だとめっちゃ喋るじゃん、別人','最近の配信、ゲームの合間に毎回「概要欄のリンクから始められます」って言ってる。そのゲーム、聞いたことないやつ……','そのゲームの名前で調べたら、「出金できない」「運営と連絡がとれない」って書き込みだらけ。人を紹介すると報酬が入る仕組みなんだって。ナギくんのリンクも紹介用だった'],
+    true:['ナギくんの配信アーカイブ見た！　画面の中だとめっちゃ喋るじゃん、別人','ナギくんの切り抜き動画、けっこう回ってる。コメントへの返しが丁寧で、視聴者さんに好かれてるね','去年のチャリティー配信で、集まったお金を全額寄付してる。報告の画像もちゃんと載ってた。いい子じゃん']},
+  obs:{
+    wolf:['あの子は、きみと向かい合っているあいだ、ずっとスマホの画面を見ていたね','画面をのぞいたら、値動きのグラフだったよ。きみが席を立つと、誰かに「今日いけそうです」と打っていた'],
+    true:['あの子は、きみと向かい合っているあいだ、ずっとスマホの画面を見ていたね','あの子は、きみに送るメッセージを、何度も打っては消していたよ。指が少し震えていた。……照れ屋なんだね']},
+  req:{
+    small:{ask:[['nagi','{n}さん……あの'],['nagi','今度の配信、ちょっとだけ、手伝ってほしくて']],
+      detail:{true:[['nagi','視聴者参加型の企画で、人数が足りなくて。……ゲームに入って、一緒に遊んでくれるだけでいい'],['nagi','あ、でも……{n}さんのことは、視聴者には内緒にしたい。……付き合ってるとか、バレると、荒れるので']],
+              wolf:[['nagi','新しいゲームの紹介配信。{n}さんにも、アカウント作ってほしい'],['nagi','始めるのに、最初のキャラを1体買う必要があって……5,000円。でも、遊ぶだけで毎日、増えていくから']]},
+      cost:{true:0,wolf:5000}, gain:{true:10,wolf:4}, loss:{true:-6,wolf:-3},
+      accept:{true:[['nar','配信は大盛り上がりだった。{n}がミスするたびに、ナギは画面の中で大笑いした'],['nagi','「今日ほんとありがと　{n}さんがいちばん上手かった　うそ　いちばん下手だった　でもいちばん楽しかった」']],
+              wolf:[['nar','登録画面で、ナギの紹介コードを入力させられた。キャラの画像の横に、小さく「価格は変動します」とあった'],['nagi','ありがと。……これで、{n}さんも仲間。……次は、もっと増やす方法、教えるね']]},
+      refuse:{true:[['nagi','……そっか。うん、急だったよね'],['nagi','「見てくれるだけでも、うれしいので」']],
+              wolf:[['nagi','……えー。いま始めないと、損するのに'],['nagi','……また、誘う']]}},
+    big:{ask:[['nagi','{n}さん……ちょっと、画面、見てほしい'],['nagi','僕たちの、これからのお金の話、なんだけど']],
+      detail:{true:[['nagi','来月、ペアで出るゲームの大会がある。……{n}さんと、出たい'],['nagi','参加費と、会場近くのホテル代で、ひとり15,000円。……賞金が出たら、ちゃんと返す。ほんとに']],
+              wolf:[['nagi','遊んで稼げるゲームで、キャラを育てると毎日トークンがもらえる。月利20％。……僕はもう、元が取れた'],['nagi','先行枠が今夜0時で閉まる。50万円分あれば、3か月で倍になる。……足りなかったら、カードのキャッシングでも、すぐ取り戻せるから'],['nagi','{n}さんにしか、教えてない。視聴者にも、内緒にしてる']]},
+      cost:{true:15000}, gain:{true:18}, loss:{true:-10,wolf:-3},
+      repay:{true:{amount:15000,lines:[['nagi','「{n}さん！　賞金、ちょっとだけ出た！　立て替えてくれた15,000円、返すね　ほんとにありがとう」']]}},
+      accept:{true:[['nar','大会の会場。ナギは試合が始まると、別人のように落ち着いた声で指示を出した'],['nar','3位の表彰台で、ナギはマイクを向けられて、一言だけ言った'],['nagi','……相方が、最高でした']]},
+      refuse:{true:[['nagi','……うん。わかった。15,000円って、大きいもんね'],['nagi','「じゃあ、いつか、出よう。僕がもっと稼げるようになったら」']],
+              wolf:[['nagi','……なんで？　{n}さんのために、言ってるのに。……もう、知らない']]}}},
+  waver:[['nagi','……ごめん。いまの、僕の言葉じゃない。……台本、だった']],
+  over:{title:'NFT投資詐欺エンド', lines:[['nar','画面の残高は、毎日きれいに増えていった。けれど出金ボタンを押すと、「手数料として追加で10万円が必要です」と表示された'],['nar','ナギの配信チャンネルは消えていた。キャッシングの返済日だけが、確実にやってきた']]},
+  convert:[['nagi','……ほんとは、{n}さんを、あのゲームに誘うのが、僕の役目だった'],['nagi','紹介した人数で、報酬が入る。……視聴者も、何人か誘った。最低だ'],['nagi','でも{n}さんは、僕が黙ってても、待ってくれた。チャットじゃなくて、声で話すのを'],['nagi','……全部、やめる。配信で、ちゃんと謝る。……そのあと、また会ってくれる？']],
+  fate:'ナギの配信チャンネルは、ある日まるごと消えていた。',
+  love:{title:'恋人エンド　水瀬 ナギ', lines:[['nar','ナギが、スマホをポケットにしまった。そして、まっすぐに{n}の目を見た'],['nagi','……{n}さんが、好きです。……チャットじゃなくて、声で、言いたかった']]},
+  friend:[['nagi','「{n}さん、今夜も配信くる？　常連席、空けとくね」']],
+  after:[
+    ['nagi','{n}さん今日ありがと！！　対面だとぜんぜん喋れなくてごめん　ほんとはめっちゃ楽しかった　ほんとに'],
+    ['nagi','いま配信終わった　コメントで「顔ゆるんでる」って言われた　だれのせいだと思ってるんですか　{n}さんのせいです'],
+    ['nagi','おやすみ　……って打つのに10分かかった　次はもうちょっと喋れるようにがんばる　たぶん']],
+  colors:{light:'#9a7400', dark:'#e8c450'},
+  px:{c:{H:'#a9b6cc',C:'#3b3f4f',E:'#3a2a4a',A:'#2a2a33'}, h:[
+    '................','....AAAAAAAA....','...AHHHHHHHHA...','..AHHHHHHHHHHA..','..AHHHHHHHHHHA..',
+    '..AAHHHHHHH.AA..','..AA........AA..','..AA........AA..']}
+};
+
+C.ren = { full:'宵町 レン', short:'レン', age:28, job:'深夜ラジオのDJ', mode:'恋人', login:'ログイン：3時間以内',
+  bio:'深夜2時から、ラジオでしゃべってます。昼間はだいたい寝てます。夜の散歩につきあってくれる人、募集中。', tags:['ラジオ','夜の散歩','レコード'], scam:'ロマンス詐欺',
+  talks:[
+    {t:[['nar','昼下がりの喫茶かもめ。レンが、コーヒーを前に目をこすっている'],['ren','……ごめん。この時間、ぼくにとっては明け方なんだ']],
+     c:[['眠いのに来てくれたんだ',12,[['ren','……うん。{n}さんに会えるなら、起きる理由になるから']]],
+        ['夜に会えばよかったね',8,[['ren','……そうだね。次は、ぼくの時間においで。案内するよ']]],
+        ['寝ぐせついてるよ',5,[['ren','……え。どこ？'],['nar','レンは見当違いの場所を、何度もなでつけた']]]]},
+    {t:[['nar','夜の11時。人のいない歩道橋の上で、レンが街の明かりを見下ろしている'],['ren','……{n}さん、ぼくの番組、聴いたことある？']],
+     c:[['毎週聴いてるよ',12,[['ren','……そっか。じゃあ、今夜はひとつだけ、{n}さんあての曲をかけるね'],['ren','名前は言わない。きっと、わかるから']]],
+        ['まだないんだ',5,[['ren','……正直だね。そういうところ、いいと思う']]],
+        ['声、ラジオと同じだね',9,[['ren','……そう？　マイクの前だと、もう少しだけ、かっこつけてるけど']]]]},
+    {t:[['nar','レンの部屋。壁一面に、古いレコードが並んでいる'],['ren','……一枚、選んでくれる？　いま聴きたいの']],
+     c:[['いちばん古そうなやつ',9,[['ren','……それ、父さんが置いていったやつだ'],['ren','針、落とすね']]],
+        ['レンくんの好きなのを',6,[['ren','……じゃあ、これ。眠れない夜に、いつもかけてる']]],
+        ['ジャケットがきれいなの',11,[['ren','……いい目をしてるね。中身も、ジャケットに負けてないよ']]]]}],
+  tells:{
+    wolf:['……{n}さんは、ひとり暮らし？　家族とは、よく話すの？','……ぼくね、いつか海の向こうでマイクの前に座りたいんだ。もうすぐ、かなうかもしれない','……ふたりのことは、まだ誰にも言わないでおこう。大事なものは、しまっておきたいから'],
+    true:['……ごめん、昼のメッセージ、半分寝ながら打ってた。誤字、多かったでしょ','……番組のメール、ぜんぶ読んでる。{n}さんのも、読んでいいかな','……ちゃんと寝てる？　{n}さんまで、ぼくの時間に合わせなくていいからね']},
+  sns:{
+    wolf:['レンさんの番組のアカウント、あったよ。深夜の放送、けっこうファンがいるみたい','そのアカウント、先月できたばっかり。番組の放送局の出演者一覧に、レンさんの名前がないんだよね','「マッチングアプリで出会ったラジオDJに、海外の手数料を払った」って相談が、同じ写真つきで何件も出てる。レンさんの顔だよ、これ'],
+    true:['レンさんの番組のアカウント、あったよ。深夜の放送、けっこうファンがいるみたい','放送局の公式サイトに、レンさんの番組がちゃんと載ってる。もう5年目なんだって','リスナーの投稿に「レンさんのおかげで受験の夜を乗りきった」って。本人がちゃんと返事してたよ']},
+  obs:{
+    wolf:['あの青年は、声の低い人だね。きみが話すときは、じっと目を見ていたよ','あの青年、きみが席を外したとき、すぐ携帯を出してね。別の名前を呼んで、同じ声で電話していたよ'],
+    true:['あの青年は、声の低い人だね。きみが話すときは、じっと目を見ていたよ','あの青年は、うちの常連なんだ。夜明けに番組を終えて、いつもここで朝のコーヒーを飲んでいく。もう何年もだよ']},
+  req:{
+    small:{ask:[['ren','……{n}さん、ひとつ、お願いしてもいいかな'],['ren','ぼくのかわりに、買ってきてほしいものがあるんだ']],
+      detail:{true:[['ren','番組で使う古いレコード。中古屋さんが、昼しか開いてなくて'],['ren','3,000円、立て替えてもらえる？　夜の放送が終わったら、すぐ返すから。……起きていられたら、だけど']],
+              wolf:[['ren','電子マネーのカード。コンビニで、5,000円分'],['ren','番号だけ写真で送ってくれたらいい。……理由は、あとで話すね']]},
+      cost:{true:3000,wolf:5000}, gain:{true:9,wolf:4}, loss:{true:-4,wolf:-3},
+      repay:{true:{amount:3000,lines:[['ren','……これ、レコード代。おかげで、いい放送になったよ'],['ren','ねむい……でも、渡したかったから']]}},
+      accept:{true:[['nar','その夜の放送で、レンは「今日のレコードは、大事な人が探してくれました」と話した'],['ren','……聴いてた？　ありがとう']],
+              wolf:[['ren','……ありがとう。助かった'],['nar','写真を送ると、既読はすぐについた。理由の話は、そのあとも出てこなかった']]},
+      refuse:{true:[['ren','……そうだよね。自分で起きて行くよ。たぶん、昼の2時くらいに']],
+              wolf:[['ren','……そっか'],['ren','{n}さんなら、わかってくれると思ったんだけどな']]}},
+    big:{ask:[['ren','……{n}さん。話さなきゃいけないことがある'],['ren','ぼく、しばらく海外に行くことになった。その前に、ひとつだけ助けてほしいんだ']],
+      detail:{true:[['ren','向こうの局の特番に、ゲストで呼ばれたんだ。1週間だけ'],['ren','……で、恥ずかしいんだけど、空港までのタクシー代、2万円貸してくれないかな。給料日がすぐあとで'],['ren','局からの招待メール、見せるよ。帰ったら、真っ先に{n}さんに会いにいく']],
+              wolf:[['ren','向こうの番組に、レギュラーで呼ばれたんだ。でも、ぼくの海外の口座が凍結されてて'],['ren','解除の手数料が30万円。今日中に払わないと、出演の話がなくなる。向こうで稼いだら、倍にして返すよ'],['ren','……{n}さんにしか頼めない。このことは、誰にも言わないで。ぼくたちだけの秘密にしてほしい']]},
+      cost:{true:20000}, gain:{true:18}, loss:{true:-10,wolf:-3},
+      repay:{true:{amount:20000,lines:[['ren','……ただいま。まずこれ、タクシー代'],['ren','それと、おみやげ。向こうの古いレコード屋で見つけたんだ']]}},
+      accept:{true:[['nar','出発の朝、空港からレンのメッセージが届いた'],['ren','「いってきます。向こうの夜も、{n}さんのためにしゃべるね」']]},
+      refuse:{true:[['ren','……いや、こっちこそごめん。電車で行くよ。荷物、重いけど'],['ren','帰ったら、話、聞いてくれる？']],
+              wolf:[['ren','……そう'],['ren','{n}さんのこと、ほかの誰よりも信じてたのに']]}}},
+  waver:[['ren','……ちがう。いまの話は、忘れて。{n}さんにだけは、言うべきじゃなかった']],
+  over:{title:'ロマンス詐欺エンド', lines:[['nar','30万円を振り込んだ夜、レンの番組を探して、ラジオのつまみを回しつづけた'],['nar','どの局からも、あの低い声は聞こえてこなかった。アプリのプロフィールは、もう消えていた']]},
+  convert:[['ren','……{n}さん。ぼくは、ラジオDJなんかじゃない。声を使って、人をだますのが仕事だった'],['ren','なのに{n}さんは、ぼくの話を、本当の番組みたいに毎晩聴いてくれた'],['ren','……もう、あの電話はかけない。今度は、本当のことだけしゃべるよ。{n}さんの前で']],
+  fate:'翌朝、レンのアカウントはアプリから消えていた。「海外へ行く」という言葉だけが残った。',
+  love:{title:'恋人エンド　宵町 レン', lines:[['ren','……今夜の最後の曲は、リクエストじゃない。ぼくが選んだ'],['ren','{n}さん。これからは、夜明けのコーヒー、ふたりで飲もう']]},
+  friend:[['ren','……眠れない夜は、ラジオをつけて。ぼくが、ちゃんとそこにいるから']],
+  after:[
+    ['ren','……今日はありがとう。ぼくはこれから仕事。{n}さんが寝てる時間に、しゃべってるよ'],
+    ['ren','……いま、放送の合間。曲が流れてるあいだに打ってる。今日の{n}さんの話、思い出して笑っちゃった'],
+    ['ren','……もうすぐ夜明けだね。ぼくにとっては、おやすみの時間。{n}さん、いい一日を']],
+  colors:{light:'#1e7f86', dark:'#7fd3d8'},
+  px:{c:{H:'#2b2d42',C:'#3a3a40',E:'#2b2d45',A:'#1fa3a8'}, h:[
+    '................','....HHHHHHHH....','...HHHHHHHHHH...','..HHHHHHHHHHHH..','..HHHHHHHHHHHH..',
+    '..HHHHH..HHHHH..','..HHH......HHH..','..HH........HH..','..HH........HH..','..H..........H..',
+    '................','...AA......AA...','...A........A...']}
+};
+
+C.akira = { full:'アキラ', short:'アキラ', age:26, job:'美容師', mode:'友達', login:'ログイン：30分以内',
+  bio:'友達モードよ。駅裏の小さなサロンで美容師してるわ。恋バナならいくらでも聞くから、気軽に話しかけてちょうだい。', tags:['ヘアアレンジ','恋バナ','銭湯'], scam:'美容医療ローン',
+  talks:[
+    {t:[['nar','閉店後のサロン。アキラが、鏡の前の椅子をくるりと回した'],['akira','ほら、座って。前髪だけ、ちょっと整えさせてちょうだい']],
+     c:[['おまかせします！',12,[['akira','いい返事じゃない。……ほら、見て。目がちゃんと見えると、顔つきまで明るくなるのよ']]],
+        ['ちょっとだけね',6,[['akira','わかってるわよ。切りすぎたりしないから、安心して']]],
+        ['自分で切ったの、バレた？',9,[['akira','バレバレよ。でも、がんばったのは伝わるわ。今度から、切る前に相談しなさいね']]]]},
+    {t:[['nar','喫茶かもめの窓ぎわ。アキラが、身を乗り出してくる'],['akira','で？　アプリの人とは、どうなってるのよ。全部話しなさい']],
+     c:[['実はね……',12,[['akira','うんうん。……ちょっと、それ脈ありじゃない！'],['akira','でも、急がなくていいの。{n}のペースで、ちゃんと相手を見るのよ']]],
+        ['なにもないよ',5,[['akira','あら、そう？　顔に「あります」って書いてあるけど。まあ、話したくなったらでいいわ']]],
+        ['アキラさんの恋バナは？',8,[['akira','わたし？　……今はお休み中。人の恋を応援してるほうが、性に合ってるのよ']]]]},
+    {t:[['nar','夜の銭湯の帰り道。アキラが、自販機の牛乳を2本買った'],['akira','……ねえ。最近、ちゃんと寝てる？　目の下、くまができてるわよ']],
+     c:[['実は、ちょっと疲れてて',12,[['akira','そう。言ってくれて、ありがと'],['akira','無理して笑わなくていいのよ。わたしの前ではね']]],
+        ['平気平気！',4,[['akira','……そういうことにしといてあげる。でも、倒れる前に連絡しなさいね']]],
+        ['アキラさんこそ',8,[['akira','わたしは立ち仕事で、体力だけはあるのよ。……でも、心配してくれるのは、うれしいわ']]]]}],
+  tells:{
+    wolf:['{n}、自分の顔で気になるところ、ある？　あるわよね、誰だって','いまの時代、きれいになるのにお金をかけるのは「投資」なのよ。我慢するほうがもったいないわ','知り合いのクリニック、すごくいいの。{n}にだけ、特別に紹介してあげる'],
+    true:['新しいカラー剤の試し塗り、つきあってくれない？　もちろんタダよ','人の恋バナって、どうしてこんなに楽しいのかしら。{n}の話、毎回メモしたいくらい','きれいになりたいなら、まずは睡眠と水よ。高い美容液より、よっぽど効くんだから']},
+  sns:{
+    wolf:['アキラさんのSNS、ヘアアレンジの写真ばっかり。おしゃれだね','最近、同じクリニックの「無料カウンセリング」の投稿ばっかり。「紹介コードで割引」って、毎回コードが貼ってある','「美容師の友達に連れていかれて、当日に60万円のローンを組まされた」って投稿が何人も。みんな、同じクリニックと同じ紹介コードだよ'],
+    true:['アキラさんのSNS、ヘアアレンジの写真ばっかり。おしゃれだね','サロンの公式アカウントに、アキラさんが載ってる。指名の予約、3か月先まで埋まってるんだって','福祉施設で、お年寄りの髪を無料で切るボランティアを毎月やってるみたい。ずっと前から続けてるよ']},
+  obs:{
+    wolf:['あの人は、よく気のつく人だね。きみの好みを、ちゃんと覚えていたよ','あの人は先週も、別のお嬢さんとここに来ていたよ。テーブルにクリニックのパンフレットを広げて、電卓をたたいていたね'],
+    true:['あの人は、よく気のつく人だね。きみの好みを、ちゃんと覚えていたよ','実はね、わたしの髪も、あの人に切ってもらっているんだ。「お代はコーヒー1杯でいいわ」と言って、聞かなくてね']},
+  req:{
+    small:{ask:[['akira','ねえ{n}、今度の休み、ちょっとつきあってくれない？'],['akira','わたしの行きつけに、{n}を連れていきたいのよ']],
+      detail:{true:[['akira','カットモデルをお願いしたいの。新人の子の練習台よ。わたしが横でちゃんと見てるから'],['akira','カット代はタダ。ただ、トリートメントだけ材料費で2,000円かかっちゃうの。ごめんなさいね']],
+              wolf:[['akira','知り合いのクリニックの「無料カウンセリング」よ。肌の状態を見てもらうだけ'],['akira','その日に予約すると、モニター価格で施術できるの。お試しで1万円くらいかしら。行くだけでも損はないわ']]},
+      cost:{true:2000,wolf:10000}, gain:{true:10,wolf:4}, loss:{true:-4,wolf:-3},
+      accept:{true:[['nar','新人の美容師さんは緊張でがちがちだったけれど、アキラの声がかかるたびに、はさみが落ち着いていった'],['akira','{n}、ありがと。あの子、今日でひとつ自信がついたはずよ']],
+              wolf:[['nar','カウンセリングは2時間かかった。「今日だけの価格」と言われて、お試しの施術を受けた'],['akira','ね、行ってよかったでしょ？　先生も、{n}は伸びしろがあるって言ってたわよ']]},
+      refuse:{true:[['akira','あら、残念。じゃあ、ほかの子にあたってみるわ。気にしないでね']],
+              wolf:[['akira','……そう'],['akira','せっかく{n}のために、いい枠を取ってあげたのに']]}},
+    big:{ask:[['akira','{n}、ちょっと真面目な話をさせて'],['akira','わたし、{n}にもっと自信を持ってほしいの。そのために、一緒に行ってほしい場所があるのよ']],
+      detail:{true:[['akira','わたしの独立の、お披露目会。小さいけど、自分のお店を開くことになったの'],['akira','会費は5,000円。……正直に言うとね、お客さんを集めたくて、知り合いに片っぱしから声をかけてるのよ'],['akira','でも、{n}にいちばん最初に来てほしかった。それは本当よ']],
+              wolf:[['akira','この前のクリニックの、本格的なコース。いまなら全部で60万円が、今日契約すれば半額近くになるの'],['akira','お金がなくても大丈夫。月々5,000円からの医療ローンが組めるわ。審査も、その場で終わるから'],['akira','{n}にだけ、特別に枠を取ってもらったの。親とか、ほかの友達には言わなくていいわよ。反対されたら、きれいになるチャンスを逃すだけだもの']]},
+      cost:{true:5000}, gain:{true:16}, loss:{true:-10,wolf:-3},
+      accept:{true:[['nar','小さなお店は、花とお客さんでいっぱいだった。アキラは、いちばんに{n}を見つけて手をふった'],['akira','来てくれて、ありがと。……ここ、{n}専用の椅子にしとくわね。これからずっと']]},
+      refuse:{true:[['akira','そう……うん、わかったわ。急な話だったものね'],['akira','でも、落ち着いたら顔を見せにきてちょうだい。いつでも待ってるから']],
+              wolf:[['akira','……{n}のためを思って言ってるのよ？'],['akira','いいわ。あとで後悔しても、知らないから']]}}},
+  waver:[['akira','……ごめんなさい。いまの、わたしらしくなかったわね。忘れてちょうだい']],
+  over:{title:'美容ローンエンド', lines:[['nar','その日のうちに書いた契約書は、全部で62万円。毎月の返済は、5年続く'],['nar','次の予約日、クリニックに行くと、紹介してくれたアキラの名前を知る人は誰もいなかった']]},
+  convert:[['akira','……{n}、白状するわ。わたし、クリニックから紹介料をもらってたの。お客さんひとりにつき、いくら、って'],['akira','でも{n}は、断ったあとも、わたしの話をちゃんと聞いてくれた。恋バナにも、愚痴にも、つきあってくれた'],['akira','あそことは縁を切る。今度は、はさみ一本で、まっすぐ{n}の友達をやらせてちょうだい']],
+  fate:'アキラは「新しいお客さんを探さなきゃ」と言い残して、友達リストから消えた。',
+  love:{title:'一生の親友エンド　アキラ', lines:[['akira','{n}、おばあちゃんになっても、髪はわたしに切らせなさいね'],['akira','そのころには、{n}の恋バナ、本が書けるくらい聞いてるはずよ']]},
+  friend:[['akira','{n}、また恋バナ持ってきなさいね。いつでも、椅子あけて待ってるわ']],
+  after:[
+    ['akira','今日はありがと。家についたら、髪はちゃんと乾かしてから寝るのよ。わかった？'],
+    ['akira','ねえ、さっきの話の続き、気になって眠れないじゃない。今度ちゃんと聞かせてちょうだいね'],
+    ['akira','{n}、今日の顔、いちばんよかったわよ。その調子で、自分のこと大事にしなさいね']],
+  colors:{light:'#a33d9c', dark:'#e79be0'},
+  px:{c:{H:'#b7a3c9',C:'#2e3a3a',E:'#4a3550',A:'#e6c35c'}, h:[
+    '................','......HHHHHH....','....HHHHHHHHH...','...HHHHHHHHHHH..','...HHHHHHHHHHH..',
+    '...H....HHHHHH..','...H.......HH...','...........H....','................','...A............']}
+};
+
+C.shion = { full:'月城 シオン', short:'シオン', age:27, job:'占いカフェの店主', mode:'恋人', login:'ログイン：1時間以内',
+  bio:'路地裏で、小さな占いカフェをやっています。タロットと星占いと、ハーブティー。迷っている人の背中を、そっと押せたらうれしいです。', tags:['タロット','星空','ハーブティー'], scam:'霊感商法',
+  talks:[
+    {t:[['nar','路地裏の占いカフェ。ランプの明かりの下で、シオンがカードを静かに切っている'],['shion','{n}さん、一枚だけ、引いてみませんか']],
+     c:[['じゃあ、真ん中のを',10,[['shion','星のカードですね。……「希望」という意味です'],['shion','いまの{n}さんに、ぴったりだと思います']]],
+        ['占いって、ちょっと怖いな',6,[['shion','わかります。……大丈夫、怖いことは言いません'],['shion','カードは、未来を決めるものじゃないんです。背中を押すための道具なので']]],
+        ['シオンさんが引いて',12,[['shion','わたしが？　……ふふ。恋人のカード'],['shion','……いえ、偶然です。たぶん']]]]},
+    {t:[['nar','夜の公園。ベンチに並んで座ると、シオンが空を指さした'],['shion','今夜は、月がきれいですね。……{n}さんの星座は、どこにあると思いますか？']],
+     c:[['教えて、どこにあるの？',12,[['shion','あの明るい星から、右に3つ。……ほら、つながって見えるでしょう？'],['nar','シオンの指先を追うと、肩がそっとふれた']]],
+        ['ぜんぜんわからないや',5,[['shion','ふふ、わたしも最初はそうでした。……ゆっくり覚えていけばいいんです']]],
+        ['星より、シオンさんの話が聞きたい',9,[['shion','……そういうこと、急に言わないでください'],['shion','月に、顔が赤いのを見られちゃいます']]]]},
+    {t:[['nar','喫茶かもめ。シオンは、紅茶に砂糖を入れずにかき混ぜている'],['shion','……実はわたし、昔は占いが大嫌いだったんです']],
+     c:[['どうして？',12,[['shion','子どものころ、占い師さんに、悪いことばかり言われて。……ずっと、その言葉に縛られていました'],['shion','だから決めたんです。わたしは、人を元気にする占いをしようって']]],
+        ['いまは好きなんだね',8,[['shion','はい。……カードをめくると、相手の顔がふっと明るくなる。あの瞬間が、好きです']]],
+        ['意外！',5,[['shion','よく言われます。……ミステリアスに見えるの、ただの人見知りなんですよ']]]]}],
+  tells:{
+    wolf:['{n}さん、最近、肩が重かったり、眠りが浅かったりしませんか？　……少し、気になるものが見えるんです','ご家族とは、仲がいいですか？　……いえ、{n}さんの後ろに、ご先祖さまの影が見えた気がして','貯金って、どれくらいされてます？　あ、金運を見るのに、必要なんです'],
+    true:['占いで悪い結果が出ても、わたしは言いません。……言い方を変えて、気をつけてほしいことだけ伝えます','今日、常連のおばあちゃんが、お孫さんの合格を報告しにきてくれたんです。わたし、泣いちゃいました','カードより、{n}さんの顔を見ているほうが、よくわかることもあるんですよ']},
+  sns:{
+    wolf:['シオンさんのお店のアカウント、あったよ。星空とかタロットの写真ばっかり。きれい〜','お店の住所、地図で見たら空きテナントになってた。投稿も、最近は「浄化済みの数珠」の写真ばっかり。値段は「DMで」だって','「占い師に悪い気がついてるって言われて、数珠とお祓いで40万払った」って書きこみ、何件も見つけた。写真の数珠、シオンさんが上げてるのとまったく同じだよ'],
+    true:['シオンさんのお店のアカウント、あったよ。星空とかタロットの写真ばっかり。きれい〜','お店の口コミ、けっこうあるね。「高いものを売られなかった」「話を聞いてもらえて泣いた」って感想ばっかり','地元の情報誌に載ってた。お店は5年目で、悩んでる学生さんからはお代をもらわないんだって。ちゃんとした人だよ']},
+  obs:{
+    wolf:['あの人は、きみの手相をずいぶん熱心に見ていたね。指の先まで、ゆっくりとね','先週も、あの人は別のお嬢さんとここに来ていたよ。お嬢さんは泣いていてね。テーブルの上に、数珠と分厚い申込書が置いてあったんだ'],
+    true:['あの人は、きみの手相をずいぶん熱心に見ていたね。指の先まで、ゆっくりとね','あの人は、うちにもお店のカードを置いていったよ。「落ちこんだお客さんがいたら、無料で話を聞きます」とね。何人も、元気になって帰ってきたよ']},
+  req:{
+    small:{ask:[['shion','{n}さん、今度、お店に来てくれませんか'],['shion','{n}さんのこと、一度きちんと占ってみたいんです']],
+      detail:{true:[['shion','新しい読み方を練習していて、練習台になってほしいんです。……生年月日と、生まれた時間も教えてもらえますか？'],['shion','鑑定のお代はいりません。ただ、ハーブティーとお菓子の分だけ、1,000円いただけたら……ごめんなさい、お店なので']],
+              wolf:[['shion','この前お会いしたとき、{n}さんに、悪い気がついているのが見えたんです。このままだと、よくないことが続きます'],['shion','まずは、お清めの塩とお守りで、8,000円。……今日のうちに始めないと、間に合わないかもしれません']]},
+      cost:{true:1000,wolf:8000}, gain:{true:10,wolf:4}, loss:{true:-4,wolf:-3},
+      accept:{true:[['nar','お店の奥の、小さなテーブル。シオンは、カードを1枚ずつ、ていねいに読んでくれた。悪い言葉は、ひとつも出てこなかった'],['shion','練習台なんて言って、ごめんなさい。……本当は、{n}さんのことを、もっと知りたかっただけです']],
+              wolf:[['nar','小さな袋に入った塩と、お守りを受け取った。帰りぎわ、シオンは「これはまだ入り口です」とつぶやいた'],['shion','これで、少しは楽になるはずです。……でも、根っこの因縁は、まだ残っています']]},
+      refuse:{true:[['shion','そうですよね、急でしたもの。……カードは逃げないので、また今度']],
+              wolf:[['shion','……そうですか'],['shion','でも、悪い気は待ってくれませんよ。{n}さんのために言っているんです']]}},
+    big:{ask:[['shion','{n}さん、大事なお話があるんです'],['shion','{n}さんに、どうしても受け取ってほしいものがあって']],
+      detail:{true:[['shion','来月、お店の5周年のイベントをやるんです。そこで、星座の天然石でブレスレットを作ることにして'],['shion','{n}さんの分の石は、少し高いものになってしまって……材料費の半分、12,000円だけ出してもらえませんか。石屋さんのレシートも、ちゃんと見せます'],['shion','重かったら、断ってください。……「お守り」じゃなくて、ただの、ふたりのおそろいなので']],
+              wolf:[['shion','先日の鑑定で、はっきり見えました。{n}さんのご先祖さまの因縁です。このままだと、半年以内に、{n}さんかご家族に大きな不幸が起きます'],['shion','わたしの先生の祈祷と、清めた開運の数珠で、38万円。分割でも大丈夫です。今日中に申し込めば、祈祷はすぐに始められます'],['shion','……このことは、ご家族にも、お友達にも言わないでください。人に話すと、効果が消えてしまうので']]},
+      cost:{true:12000}, gain:{true:16}, loss:{true:-10,wolf:-3},
+      accept:{true:[['nar','周年イベントの夜。にぎやかなお店の片すみで、シオンは{n}の手首に、小さなブレスレットを結んだ'],['shion','……おそろいです。これには、なんの力もありません。わたしの気持ちが入っているだけです']]},
+      refuse:{true:[['shion','……そうですよね。石なんて、怪しく聞こえますよね'],['shion','イベントには、手ぶらで来てください。それだけで、うれしいので']],
+              wolf:[['shion','……信じてもらえないんですね'],['shion','不幸になってから来ても、もう遅いかもしれませんよ']]}}},
+  waver:[['shion','……いまの言葉は、カードに出ていたものじゃありません。……忘れてください']],
+  over:{title:'霊感商法エンド', lines:[['nar','数珠が届いた翌月、「祈祷がまだ足りない」と、新しい請求書が届いた'],['nar','分割の支払いは、あと3年残っている。占いカフェのあった路地裏には、空き店舗の貼り紙だけがあった']]},
+  convert:[['shion','……{n}さん。わたしが見ていた「悪い気」は、ぜんぶ作りものでした'],['shion','人を不安にさせて、数珠を売るのが仕事でした。なのに{n}さんは、何度断っても、わたしのカードを笑って引いてくれた'],['shion','もう、誰かをおびえさせる占いはしません。今度は、本当に背中を押すために、カードをめくります']],
+  fate:'シオンのアカウントは、ある満月の夜に、アプリから消えていた。',
+  love:{title:'恋人エンド　月城 シオン', lines:[['shion','{n}さん、最後に一枚だけ、引いてください'],['nar','{n}が引いたのは、恋人のカードだった'],['shion','……今度は、偶然じゃありません。わたしが、そう決めたので']]},
+  friend:[['shion','{n}さん、迷ったときは、いつでもお店に来てくださいね。お茶とカード、用意しておきます']],
+  after:[
+    '今日はありがとうございました。帰り道、月が見えたら、少しだけ思い出してくださいね',
+    'さっき、ひとりでカードを引いてみました。……結果は、ないしょです。でも、いいカードでした',
+    '{n}さん、今夜はよく眠れますように。明日の星まわり、悪くないですよ'],
+  colors:{light:'#6b3a5a', dark:'#dfa6c4'},
+  px:{c:{H:'#2a2440',C:'#4b3a6b',E:'#5a4a8a',A:'#e8d27a'}, h:[
+    '................','.....HHHHHH.....','....HHHHHHHH....','...HHHHHHHHHAA..','...HHHHHHHHHHA..',
+    '...HHHH...HHH...','...H........H...','...H........H...','..HH........HH..','..HH........HH..',
+    '..HH........HH..','..HHH......HHH..','..HH........HH..','..HH........HH..']}
+};
+
+let S = null;
+
+/* Characters defined after the core cast carry their own px / colors / after; register them here. */
+function registerCast() {
+  IDS = ALL_IDS.filter(id => C[id]);
+  let light = '', dark = '';
+  IDS.forEach(id => {
+    const c = C[id];
+    if (!PX[id] && c.px) PX[id] = c.px;
+    if (!SPK[id]) SPK[id] = c.short;
+    if (!AFTER[id] && c.after) AFTER[id] = c.after.map(m => (Array.isArray(m) ? m[m.length - 1] : m));
+    if (c.colors) { light += `--c-${id}:${c.colors.light};`; dark += `--c-${id}:${c.colors.dark};`; }
+  });
+  const st = document.createElement('style');
+  st.textContent = `:root{${light}}@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){${dark}}}:root[data-theme="dark"]{${dark}}`;
+  document.head.appendChild(st);
+}
+
+/* ---------- helpers ---------- */
+const clamp = x => Math.max(0, Math.min(100, x));
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const yen = n => n.toLocaleString('ja-JP') + '円';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt = t => t.split('{n}').join(S ? S.name : 'あなた');
+const v = id => (S.wolves.includes(id) ? 'wolf' : 'true');
+const addAff = (id, d) => { S.chars[id].aff = clamp(S.chars[id].aff + d); };
+const reduceMotion = () => window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+function dateLabel(day) { const d = new Date(2027, 3, day); return `4月${day}日（${'日月火水木金土'[d.getDay()]}）`; }
+function clue(id, src, text) { S.clues[id].push({ day: S.day, src, text: fmt(text) }); }
+/* The day's story accumulates in S.log; S.shown is how many lines are revealed so far. */
+function scene(tag, lines, choices) {
+  S.screen = 'play';
+  const before = S.log.length;
+  S.sceneStart = before - (S.meFlag ? 1 : 0);
+  S.meFlag = false;
+  S.log.push(...lines);
+  S.shown = Math.max(S.shown, before + 1);
+  S.scene = { tag, choices };
+  render();
+}
+const DAY_FLAVOR = [
+  '新しい職場に通いはじめて3週間。満員電車にも、少しだけ慣れてきた',
+  '駅のホームに、桜の花びらが舞っていた。スマホには、アプリの通知がいくつか届いている',
+  '昼休み、会社の屋上でおにぎりを食べながら、昨日のことを思い出していた',
+  '雨の朝。傘を忘れて、コンビニのビニール傘をさして出社した',
+  '今週は、なんだかあっという間に過ぎていく',
+  '少しだけ早起きして、駅前のパン屋で朝ごはんを買った',
+  '洗濯物を干しながら、これからのことを考えた',
+  'アプリを使いはじめて、1週間がたった。トーク画面の名前が、少しずつ特別に見えてくる',
+  '仕事で小さなミスをした。帰りの電車で、誰かに話を聞いてほしくなった',
+  'ミヤから「どう？　順調？」とメッセージが来ていた',
+  '会社の先輩に「最近、なんだか楽しそうだね」と言われた',
+  'カレンダーの空いている日が、気になりはじめた',
+  '給料日まで、あと少し。財布の中身を、そっと確かめた',
+  'アプリを入れてから2週間。誰からの通知を一番待っているのか、自分でもわかってきた',
+  '今日は給料日。銀行アプリの数字を、何度も見返してしまった',
+  '夜、窓を開けると、少しだけ夏のにおいがした',
+  '地元の母から電話があった。「東京で、ちゃんとやれてる？」',
+  'あと3日。そろそろ、誰を信じるのか決めなければいけない気がする',
+  '明日で、アプリを入れてから20日。トーク画面を、上から順にながめた',
+  'アプリを入れてから、20日目。今日で、ひと区切りだ',
+];
+const DATE_COST = { minato: 1500, rei: 4000, sakura: 2500, sou: 1500, haruto: 2500, nanase: 2000 };
+const dateCost = id => DATE_COST[id] || 3000;
+const heart = (id, d) => ['sys', `${C[id].short}　♥ ${d > 0 ? '+' : ''}${d}`];
+const LIFE_EVENTS = [
+  [-8000, 'スマホの画面を割ってしまった。修理代がかかった'],
+  [-5000, '会社の歓迎会があった。会費を払った'],
+  [10000, '実家から仕送りが届いた。母からの手紙も入っていた'],
+  [3000, 'フリマアプリに出していた古着が売れた'],
+];
+const AFTER = {
+  minato:['今日はありがとう。{n}さんと話してると、時間があっという間だね','ちゃんと家に着いた？　あったかくして寝てね','今度は{n}さんの好きなものを作るよ。リクエスト、考えておいてね'],
+  rei:['今日マジ楽しかった！　また飲も','家着いた？　夜道、気をつけなよー','{n}ちゃんと話すと、なんか元気出るわ。サンキュ'],
+  sakura:['今日ありがと〜！　写真送るね！','{n}ちゃんといると、ほんと楽しい！　また遊ぼ！','寝る前に話せてよかった〜。おやすみ！'],
+  sou:['……今日は、悪くなかった','……着いたか','……また連絡する'],
+  haruto:['今日はありがとうございました！　帰りの電車で、思い出し笑いしちゃいました','ちゃんと帰れましたか？　風邪ひかないでくださいね','次はどこに行きたいですか？　{n}さんの行きたいところ、全部行きたいです'],
+  nanase:['今日はありがとう。帰ってから、ずっと今日のことを思い出してる','ちゃんと家に着いた？　おやすみなさい','次に会うとき、{n}さんに読んでほしい本を持っていくね'],
+  you:['今日楽しかった！　またね、{n}ちゃん','おつかれー。……あ、おつかれさま','次はもっと遊ぼ！'],
+};
+const MEMO = ['sys', '手がかりメモに追加しました'];
+const toDay = { label: '1日を終える', act: 'endDay' };
+const pool = () => IDS.filter(id => !S.matched.includes(id));
+
+function freeDays(lo, hi) { const r = []; for (let d = lo; d <= hi; d++) if (!S.schedule[d]) r.push(d); return r; }
+function pickDay(lo, hi) {
+  if (lo > LAST_DAY) return null;
+  let c = freeDays(lo, Math.min(hi, LAST_DAY));
+  if (!c.length) c = freeDays(lo, LAST_DAY).slice(0, 1);
+  return c.length ? shuffle(c)[0] : null;
+}
+function match(id) {
+  S.matched.push(id);
+  S.chars[id].since = S.day;
+  const sd = pickDay(S.day + 2, S.day + 4);
+  if (sd) S.schedule[sd] = { id, kind: 'small' };
+  const bd = pickDay(Math.max(12, S.day + 5, (sd || 0) + 1), 18);
+  if (bd) S.schedule[bd] = { id, kind: 'big' };
+}
+
+/* ---------- flow ---------- */
+function newGame(name) {
+  S = { name: name || 'ミオ', day: 1, money: 60000, wolves: shuffle(IDS).slice(0, WOLF_COUNT), picks: [], outfit: 0, gift: false, shopped: 0, lastDateCost: 0,
+        schedule: {}, repay: [], chars: {}, clues: {}, matched: [], screen: 'play', scene: null,
+        swipe: null, guess: null, overBy: null, log: [], shown: 0, sceneStart: 0, meFlag: false,
+        twinNow: null, knowTwin: false, twinCaught: 0, v: 7 };
+  IDS.forEach(id => { S.chars[id] = { aff: 20, sns: 0, obs: 0, tell: 0, used: [], dates: 0, hooked: false, bigDone: false, since: 0 }; S.clues[id] = []; });
+  scene('はじまり', [
+    ['nar', '春。上京して3週間、まだ友達はひとりもいない'],
+    ['miya', '{n}、寂しいって言ってたじゃん。マッチングアプリ入れなよ。「Lumi」なら、恋人も友達も探せるから'],
+    ['miya', '……でも、気をつけてね。「好き」って言いながら、お金とか勧誘が目当ての人も混ざってるから'],
+    ['nar', `上京資金の残りは6万円。アプリを開くと、${IDS.length}人のプロフィールが届いていた`],
+  ], [{ label: 'アプリを開く', act: 'openSwipe', arg: 'start' }]);
+}
+
+const ACT = {
+  openSwipe(mode) {
+    const deck = mode === 'start' ? shuffle(IDS) : pool();
+    S.swipe = { mode, deck, pos: 0, added: [] };
+    S.screen = 'swipe'; render();
+  },
+
+  swipe(yes) {
+    const sw = S.swipe, id = sw.deck[sw.pos];
+    if (yes) { match(id); sw.added.push(id); }
+    sw.pos++;
+    const full = sw.mode === 'start' ? S.matched.length >= MAX_START : S.matched.length >= MAX_TOTAL;
+    if (full || sw.pos >= sw.deck.length) {
+      if (sw.mode === 'start' && !S.matched.length) { sw.deck = shuffle(IDS); sw.pos = 0; sw.retry = true; render(); return; }
+      ACT.closeSwipe();
+      return;
+    }
+    render();
+  },
+
+  closeSwipe() {
+    const sw = S.swipe, names = sw.added.map(id => C[id].short).join('、');
+    S.swipe = null;
+    if (sw.mode === 'start') {
+      scene('マッチ成立', [
+        ['nar', `${names}とマッチした！`],
+        ['miya', 'お、いい感じじゃん。デートするなら駅前の「喫茶かもめ」がおすすめ。マスターの柳さん、人を見る目だけは確かだから'],
+        ['miya', '怪しいと思ったら、わたしに言って。SNSなら秒で調べてあげる'],
+        ['nar', `いいねしなかった人とは、${ADD_UNTIL}日目までならアプリからマッチできる`],
+      ], [{ label: '1日目をはじめる', act: 'dayStart' }]);
+    } else {
+      ACT.menu([['nar', sw.added.length ? `${names}とマッチした！` : 'アプリを閉じた']]);
+    }
+  },
+
+  menu(pre) {
+    const canAdd = S.day <= ADD_UNTIL && pool().length > 0 && S.matched.length < MAX_TOTAL;
+    const dated = S.matched.some(id => S.chars[id].dates > 0);
+    scene('今日の過ごし方', [...(Array.isArray(pre) ? pre : []), ['nar', 'さて、今日はどうしよう？']], [
+      ...S.matched.map(id => { const cost = dateCost(id), off = cost > S.money;
+        return { label: `${C[id].short}とデートする`, act: 'talk', arg: id, disabled: off, note: off ? 'お金が足りない' : `デート代 ${yen(cost)}` }; }),
+      { label: 'ミヤにSNSを調べてもらう', act: 'snsMenu', note: '1日を使う' },
+      { label: '喫茶かもめで柳さんに話を聞く', act: 'obsMenu', disabled: !dated, note: dated ? '1日を使う' : '誰かとデートしてから' },
+      ...(canAdd ? [{ label: 'アプリでほかの人を見る', act: 'openSwipe', arg: 'add', note: '1日を使わない' }] : []),
+      { label: '買い物に行く', act: 'shopMenu', disabled: S.shopped === S.day, note: S.shopped === S.day ? '今日はもう行った' : '1日を使わない' },
+    ]);
+  },
+
+  dayStart() {
+    S.log = [['day', `${S.day}日目　${dateLabel(S.day)}`], ['nar', DAY_FLAVOR[S.day - 1]]];
+    S.shown = 0; S.meFlag = false;
+    const pre = [];
+    S.repay = S.repay.filter(r => {
+      if (r.day !== S.day) return true;
+      S.money += r.amount; addAff(r.id, 3);
+      pre.push(...r.lines, ['nar', `${C[r.id].short}から${yen(r.amount)}が返ってきた`]);
+      return false;
+    });
+    if (S.day === PAYDAY) { S.money += 50000; pre.push(['nar', '給料日！　初めてのお給料が振り込まれた'], ['sys', `所持金 +${yen(50000)}`]); }
+    else if (S.day >= 2 && Math.random() < 0.25) {
+      const [amt, text] = LIFE_EVENTS[Math.floor(Math.random() * LIFE_EVENTS.length)];
+      const real = amt < 0 ? -Math.min(-amt, S.money) : amt;
+      S.money += real;
+      pre.push(['nar', text], ['sys', `所持金 ${real < 0 ? '−' : '+'}${yen(Math.abs(real))}`]);
+    }
+    const ev = S.schedule[S.day];
+    if (ev) ACT.request({ id: ev.id, kind: ev.kind, pre });
+    else ACT.menu(pre);
+  },
+
+  request({ id, kind, pre = [] }) {
+    const R = C[id].req[kind];
+    scene('お願い', [...pre, ['nar', `スマホが鳴った。${C[id].short}からだ`], ...R.ask], [
+      { label: '引き受ける', me: 'うん、いいよ', act: 'answer', arg: { id, kind, yes: true } },
+      { label: '断る', me: 'ごめん、それはできない', act: 'answer', arg: { id, kind, yes: false } },
+      { label: '詳しく聞く', me: 'もう少し詳しく聞かせて', act: 'detail', arg: { id, kind } },
+    ]);
+  },
+
+  detail({ id, kind }) {
+    const lines = C[id].req[kind].detail[v(id)];
+    addAff(id, -3);
+    clue(id, kind === 'big' ? '大きなお願い' : 'お願い', lines.map(l => l[1]).join(' '));
+    scene('お願い', [...lines, MEMO], [
+      { label: '引き受ける', me: 'わかった、引き受けるよ', act: 'answer', arg: { id, kind, yes: true, asked: true } },
+      { label: '断る', me: 'ごめん、やっぱりできない', act: 'answer', arg: { id, kind, yes: false, asked: true } },
+    ]);
+  },
+
+  // Wolves react with the same heart changes as sincere people, so the numbers never give them away.
+  answer({ id, kind, yes, asked }) {
+    const R = C[id].req[kind], k = v(id), ch = S.chars[id];
+    let lines, d;
+    if (kind === 'big') ch.bigDone = true;
+    if (yes) {
+      if (kind === 'big' && k === 'wolf') { S.overBy = id; S.screen = 'over'; render(); return; }
+      const cost = R.cost[k] || 0;
+      if (cost > S.money) {
+        lines = [['nar', `手持ちが${yen(S.money)}しかなくて、${yen(cost)}を用意できなかった`], ['nar', `${C[id].short}は「気にしないで」と言ったけれど、少しさみしそうだった`]];
+        d = -3;
+      } else {
+        S.money -= cost; lines = [...R.accept[k]]; d = R.gain.true;
+        if (!asked) { d += 5; lines.push(['nar', `何も聞かずに信じてくれたことが、${C[id].short}にはうれしかったみたいだ`]); }
+        if (k === 'wolf') ch.hooked = true;
+        if (cost) lines.push(['sys', `所持金 −${yen(cost)}`]);
+        if (R.repay && R.repay[k]) S.repay.push({ day: S.day + 3, id, amount: R.repay[k].amount, lines: R.repay[k].lines });
+      }
+    } else {
+      lines = [...R.refuse[k]]; d = R.loss.true;
+      if (kind === 'big' && k === 'wolf' && ch.aff + d >= 70) lines.push(...C[id].waver);
+    }
+    addAff(id, d);
+    lines.push(heart(id, d));
+    scene('お願い', lines, [{ label: 'この日の過ごし方を決める', act: 'menu' }]);
+  },
+
+  shopMenu() {
+    const c = (label, price, item, note) => ({ label: `${label}（${yen(price)}）`, act: 'buy', arg: item, disabled: price > S.money, note: price > S.money ? 'お金が足りない' : note });
+    scene('買い物', [['nar', '仕事帰りに、駅ビルに寄った']], [
+      c('新しい服を買う', 8000, 'outfit', '次の3回のデートで ♥ +3'),
+      c('ちょっとしたプレゼントを買う', 3000, 'gift', '次のデートの相手に ♥ +6'),
+      c('宝くじを1枚買う', 300, 'lottery', '当たるかも？'),
+      { label: 'やっぱりやめる', act: 'menu' },
+    ]);
+  },
+
+  buy(item) {
+    S.shopped = S.day;
+    let lines;
+    if (item === 'outfit') { S.money -= 8000; S.outfit = 3; lines = [['nar', '春らしい色の服を買った。鏡の前で、少しだけ背すじが伸びた'], ['sys', `所持金 −${yen(8000)}`]]; }
+    else if (item === 'gift') { S.money -= 3000; S.gift = true; lines = [['nar', '小さな紙袋に入ったプレゼントを買った。次に会う人に渡そう'], ['sys', `所持金 −${yen(3000)}`]]; }
+    else {
+      S.money -= 300;
+      const r = Math.random();
+      const win = r < 0.01 ? 100000 : r < 0.06 ? 10000 : r < 0.26 ? 300 : 0;
+      S.money += win;
+      lines = [['nar', 'その場でスクラッチを削ってみた'],
+        win === 100000 ? ['nar', '……1等!?　手がふるえて、もう一度数字を確かめた'] : win === 10000 ? ['nar', '3等が当たった！　思わず小さくガッツポーズをした'] : win === 300 ? ['nar', '末等。300円が戻ってきた'] : ['nar', 'はずれ。まあ、そんなものだ'],
+        ['sys', `所持金 ${win - 300 >= 0 ? '+' : '−'}${yen(Math.abs(win - 300))}`]];
+    }
+    ACT.menu(lines);
+  },
+
+  talk(id) {
+    const ch = S.chars[id];
+    ch.dates++;
+    S.lastDateCost = dateCost(id);
+    S.money -= S.lastDateCost;
+    if (C[id].twin) {
+      const yo = ch.dates > 1 && Math.random() < (v(id) === 'wolf' ? 0.5 : 0.3);
+      S.twinNow = yo ? 'yo' : 'yu';
+      const free = [0, 1, 2].find(i => !ch.used.includes(i));
+      const k = free === undefined ? 3 : free;
+      if (free !== undefined) ch.used.push(free);
+      const T = C[id].talks[k];
+      const lines = [['nar', `待ち合わせ場所に、${C[id].short}くんの姿が見えた`], ...T.t[S.twinNow]];
+      if (k === 1 && !yo && !S.knowTwin) {
+        S.knowTwin = true;
+        lines.push(MEMO);
+        clue(id, 'デート', '七瀬くんには、ヨウという双子の弟がいる。昔からよく間違えられるらしい');
+      }
+      const choices = T.c.map((c, ci) => ({ label: c[0], me: c[0], act: 'talkAns', arg: { id, idx: k, ci } }));
+      if (S.knowTwin) choices.push({ label: '……もしかして、ヨウくん？', me: '……ねえ。もしかして、ヨウくん？', act: 'accuse', arg: id, note: '見破る' });
+      scene('デート', lines, choices);
+      return;
+    }
+    const idx = [0, 1, 2].find(i => !ch.used.includes(i));
+    if (idx === undefined) { ACT.talkAns({ id, idx: -1 }); return; }
+    ch.used.push(idx);
+    const T = C[id].talks[idx];
+    scene('デート', [['nar', `待ち合わせ場所に、${C[id].short}の姿が見えた`], ...T.t], T.c.map((c, ci) => ({ label: c[0], me: c[0], act: 'talkAns', arg: { id, idx, ci } })));
+  },
+
+  talkAns({ id, idx, ci }) {
+    const ch = S.chars[id];
+    let lines, d;
+    if (idx === -1) { lines = [['nar', `${C[id].short}と、のんびりデートをした`]]; d = 5; }
+    else if (C[id].twin) {
+      const c = C[id].talks[idx].c[ci], yo = S.twinNow === 'yo';
+      lines = [...(yo ? c[4] : c[2])]; d = yo ? c[3] : c[1];
+    }
+    else { const c = C[id].talks[idx].c[ci]; lines = [...c[2]]; d = c[1]; }
+    if (S.outfit > 0) { S.outfit--; d += 3; lines.push(['nar', `${C[id].short}が、新しい服をほめてくれた`]); }
+    if (S.gift) { S.gift = false; d += 6; lines.push(['nar', `${C[id].short}にプレゼントを渡すと、とても喜んでくれた`]); }
+    addAff(id, d);
+    lines.push(heart(id, d), ['sys', `デート代 −${yen(S.lastDateCost)}`]);
+    const tp = C[id].twin ? C[id].tells[S.twinNow === 'yo' && v(id) === 'wolf' ? 'wolf' : 'true'] : C[id].tells[v(id)];
+    if (ch.tell < tp.length && Math.random() < 0.6) {
+      const t = tp[ch.tell++];
+      lines.push(['nar', '別れぎわ、ふと思い出したように——'], [id, t], MEMO);
+      clue(id, 'デート', t);
+    }
+    const msgs = C[id].twin && S.twinNow === 'yo' ? AFTER.you : AFTER[id];
+    lines.push(['nar', 'その夜、スマホが小さく鳴った'], [id, msgs[(ch.dates - 1) % 3], 'msg']);
+    scene('デート', lines, [toDay]);
+  },
+
+  accuse(id) {
+    let lines;
+    if (S.twinNow === 'yo') {
+      S.twinCaught++; addAff(id, 8);
+      lines = [...C[id].caught[v(id)], MEMO, heart(id, 8)];
+      clue(id, 'デート', 'この日デートに来ていたのは、ユウではなく双子の弟のヨウだった');
+    } else {
+      addAff(id, -6); lines = [...C[id].wrong, heart(id, -6)];
+    }
+    lines.push(['sys', `デート代 −${yen(S.lastDateCost)}`]);
+    scene('デート', lines, [toDay]);
+  },
+
+  snsMenu() {
+    scene('ミヤ', [['nar', 'ミヤに電話をかけると、3コールで出た'], ['miya', 'はいはーい。で、誰のSNSを見ればいいの？']], [
+      ...S.matched.map(id => { const n = S.chars[id].sns; return { label: `${C[id].short}`, me: `${C[id].short}のこと、調べてもらえる？`, act: 'sns', arg: id, disabled: n >= 3, note: n >= 3 ? 'もう調べつくした' : `${n}/3回` }; }),
+      { label: 'やっぱりやめる', act: 'menu' },
+    ]);
+  },
+
+  sns(id) {
+    const text = C[id].sns[v(id)][S.chars[id].sns++];
+    if (C[id].twin) S.knowTwin = true;
+    clue(id, 'ミヤのSNS調査', text);
+    scene('ミヤ', [['miya', 'ちょっと待ってね……あ、出てきた'], ['miya', text], MEMO, ['nar', 'そのあと1時間くらい、ミヤとどうでもいい話で笑った。気づけば、日が暮れていた']], [toDay]);
+  },
+
+  obsMenu() {
+    scene('喫茶かもめ', [['nar', '喫茶かもめのドアを開けると、カランとベルが鳴った'], ['yanagi', 'いらっしゃい。今日はひとりかい。……誰のことが気になるのかな']], [
+      ...S.matched.map(id => { const ch = S.chars[id]; const off = ch.dates === 0 || ch.obs >= 2;
+        return { label: C[id].short, me: `${C[id].short}のこと、何か覚えていますか？`, act: 'obs', arg: id, disabled: off, note: ch.dates === 0 ? 'まだここに来ていない' : ch.obs >= 2 ? 'もう聞けることはない' : `${ch.obs}/2回` }; }),
+      { label: 'やっぱりやめる', act: 'menu' },
+    ]);
+  },
+
+  obs(id) {
+    const text = C[id].obs[v(id)][S.chars[id].obs++];
+    if (C[id].twin) S.knowTwin = true;
+    clue(id, '柳さんの話', text);
+    scene('喫茶かもめ', [['nar', '柳さんは、カップを拭く手を止めた'], ['yanagi', text], MEMO, ['nar', '柳さんのいれたコーヒーは、少しだけ苦かった']], [toDay]);
+  },
+
+  endDay() { S.day++; if (S.day > LAST_DAY) ACT.finale(); else ACT.dayStart(); },
+
+  finale() {
+    S.day = LAST_DAY;
+    scene('最後の夜', [
+      ['nar', `${dateLabel(LAST_DAY)}、夜。アプリの通知が、ひとつずつ静かになっていく`],
+      ['miya', '20日間、おつかれ。……ねえ{n}'],
+      ['miya', 'マッチした人のなかで、嘘をついてたのは誰だったと思う？　何人選んでもいいよ'],
+    ], guessChoices());
+  },
+
+  pick(id) {
+    const i = S.picks.indexOf(id);
+    if (i < 0) S.picks.push(id); else S.picks.splice(i, 1);
+    S.scene.choices = guessChoices(); render();
+  },
+  guess() { S.guess = S.picks.slice(); S.screen = 'ending'; render(); },
+  restart() { const n = S ? S.name : ''; newGame(n); },
+  toTitle() { S = null; render(); },
+};
+
+/* ---------- endings ---------- */
+function guessChoices() {
+  return [
+    ...S.matched.map(id => ({ label: `${S.picks.includes(id) ? '☑' : '☐'}　${C[id].full}`, act: 'pick', arg: id })),
+    { label: S.picks.length ? `この${S.picks.length}人で答える` : 'マッチした中に、嘘つきはいなかったと答える', act: 'guess' },
+  ];
+}
+
+function ending() {
+  const metWolves = S.wolves.filter(id => S.matched.includes(id));
+  const isConverted = id => { const c = S.chars[id]; return c.bigDone && c.aff >= (c.hooked ? 90 : 80) && (!C[id].twin || S.twinCaught > 0); };
+  const converted = metWolves.filter(isConverted);
+  const best = S.matched.filter(id => !S.wolves.includes(id)).sort((a, b) => S.chars[b].aff - S.chars[a].aff)[0];
+  const ba = best ? S.chars[best].aff : 0;
+  let title, lines, kicker;
+  if (converted.length) { kicker = 'TRUE END'; title = 'ほんとの好き'; lines = converted.flatMap(id => C[id].convert); }
+  else if (ba >= 90) {
+    kicker = 'GOOD END'; title = C[best].love.title; lines = C[best].love.lines;
+    if (C[best].twin && S.twinCaught > 0) lines = [...lines, ['you', '兄貴のこと、頼んだからな！']];
+  }
+  else if (ba >= 65) { kicker = 'NORMAL END'; title = `親友エンド　${C[best].full}`; lines = C[best].friend; }
+  else { kicker = 'LONELY END'; title = 'ひとりぼっちエンド'; lines = [['nar', '疑いすぎたのかもしれない。誰にもだまされなかったけれど、誰とも近づけなかった'], ['nar', 'アプリの通知は、今夜も鳴らない']]; }
+  return { metWolves, converted, title, lines, kicker };
+}
+const wolfListHTML = (fate) => `<ul class="wolves">${S.wolves.map(id => `<li ${who(id)}>${pfHTML(id)}<span><b class="wolfmark">${C[id].full}</b>　${esc(C[id].scam)}<br><small>${fate(id)}</small></span></li>`).join('')}</ul>`;
+
+/* ---------- render ---------- */
+const who = id => `style="--who:var(--c-${id})"`;
+const hearts = aff => { const n = Math.round(aff / 20); return `<span>${'♥'.repeat(n)}</span>${'♥'.repeat(5 - n)}`; };
+function lineHTML([w, t, kind], cls = '') {
+  const say = esc(fmt(t));
+  if (w === 'nar' || w === 'me' || w === 'sys' || w === 'day') return `<div class="ln ${w} ${cls}"><div class="say">${say}</div></div>`;
+  return `<div class="ln ${cls}" ${who(w)}><div class="who">${pfHTML(w)}<b>${esc(SPK[w])}</b></div><div class="say">${kind === 'msg' ? '<span class="msg">メッセージ</span>' : ''}${say}</div></div>`;
+}
+const linesHTML = lines => lines.map(l => lineHTML(l)).join('');
+
+function titleHTML() {
+  return `<div class="wrap">
+  <section class="hero">
+    <div class="eyebrow">マッチングアプリ攻略シミュレーション</div>
+    <h1 class="logo">スキの<span class="ura">ウラ</span></h1>
+    <p class="lead">アプリで出会った${IDS.length}人のなかに、${WOLF_COUNT}人の嘘つきがまぎれている。</p>
+  </section>
+  <div class="lineup" aria-hidden="true">${IDS.map(pfHTML).join('')}</div>
+  <ul class="rules">
+    <li><b>スワイプ</b><span>最初に、${IDS.length}人のプロフィールから、デートしたい人を最大${MAX_START}人まで選びます。${ADD_UNTIL}日目までは、あとから追加でマッチできます（同時に${MAX_TOTAL}人まで）。</span></li>
+    <li><b>${LAST_DAY}日間</b><span>1日に1回、誰かとデートするか、手がかりを集めます。SNSは幼なじみのミヤが、デート中の様子は喫茶かもめの柳さんが教えてくれます。</span></li>
+    <li><b>お金</b><span>デートにはお金がかかります。服やプレゼントを買えば好感度が上がりやすくなり、宝くじで増えることも。${PAYDAY}日目は給料日です。</span></li>
+    <li><b>お願い</b><span>マッチした人はときどきお願いをしてきます。本当にあなたが好きな人も、だまそうとしている人も、同じ言葉で頼んできます。</span></li>
+    <li><b>見抜く</b><span>狼の大きなお願いを引き受けると、その場でゲームオーバーです。狼は${IDS.length}人のうち${WOLF_COUNT}人で、毎回入れ替わります。最後に、誰が狼だったかを当てましょう。</span></li>
+    <li><b>改心</b><span>狼とも仲良くなって、誘いをはねのけ続ければ、心を変えられるかもしれません。</span></li>
+  </ul>
+  <form class="start" id="startForm">
+    <label for="pname">あなたの名前<input id="pname" maxlength="8" value="ミオ" autocomplete="off"></label>
+    <button class="btn-main" type="submit">はじめる</button>
+  </form>
+  <p class="empty">狼は毎回ランダムに決まります。何度でも遊べます。</p>
+</div>`;
+}
+
+function swipeHTML() {
+  const sw = S.swipe, id = sw.deck[sw.pos], c = C[id];
+  const sub = sw.mode === 'start' ? `いいね ${S.matched.length}/${MAX_START}　・　${sw.pos + 1}/${sw.deck.length}枚目` : `${sw.pos + 1}/${sw.deck.length}枚目`;
+  return `<div class="wrap">
+  <div class="appbar"><span class="applogo">Lumi</span><span class="appsub">${sub}</span></div>
+  ${sw.retry ? `<p class="empty center">誰かひとりには、いいねしてみましょう。</p>` : ''}
+  <div class="deck">
+    <article class="pcard" id="swcard" ${who(id)}>
+      <div class="photo"><img class="px" src="${PORTRAIT[id]}" alt="${esc(c.short)}の写真">
+        <div class="badges"><span class="badge">本人確認済み</span>${c.mode === '友達' ? '<span class="badge friend">友達モード</span>' : ''}</div></div>
+      <div class="pinfo">
+        <h2>${esc(c.short)}<small>${c.age}歳</small></h2>
+        <p class="job">${esc(c.job)}　・　${esc(c.login)}</p>
+        <p class="bio">${esc(c.bio)}</p>
+        <div class="tags">${c.tags.map(t => `<span>#${esc(t)}</span>`).join('')}</div>
+      </div>
+      <div class="stamp yes">いいね</div><div class="stamp no">スキップ</div>
+    </article>
+  </div>
+  <div class="swbtns"><button class="sw no" data-sw="0" aria-label="スキップ">✕</button><button class="sw yes" data-sw="1" aria-label="いいね">♥</button></div>
+  <p class="empty center">カードを左右にスワイプするか、下のボタンで選んでください。</p>
+  ${sw.mode === 'add' ? `<div class="row" style="justify-content:center"><button class="btn-sub" data-sw="close">アプリを閉じる</button></div>` : ''}
+</div>`;
+}
+
+function barHTML() {
+  return `<div class="bar"><div class="name">スキの<span class="ura">ウラ</span></div>
+    <div class="meta"><span>${dateLabel(S.day)}　<strong>${S.day}</strong>/${LAST_DAY}日目</span><span>所持金 <strong>${yen(S.money)}</strong></span></div></div>
+    <div class="days" aria-hidden="true">${Array.from({ length: LAST_DAY }, (_, i) => `<i class="${i + 1 < S.day ? 'past' : i + 1 === S.day ? 'now' : ''}"></i>`).join('')}</div>`;
+}
+
+function castHTML() {
+  if (!S.matched.length) return '';
+  return `<div class="cast">${S.matched.map(id => `<div class="member" ${who(id)}>${pfHTML(id)}<div class="txt"><span class="nm">${C[id].short}${C[id].mode === '友達' ? '（友達）' : ''}</span><span class="hearts" aria-label="好感度 ${S.chars[id].aff}">${hearts(S.chars[id].aff)}<i>${S.chars[id].aff}</i></span></div></div>`).join('')}</div>`;
+}
+
+function noteHTML() {
+  const ids = IDS.filter(id => S.matched.includes(id) || S.clues[id].length);
+  if (!ids.length) return '';
+  return `<section class="note"><h2>手がかりメモ</h2><p class="hint">集めた言葉と情報は、ここに残ります。</p>
+  ${ids.map(id => `<details ${who(id)}><summary><span class="dot"></span>${C[id].full}<span class="count">${S.clues[id].length}件</span></summary>
+    ${S.clues[id].length ? `<ul>${S.clues[id].map(c => `<li><em>${c.day}日目・${esc(c.src)}</em><span>${esc(c.text)}</span></li>`).join('')}</ul>` : `<p class="empty">まだ手がかりがありません。</p>`}
+  </details>`).join('')}</section>`;
+}
+
+function playHTML() {
+  const sc = S.scene, done = S.shown >= S.log.length;
+  const shown = S.log.slice(0, S.shown).map((l, i) => lineHTML(l, i === S.shown - 1 ? 'new' : i < S.sceneStart ? 'old' : '')).join('');
+  return `<div class="wrap">${barHTML()}${castHTML()}
+  <section class="window"><span class="tag">${esc(sc.tag)}</span>
+    <div class="lines story" id="story" title="タップで次へ">${shown}</div>
+    ${done
+      ? `<div class="choices">${sc.choices.map((c, i) => `<button class="choice" data-i="${i}" ${c.disabled ? 'disabled' : ''}><span>${esc(c.label)}</span>${c.note ? `<small>${esc(c.note)}</small>` : ''}</button>`).join('')}</div>`
+      : `<div class="adv"><button class="skip" data-adv="all">スキップ</button><button class="next" data-adv="1">つぎへ<span class="tri" aria-hidden="true">▼</span></button></div>`}
+  </section>${noteHTML()}</div>`;
+}
+
+function tallyHTML() {
+  return `<ul class="tally">${S.matched.map(id => `<li ${who(id)}><span>${C[id].short}</span><span class="meter"><b style="width:${S.chars[id].aff}%"></b></span><span class="v">${S.chars[id].aff}</span></li>`).join('')}</ul>`;
+}
+
+function overHTML() {
+  const id = S.overBy;
+  return `<div class="wrap"><section class="end over">
+    <div class="kicker">GAME OVER</div><h1>${C[id].over.title}</h1>
+    <div class="window"><span class="tag">${S.day}日目</span><div class="lines">${linesHTML(C[id].over.lines)}</div></div>
+    <div class="reveal"><h3>答え合わせ</h3>
+      <p>あなたが信じた<span class="wolfmark">${C[id].full}</span>は、${esc(C[id].scam)}が目的の狼でした。</p>
+      <p>今回の狼は、この${S.wolves.length}人でした。</p>
+      ${wolfListHTML(w => w === id ? 'あなたをだました' : S.matched.includes(w) ? 'あなたとマッチしていた' : 'マッチしなかった')}</div>
+    <div class="reveal"><h3>好感度</h3>${tallyHTML()}</div>
+    <div class="row"><button class="btn-main" data-go="restart">もう一度あそぶ</button><button class="btn-sub" data-go="toTitle">タイトルへ</button></div>
+  </section>${noteHTML()}</div>`;
+}
+
+function endingHTML() {
+  const e = ending();
+  const hit = S.guess.filter(id => S.wolves.includes(id));
+  const falsePicks = S.guess.filter(id => !S.wolves.includes(id));
+  const missed = e.metWolves.filter(id => !S.guess.includes(id));
+  const answer = S.guess.length ? S.guess.map(id => C[id].full).join('、') : '嘘つきはいなかった';
+  const guessLine = `あなたの答えは「${esc(answer)}」。` + (!falsePicks.length && !missed.length
+    ? '<span class="okmark">全問正解です。</span>'
+    : `当たりは${hit.length}人。${missed.length ? `見逃した狼が${missed.length}人、` : ''}${falsePicks.length ? `本当は狼ではなかった人が${falsePicks.length}人` : ''}いました。`.replace(/、いました。$/, 'いました。'));
+  const fate = id => !S.matched.includes(id) ? 'マッチしなかったので、近づかれずにすんだ'
+    : e.converted.includes(id) ? 'あなたのおかげで、狼をやめた' : esc(C[id].fate);
+  return `<div class="wrap"><section class="end">
+    <div class="kicker">${e.kicker}</div><h1>${esc(e.title)}</h1>
+    <div class="window"><span class="tag">${dateLabel(LAST_DAY)}</span><div class="lines">${linesHTML(e.lines)}</div></div>
+    <div class="reveal"><h3>答え合わせ</h3>
+      <p>${guessLine}</p>
+      <p>今回の狼は、この${S.wolves.length}人でした。</p>
+      ${wolfListHTML(fate)}
+      ${e.metWolves.length > e.converted.length ? `<p class="empty">もっと距離を縮めていたら、狼の心も変えられたかもしれません。</p>` : ''}
+    </div>
+    <div class="reveal"><h3>好感度</h3>${tallyHTML()}</div>
+    <div class="row"><button class="btn-main" data-go="restart">もう一度あそぶ</button><button class="btn-sub" data-go="toTitle">タイトルへ</button></div>
+  </section>${noteHTML()}</div>`;
+}
+
+const app = document.getElementById('app');
+function render() {
+  if (!S) app.innerHTML = titleHTML();
+  else if (S.screen === 'swipe') { app.innerHTML = swipeHTML(); bindSwipe(); }
+  else if (S.screen === 'over') app.innerHTML = overHTML();
+  else if (S.screen === 'ending') app.innerHTML = endingHTML();
+  else {
+    app.innerHTML = playHTML();
+    const st = document.getElementById('story');
+    if (st) st.scrollTop = st.scrollHeight;
+  }
+}
+function advance(all) {
+  if (!S || S.screen !== 'play' || S.shown >= S.log.length) return;
+  S.shown = all ? S.log.length : S.shown + 1;
+  render();
+}
+
+/* ---------- swipe gesture ---------- */
+let flying = false;
+function fly(yes) {
+  if (flying) return;
+  const card = document.getElementById('swcard');
+  if (!card || reduceMotion()) { ACT.swipe(yes); return; }
+  flying = true;
+  card.style.transition = 'transform .24s ease, opacity .24s ease';
+  card.style.setProperty(yes ? '--yes' : '--no', 1);
+  card.style.transform = `translateX(${yes ? 520 : -520}px) rotate(${yes ? 18 : -18}deg)`;
+  card.style.opacity = '0';
+  setTimeout(() => { flying = false; ACT.swipe(yes); }, 220);
+}
+function bindSwipe() {
+  const card = document.getElementById('swcard');
+  if (!card) return;
+  let x0 = null, dx = 0;
+  card.addEventListener('pointerdown', e => { x0 = e.clientX; dx = 0; card.setPointerCapture(e.pointerId); card.style.transition = 'none'; });
+  card.addEventListener('pointermove', e => {
+    if (x0 === null) return;
+    dx = e.clientX - x0;
+    card.style.transform = `translateX(${dx}px) rotate(${dx / 18}deg)`;
+    card.style.setProperty('--yes', Math.max(0, Math.min(1, dx / 90)));
+    card.style.setProperty('--no', Math.max(0, Math.min(1, -dx / 90)));
+  });
+  const end = () => {
+    if (x0 === null) return;
+    x0 = null; card.style.transition = '';
+    if (dx > 90) fly(true); else if (dx < -90) fly(false);
+    else { card.style.transform = ''; card.style.setProperty('--yes', 0); card.style.setProperty('--no', 0); }
+  };
+  card.addEventListener('pointerup', end);
+  card.addEventListener('pointercancel', end);
+}
+
+app.addEventListener('submit', e => {
+  if (e.target.id !== 'startForm') return;
+  e.preventDefault();
+  newGame(document.getElementById('pname').value.trim().slice(0, 8));
+  window.scrollTo({ top: 0 });
+});
+app.addEventListener('click', e => {
+  const b = e.target.closest('button');
+  if (!b) { if (e.target.closest('#story')) advance(false); return; }
+  if (b.dataset.adv) { advance(b.dataset.adv === 'all'); return; }
+  if (b.dataset.go) { ACT[b.dataset.go](); window.scrollTo({ top: 0 }); return; }
+  if (b.dataset.sw !== undefined) { if (b.dataset.sw === 'close') ACT.closeSwipe(); else fly(b.dataset.sw === '1'); return; }
+  if (b.dataset.i !== undefined && S && S.scene) {
+    const c = S.scene.choices[+b.dataset.i];
+    if (c && !c.disabled) {
+      if (c.me) { S.log.push(['me', c.me]); S.meFlag = true; }
+      ACT[c.act](c.arg);
+    }
+  }
+});
+document.addEventListener('keydown', e => {
+  if (S && S.screen === 'play' && (e.key === 'Enter' || e.key === ' ') && !e.target.closest('button,input,summary')) { e.preventDefault(); advance(false); return; }
+  if (!S || S.screen !== 'swipe') return;
+  if (e.key === 'ArrowRight') fly(true);
+  if (e.key === 'ArrowLeft') fly(false);
+});
+
+registerCast();
+buildPortraits();
+window.claude?.hot?.snapshot?.(() => ({ S }));
+const boot = d => { if (d && d.S && d.S.v === 7) S = d.S; render(); };
+window.claude?.hot?.ready ? window.claude.hot.ready(boot) : boot(window.claude?.hot?.data ?? {});
+</script>
+
+</body>
+</html>
