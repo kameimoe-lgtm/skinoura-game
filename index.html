@@ -1336,6 +1336,33 @@ const DECOYS = [
   '{c}の財布に、近所のパン屋のスタンプカードが入っていた',
   '{c}の袖口に、絵の具が少しついていた',
 ];
+/* Confessions: romance-mode people confess once at heart 90. Wolves use exactly the same words. */
+const CONFESS = {
+  minato:{ask:[['minato','{n}さん。……少しだけ、話を聞いてくれるかな'],['minato','誰かのためにご飯を作るのが、こんなに楽しいって忘れてた。……僕と、付き合ってほしい']],
+    yes:[['minato','……ありがとう。今夜は、うれしくて眠れそうにないや']], no:[['minato','……そっか。うん、言えてよかった。これからも、ご飯は一緒に食べようね']]},
+  rei:{ask:[['rei','{n}ちゃん。……ちょっと、真面目な顔していい？'],['rei','いろんな客を見てきたけどさ、こんなに会いたくなるの、初めてなんだ。……俺と付き合って']],
+    yes:[['rei','……っしゃ！　やべ、手ふるえてる。……大事にするから']], no:[['rei','……そっか。ははっ、フラれた。……でも、店には来てくれよな']]},
+  sou:{ask:[['sou','……なあ'],['sou','……俺、気のきいたこと言えねえけど。お前の隣に、いたい。……付き合ってくれ']],
+    yes:[['sou','……そうか'],['nar','ソウは顔をそむけたまま、そっと手をにぎってきた']], no:[['sou','……そうか。……悪い、忘れてくれ。……また、ギター聴きに来いよ']]},
+  haruto:{ask:[['haruto','{n}さん、あの……今日こそ言うって、決めてたんです'],['haruto','年下だし、まだ半人前だけど……{n}さんのことが好きです。付き合ってください']],
+    yes:[['haruto','……ほんとに？　……やった。僕、もっとがんばります！']], no:[['haruto','……はい。わかりました。……でも、あきらめるのは、もう少しあとにしてもいいですか']]},
+  nanase:{ask:[['nanase','{n}さん。……本で読んだどんな言葉より、いま言いたいことがあるんだ'],['nanase','{n}さんのことが、好きです。……僕と、付き合ってください']],
+    yes:[['nanase','……ありがとう。今日の日記、たぶん1ページじゃ足りないな']], no:[['nanase','……そっか。うん。……聞いてくれて、ありがとう']]},
+  shizuma:{ask:[['shizuma','{n}様。……本日は、お客様としてではなく、ひとりの人間としてお話しさせてください'],['shizuma','あなたの毎日を、いちばん近くでお支えしたいのです。……わたくしと、お付き合いいただけませんか']],
+    yes:[['shizuma','……ありがとうございます。生涯で、いちばん光栄なご予約です']], no:[['shizuma','……かしこまりました。失礼をいたしました。……どうか、これまでどおり仲良くしてくださいませ']]},
+  gou:{ask:[['gou','{n}。……飯の話じゃねえんだけどさ'],['gou','俺、腹減ってないときでも、お前のことばっか考えてんだ。……付き合ってくれ']],
+    yes:[['gou','……マジか。……よっしゃ！　今度、店でいちばんうまいの作ってやる']], no:[['gou','……そっか。……いや、言えてすっきりした。また食いに来いよ']]},
+  kai:{ask:[['kai','{n}ちゃん、今日はおごりじゃなくて、俺の気持ちを受け取ってほしい'],['kai','……なんてな。でも本気。{n}ちゃんのこと、好きだ。付き合おう']],
+    yes:[['kai','マジで!?　うわ、今日いちばんいい日！　大事にする！']], no:[['kai','……そっかそっか！　いや、全然大丈夫！　……ちょっとだけ、へこんでるけど']]},
+  shingo:{ask:[['shingo','{n}さん。……いつもは話が長くなりますが、今日は短く言います'],['shingo','好きです。僕と、お付き合いしてください']],
+    yes:[['shingo','……ありがとうございます。すみません、本当は、このあと3時間くらい語れます']], no:[['shingo','……そうですか。いえ、ちゃんと聞いてもらえただけで、十分です']]},
+  nagi:{ask:[['nagi','……あの。……配信だと、いくらでも喋れるのに'],['nagi','……{n}さんが、好き、です。……付き合って、ください']],
+    yes:[['nagi','……っ。……うれしい。……いま、たぶん、一生でいちばんの顔してる']], no:[['nagi','……うん。……だいじょうぶ。……また、ゲームしよ']]},
+  ren:{ask:[['ren','……{n}さん。今夜の最後の曲は、きみに向けて選んだんだ'],['ren','……ぼくの夜に、ずっといてほしい。……付き合ってくれる？']],
+    yes:[['ren','……ありがとう。今夜は、いい夢が見られそうだ。……朝だけどね']], no:[['ren','……そっか。……ううん、きみの声が聞けるだけで、ぼくは十分だよ']]},
+  shion:{ask:[['shion','{n}さん。今日は、カードを引かずに言いますね'],['shion','占いなんかなくても、わかるんです。……あなたが好きです。お付き合いしてください']],
+    yes:[['shion','……ありがとう。いまの私、きっと星のカードみたいな顔をしています']], no:[['shion','……そうですか。ふふ、未来は、まだ決まっていませんから']]},
+};
 const confrontChoice = id => {
   const ch = S.chars[id];
   return C[id].lie && ch.claim && ch.evidence && !ch.confronted
@@ -1365,7 +1392,7 @@ function newGame(name) {
   S = { name: name || 'ミオ', day: 1, money: 60000, wolves: shuffle(IDS).slice(0, WOLF_COUNT), picks: [], outfit: 0, gift: false, shopped: 0, lastDateCost: 0,
         schedule: {}, repay: [], chars: {}, clues: {}, matched: [], screen: 'play', scene: null,
         swipe: null, guess: null, overBy: null, log: [], shown: 0, sceneStart: 0, meFlag: false,
-        twinNow: null, knowTwin: false, twinCaught: 0, motif: Math.floor(Math.random() * MOTIFS.length), motifKnown: false, decoy: {}, v: 8 };
+        twinNow: null, knowTwin: false, twinCaught: 0, motif: Math.floor(Math.random() * MOTIFS.length), motifKnown: false, decoy: {}, partner: null, v: 9 };
   const decoys = shuffle(DECOYS.map((_, i) => i));
   IDS.forEach((id, i) => {
     S.chars[id] = { aff: 20, sns: 0, obs: 0, tell: 0, used: [], dates: 0, hooked: false, bigDone: false, since: 0, claim: false, evidence: false, confronted: false, exposed: false };
@@ -1451,7 +1478,8 @@ const ACT = {
 
   request({ id, kind, pre = [] }) {
     const R = C[id].req[kind];
-    scene('お願い', [...pre, ['nar', `スマホが鳴った。${C[id].short}からだ`], ...R.ask], [
+    const lover = S.partner === id ? [['nar', `恋人の${C[id].short}が、あなたを頼るように見つめてくる。断ったら、きっとすごく悲しませてしまう`]] : [];
+    scene('お願い', [...pre, ['nar', `スマホが鳴った。${C[id].short}からだ`], ...R.ask, ...lover], [
       { label: '引き受ける', me: 'うん、いいよ', act: 'answer', arg: { id, kind, yes: true } },
       { label: '断る', me: 'ごめん、それはできない', act: 'answer', arg: { id, kind, yes: false } },
       { label: '詳しく聞く', me: 'もう少し詳しく聞かせて', act: 'detail', arg: { id, kind } },
@@ -1487,7 +1515,7 @@ const ACT = {
         if (R.repay && R.repay[k]) S.repay.push({ day: S.day + 3, id, amount: R.repay[k].amount, lines: R.repay[k].lines });
       }
     } else {
-      lines = [...R.refuse[k]]; d = R.loss.true;
+      lines = [...R.refuse[k]]; d = R.loss.true * (S.partner === id ? 2 : 1);
       if (kind === 'big' && k === 'wolf' && ch.aff + d >= 70) lines.push(...C[id].waver);
     }
     addAff(id, d);
@@ -1586,8 +1614,30 @@ const ACT = {
       lines.push(['nar', t], MEMO);
       clue(id, '持ち物', t);
     }
+    if (CONFESS[id] && !S.partner && !ch.confessed && ch.aff >= 90) {
+      ch.confessed = true;
+      lines.push(['nar', '帰り道。ふいに、足が止まった'], ...CONFESS[id].ask);
+      scene('デート', lines, [
+        { label: '付き合う', me: 'うん。……よろしくお願いします', act: 'confessAns', arg: { id, yes: true } },
+        { label: 'ごめん、まだ友達でいたい', me: 'ごめんね。……まだ、友達でいたいな', act: 'confessAns', arg: { id, yes: false } },
+      ]);
+      return;
+    }
     const msgs = C[id].twin && S.twinNow === 'yo' ? AFTER.you : AFTER[id];
     lines.push(['nar', 'その夜、スマホが小さく鳴った'], [id, msgs[(ch.dates - 1) % 3], 'msg']);
+    scene('デート', lines, [toDay]);
+  },
+
+  confessAns({ id, yes }) {
+    let lines;
+    if (yes) {
+      S.partner = id; addAff(id, 5);
+      lines = [...CONFESS[id].yes, ['sys', `${C[id].short}と付き合うことになった`], heart(id, 5)];
+      clue(id, 'デート', `${C[id].short}に告白されて、付き合うことにした`);
+    } else {
+      addAff(id, -8);
+      lines = [...CONFESS[id].no, heart(id, -8)];
+    }
     scene('デート', lines, [toDay]);
   },
 
@@ -1709,10 +1759,17 @@ function ending() {
   const ba = best ? S.chars[best].aff : 0;
   let title, lines, kicker;
   if (converted.length) { kicker = 'TRUE END'; title = 'ほんとの好き'; lines = converted.flatMap(id => C[id].convert); }
-  else if (ba >= 90) {
-    kicker = 'GOOD END'; title = C[best].love.title; lines = C[best].love.lines;
-    if (C[best].twin && S.twinCaught > 0) lines = [...lines, ['you', '兄貴のこと、頼んだからな！']];
+  else if (S.partner && !S.wolves.includes(S.partner)) {
+    const p = S.partner;
+    kicker = 'GOOD END'; title = C[p].love.title; lines = C[p].love.lines;
+    if (C[p].twin && S.twinCaught > 0) lines = [...lines, ['you', '兄貴のこと、頼んだからな！']];
   }
+  else if (S.partner) {
+    const p = S.partner;
+    kicker = 'BAD END'; title = '偽りの恋人エンド';
+    lines = [['nar', `20日目の夜、${C[p].short}からの返信は来なかった`], ['nar', '「付き合おう」と言ってくれたあの日の笑顔は、なんだったんだろう']];
+  }
+  else if (ba >= 90 && C[best].mode === '友達') { kicker = 'GOOD END'; title = C[best].love.title; lines = C[best].love.lines; }
   else if (ba >= 65) { kicker = 'NORMAL END'; title = `親友エンド　${C[best].full}`; lines = C[best].friend; }
   else { kicker = 'LONELY END'; title = 'ひとりぼっちエンド'; lines = [['nar', '疑いすぎたのかもしれない。誰にもだまされなかったけれど、誰とも近づけなかった'], ['nar', 'アプリの通知は、今夜も鳴らない']]; }
   return { metWolves, converted, title, lines, kicker };
@@ -1748,6 +1805,7 @@ function titleHTML() {
     <li><b>お金</b><span>デートにはお金がかかります。服やプレゼントを買えば好感度が上がりやすくなり、宝くじで増えることも。${PAYDAY}日目は給料日です。</span></li>
     <li><b>お願い</b><span>マッチした人はときどきお願いをしてきます。本当にあなたが好きな人も、だまそうとしている人も、同じ言葉で頼んできます。</span></li>
     <li><b>矛盾</b><span>相手が話していたことと、ミヤの調べた情報が食い違ったら、デートで問い詰められます。本物ならちゃんと理由があり、狼なら言い訳がほころびます。狼どうしは仲間で、同じ目印を持っているかもしれません。</span></li>
+    <li><b>告白</b><span>恋人モードの相手は、好感度が90に届くと告白してきます。付き合えるのは1人だけ。恋人のお願いは断りにくくなります。狼も、本物と同じように告白してきます。</span></li>
     <li><b>見抜く</b><span>狼の大きなお願いを引き受けると、その場でゲームオーバーです。狼は${IDS.length}人のうち${WOLF_COUNT}人で、毎回入れ替わります。最後に、誰が狼だったかを当てましょう。</span></li>
     <li><b>改心</b><span>狼とも仲良くなって、誘いをはねのけ続ければ、心を変えられるかもしれません。</span></li>
   </ul>
@@ -1792,7 +1850,7 @@ function barHTML() {
 
 function castHTML() {
   if (!S.matched.length) return '';
-  return `<div class="cast">${S.matched.map(id => `<div class="member" ${who(id)}>${pfHTML(id)}<div class="txt"><span class="nm">${C[id].short}${C[id].mode === '友達' ? '（友達）' : ''}</span><span class="hearts" aria-label="好感度 ${S.chars[id].aff}">${hearts(S.chars[id].aff)}<i>${S.chars[id].aff}</i></span></div></div>`).join('')}</div>`;
+  return `<div class="cast">${S.matched.map(id => `<div class="member" ${who(id)}>${pfHTML(id)}<div class="txt"><span class="nm">${C[id].short}${S.partner === id ? '（恋人）' : C[id].mode === '友達' ? '（友達）' : ''}</span><span class="hearts" aria-label="好感度 ${S.chars[id].aff}">${hearts(S.chars[id].aff)}<i>${S.chars[id].aff}</i></span></div></div>`).join('')}</div>`;
 }
 
 function noteHTML() {
@@ -1940,7 +1998,7 @@ document.addEventListener('keydown', e => {
 registerCast();
 buildPortraits();
 window.claude?.hot?.snapshot?.(() => ({ S }));
-const boot = d => { if (d && d.S && d.S.v === 8) S = d.S; render(); };
+const boot = d => { if (d && d.S && d.S.v === 9) S = d.S; render(); };
 window.claude?.hot?.ready ? window.claude.hot.ready(boot) : boot(window.claude?.hot?.data ?? {});
 </script>
 
