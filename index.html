@@ -271,7 +271,7 @@ button.ntf:hover{border-color:var(--rose)}
 <div id="app"></div>
 
 <script>
-const ALL_IDS = ['minato','rei','sakura','sou','haruto','nanase','shizuma','gou','kai','iroha','shingo','nagi','ren','akira','shion'];
+const ALL_IDS = ['minato','rei','sakura','sou','haruto','nanase','shizuma','gou','kai','iroha','shingo','nagi','ren','akira','shion','noa','keita','shuichi','ryo'];
 const WOLF_COUNT = 5;
 let IDS = ALL_IDS;
 const SPK = {news:'ニュース', minato:'湊', rei:'レイ', sakura:'さくら', sou:'ソウ', haruto:'ハルト', nanase:'七瀬', you:'ヨウ', miya:'ミヤ', yanagi:'柳', nar:''};
@@ -1314,6 +1314,286 @@ C.shion.lie = {
   }
 };
 
+/* ---------- cast added 2026-10-23 (第14版): sources in library/scam/ ---------- */
+// ノア: never in the Lumi deck. He arrives as a wrong-number message and lives abroad, so "dates" are calls until he flies home.
+C.noa = { full:'鳴海 ノア', short:'ノア', age:27, job:'物流会社（シンガポール駐在）', mode:'恋人', login:'Lumi ではなく、間違いメッセージで知り合った',
+  bio:'アメリカ育ちで、いまはシンガポールで働いています。日本語はまだ勉強中です。へんな言い方をしたら、教えてください。', tags:['海外勤務','日本語勉強中','夜景'], scam:'荷物の手数料と渡航費をだまし取るロマンス詐欺',
+  remote:true, entry:'wrong', returnDay:16, bigBy:15,
+  talks:[
+    {t:[['nar','夜、ノアから着信があった。画面は真っ暗で、声だけが聞こえる'],['noa','もしもし、{n}さん？　すいません、こっちの回線がわるくて、カメラが使えません'],['noa','声だけでも、話せてうれしいです']],
+     c:[['シンガポールって、いま何時？',10,[['noa','こっちは、日本より1時間おそいです。だから、まだ仕事のあとの感じ'],['noa','{n}さんと同じ夜に話せるの、ちょっとふしぎです']]],
+        ['日本語、上手だね',8,[['noa','ほんとですか？　ありがとう。毎日、日本のドラマで練習してます'],['noa','でも「いただきます」と「ごちそうさま」、ときどき逆になります']]],
+        ['声、思ったより低いね',6,[['noa','そうですか？　……すいません、がっかりしましたか'],['noa','あ、いま笑いましたね。よかった']]]]},
+    {t:{true:[['nar','夜、ノアから着信があった。今日は、画面に顔が映っている'],['noa','見えますか？　今日は回線がいいです。うしろの窓、マリーナの夜景です'],['nar','少し照れくさそうに笑う顔は、思っていたより幼かった']],
+        wolf:[['nar','夜、ノアから着信があった。今日も、画面は真っ暗だ'],['noa','すいません、まだカメラが壊れています。会社のパソコンは、規則で通話に使えなくて'],['noa','でも、{n}さんの声を聞くと、元気が出ます']]},
+     c:[['今日はどんな一日だった？',10,[['noa','港で、コンテナの数をかぞえる一日でした。ぜんぶで、たぶん1000個'],['noa','……うそです。でも、それくらい疲れました']]],
+        ['早く会ってみたいな',12,[['noa','ぼくもです。4月16日に、一時帰国します。カレンダーに、もう丸をつけました'],['noa','その日、{n}さんに会えたら、うれしいです']]],
+        ['ちゃんと寝てる？',8,[['noa','……あまり。でも、{n}さんと話した日は、よく眠れます'],['noa','あ、いまのは、ドラマのセリフじゃないです。本当です']]]]},
+    {t:{true:[['nar','夜、ノアから着信。画面のむこうで、ノアはカップラーメンにお湯を注いでいた'],['noa','すいません、晩ごはんです。日本のカップラーメン、こっちだと高いんです']],
+        wolf:[['nar','夜、ノアから着信。今日も声だけだ'],['noa','カメラ、修理に出しました。でも、部品が日本から届くまで、時間がかかるそうです'],['noa','{n}さんは、ぼくの顔、見たいですか？']]},
+     c:[['家族はどこにいるの？',10,[['noa','父はアメリカ、母は日本の広島です。ぼくは、ちょうどまんなかにいます'],['noa','だから、どこにいても、ちょっとだけさびしいです']]],
+        ['どうして日本語を勉強してるの？',12,[['noa','母の国の言葉で、母と話したいからです。……それと、いまは、もうひとつ理由があります'],['noa','{n}さんと、ちゃんと話したいからです']]],
+        ['今日は声だけでいいよ',6,[['noa','やさしいですね。……ありがとう'],['noa','目をとじて聞くと、となりにいるみたいです']]]]},
+    {t:[['nar','羽田空港の到着ロビー。スーツケースを引いた背の高い人が、こちらに手をふった'],['noa','{n}さん！　……本物だ。画面より、ずっと、きれいです']],
+     c:[['おかえりなさい',14,[['noa','……ただいま。日本で「ただいま」を言うの、ひさしぶりです'],['nar','ノアは、少し泣きそうな顔で笑った']]],
+        ['ほんとに会えたね',12,[['noa','はい。……ぼくも、ちょっと夢みたいです'],['noa','おなかすきました。日本のラーメン、いっしょに食べたいです']]],
+        ['思ったより背が高い！',8,[['noa','よく言われます。……でも、{n}さんの声は、電話と同じです'],['noa','安心しました']]]]}],
+  tells:{
+    wolf:['ぼくのこと、あまり人に話さないでください。遠距離は、みんな反対するので','このアカウント、新しく作りました。前のは、仕事で使えなくなって','{n}さんは、貯金とか、ちゃんとしてますか？　ぼくは、将来のこと、まじめに考えています'],
+    true:['母に、{n}さんの話をしました。「ちゃんと会ってから決めなさい」と言われました','会社の同僚が、日本のお菓子をほしがっています。帰国したら、たくさん買って帰ります','もし会ってみて、イメージとちがったら、正直に言ってください。ぼくは大丈夫です']},
+  sns:{
+    wolf:['ノアさんのアカウント、あったよ。高層ビルとか高級ホテルのプールの写真ばっかり。顔は横顔だけだね','画像検索してみた。ノアさんのプロフィール写真、海外のモデルさんの写真と同じだった。名前も国もぜんぜんちがう人','投稿は全部、ここ2か月以内。フォロワーはほとんど知らない外国の人で、友達とのやりとりが1件もない。……{n}、これ、ユキのときとそっくりだよ'],
+    true:['ノアさんのアカウント、あったよ。夜景とか港の写真ばっかり。顔は横顔だけだね','会社の公式ページに、シンガポール支社の集合写真があった。いちばん端で、ノアさんがピースしてる','5年前から投稿してる。広島のおばあちゃんちの写真とか、お母さんの誕生日の投稿もあるよ。ちゃんと生活してる人だと思う']},
+  obs:{
+    wolf:['その人は、まだこの店に来たことがないね。……会ったことのない人のことは、私にはわからないよ','最近、ほかのお客さんからも「海外にいる恋人」の話をよく聞くんだ。みんな、まだ一度も会えていない。そして、そのうち「荷物」の話が出てくるそうだよ'],
+    true:['その人は、まだこの店に来たことがないね。……会ったことのない人のことは、私にはわからないよ','そういえば、常連の奥さんが「息子がシンガポールで働いていて、来月帰ってくる」と話していたな。広島の出身だそうだ。……まさかね']},
+  req:{
+    small:{ask:[['noa','{n}さん、ひとつ、お願いがあります'],['noa','日本に荷物を送りたいんです。{n}さんの住所で、受け取ってもらえませんか']],
+      detail:{true:[['noa','広島の母に、誕生日プレゼントを送りたいんです。でも、実家がいま引っ越し中で、受け取れなくて'],['noa','送料は、こっちで払いました。{n}さんは、受け取って、帰国まで預かってくれるだけでいいです']],
+              wolf:[['noa','中身は、会社からもらった記念品と、{n}さんへのプレゼントです。少しだけ、現金も入っています'],['noa','ただ、日本で受け取るときに、通関手数料が18,000円かかります。帰国したら、すぐ返します']]},
+      cost:{true:0,wolf:18000}, gain:{true:10,wolf:4}, loss:{true:-6,wolf:-3},
+      accept:{true:[['nar','数日後、小さな箱が届いた。送り状には、ていねいな字で「お母さん　お誕生日おめでとう」と書いてあった'],['noa','とどきましたか？　ありがとう。{n}さんは、ぼくの恩人です']],
+              wolf:[['nar','コンビニで手数料を払った。届いた箱には、安っぽいキーホルダーがひとつ入っていた。現金は、どこにもなかった'],['noa','とどきましたか？　現金は、税関で別にされたのかもしれません。また調べます']]},
+      refuse:{true:[['noa','そうですよね。会ったこともないのに、住所なんて。……すいません、ぼくが考えなしでした']],
+              wolf:[['noa','……そうですか'],['noa','{n}さんなら、信じてくれると思っていました']]}},
+    big:{ask:[['noa','{n}さん、こまったことになりました'],['noa','帰国の飛行機のことで、いま、{n}さんにしか頼れないんです']],
+      detail:{true:[['noa','帰国の便が、会社の都合で早まりました。ホテルの予約が1日ずれて、カードの限度額がいっぱいで'],['noa','1泊分、3万円だけ貸してもらえませんか。着いたら、空港のATMですぐ返します。……やっぱり、へんですよね。断ってもいいです']],
+              wolf:[['noa','空港で、荷物の超過料金とビザの手続きのお金が足りなくて、出国できません'],['noa','30万円、立て替えてもらえませんか。日本に着いたら、すぐに返します。いまから言う口座に、今日中にお願いします'],['noa','……このことは、誰にも言わないでください。ぼくの会社に知られたら、クビになります']]},
+      cost:{true:30000}, gain:{true:16}, loss:{true:-10,wolf:-3},
+      repay:{true:{amount:30000,lines:[['noa','{n}さん、これ、お借りした3万円です。……本当に、ありがとう']]}},
+      accept:{true:[['nar','銀行アプリで3万円を送った。すぐに、ホテルの予約確認の画面が送られてきた'],['noa','助かりました。日本に着いたら、まっさきに返しに行きます']]},
+      refuse:{true:[['noa','……そうですよね。自分でなんとかします。会社の先輩に頼んでみます'],['noa','へんなことを言って、すいませんでした']],
+              wolf:[['noa','……どうして'],['noa','{n}さんは、ぼくに会いたくないんですか？']]}}},
+  waver:[['noa','……ぼくの名前、本当は、ノアじゃありません。……いえ、なんでもないです']],
+  over:{title:'会えない恋人エンド', lines:[['nar','30万円を振り込んだ翌日、ノアから「ビザの保証金があと50万円必要です」とメッセージが届いた'],['nar','4月16日、羽田空港の到着ロビーで、{n}はいつまでも待っていた。ノアのアカウントは、その夜に消えた']]},
+  convert:[['noa','{n}さん。……ぼくは、シンガポールにはいません。写真も、名前も、ぜんぶ借りものでした'],['noa','台本どおりに「会いたい」と打っていたのに、{n}さんはいつも、ぼくの体調を心配してくれた'],['noa','もう、誰かを待たせる仕事はしません。……今度は、自分の顔で、会いに行ける人になります']],
+  fate:'ノアのアカウントは、4月16日を待たずに消えていた。',
+  love:{title:'恋人エンド　鳴海 ノア', lines:[['noa','{n}さん。来年、日本の支社に異動できるよう、会社に頼みました'],['nar','空港で別れるとき、ノアは「いってきます」と言った'],['noa','次は、「ただいま」を言いに帰ってきます。……それまで、毎晩電話します']]},
+  friend:[['noa','{n}さん、日本の友達は、{n}さんが一人目です。また、電話してもいいですか？']],
+  confess:{ask:[['noa','{n}さん。……電話を切る前に、言いたいことがあります'],['noa','顔も見えないのに、{n}さんの声がいちばん好きです。……ぼくと、付き合ってくれませんか']],
+    yes:[['noa','……ありがとう。いま、こっちの窓の外、すごくきれいです。{n}さんにも見せたい']], no:[['noa','……はい。わかりました。……また、電話してもいいですか']]},
+  after:['今日も話してくれて、ありがとう。おやすみなさい。……日本語、合ってますか？','{n}さんの声を聞いたあとは、こっちの夜も、ちょっと短く感じます','明日も、電話していいですか？　仕事、がんばれそうです'],
+  colors:{light:'#2f6b8a', dark:'#8cc8e6'},
+  px:{c:{H:'#c9a46a',C:'#2e3f63',E:'#3a5a7a'}, h:[
+    '................','.....HHHHHH.....','....HHHHHHHH....','...HHHHHHHHHH...','...HHHHHHHHHHH..',
+    '...HH.HHHHH.H...','...H........H...']}
+};
+
+// ケイタ: his small request is to leave Lumi for LINE — the classic first step in the articles.
+C.keita = { full:'日野 ケイタ', short:'ケイタ', age:24, job:'古着屋の店員', mode:'恋人', login:'ログイン：3時間以内',
+  bio:'下北沢の古着屋で働いてます！　ノリは軽いってよく言われるけど、好きになったら一途です。マジで。', tags:['古着','フェス','ラーメン'], scam:'口座の売り渡し（闇バイト）',
+  talks:[
+    {t:[['nar','下北沢の古着屋めぐり。ケイタは、店に入るたびに店員さんとハイタッチしている'],['keita','{n}ちゃん、これ着てみ？　ぜったい似合うって、マジで']],
+     c:[['じゃあ、着てみる！',12,[['keita','……やば。俺、見立ての天才かも'],['keita','いや、ちがうな。{n}ちゃんが着るから似合うんだわ']]],
+        ['顔が広いんだね',8,[['keita','この街、狭いからさ。みんな友達みたいなもん'],['keita','でも、こうやって二人で歩くのは、{n}ちゃんだけだよ']]],
+        ['ちょっと派手じゃない？',5,[['keita','え〜、いいじゃん。……あ、でも{n}ちゃんが好きなのがいちばんか'],['keita','ごめん、俺の趣味押しつけてた。次、{n}ちゃんの好きな店いこ']]]]},
+    {t:[['nar','夜のラーメン屋。ケイタは、替え玉を2回たのんだ'],['keita','俺さ、いつか自分の店を出したいんだよね。古着とレコードの店']],
+     c:[['素敵な夢だね',12,[['keita','……笑わないの？　ほとんどのやつ、「無理だろ」って笑うんだけど'],['keita','{n}ちゃんに言うと、ほんとにできそうな気がしてくるわ']]],
+        ['お金、かかりそう',6,[['keita','それな〜。だから、いまコツコツ貯めてんの。まだ全然だけど'],['keita','……でも、ちゃんと自分で貯めたいんだよね。そこは、こだわり']]],
+        ['レコード好きなんだ？',9,[['keita','父ちゃんの影響。家に、昭和のレコードが山ほどあんの'],['keita','今度、うち来る？　……いや、変な意味じゃなくて！　レコード聴くだけ！']]]]},
+    {t:[['nar','夕方の河川敷。ケイタは、めずらしく黙って川を見ていた'],['keita','……俺さ、こう見えて、けっこう人見知りなんだよね']],
+     c:[['ぜんぜん見えない！',6,[['keita','でしょ？　しゃべってないと、不安になんの'],['keita','……{n}ちゃんの前だと、黙ってても平気なんだけどさ']]],
+        ['どうして明るくしてるの？',12,[['keita','中学のとき、転校ばっかでさ。最初に笑わせたもん勝ち、って覚えたんだよね'],['keita','……こんな話、店のやつにもしたことないわ']]],
+        ['黙ってるケイタくんも好きだよ',10,[['keita','……は？　……ちょ、いま、こっち見ないで'],['nar','夕日のせいにできないくらい、ケイタの耳が赤い']]]]}],
+  tells:{
+    wolf:['最近、知り合いの先輩の手伝いしててさ。それが、けっこういい金になんの','{n}ちゃん、使ってない銀行口座とかある？　いや、聞いてみただけ','Lumi ってさ、運営にトーク見られてるらしいよ。なんか、やじゃない？'],
+    true:['今日、店にきたおばあちゃんが、亡くなった旦那さんのジャケット売りにきてさ。……値段つけるの、つらかったわ','店長に「最近、楽しそうだな」って言われた。……誰のせいだと思う？','貯金、今月はちょっと増えた！　店を出すまで、あと……まあ、まだまだだけど']},
+  sns:{
+    wolf:['ケイタくんのアカウント、あったよ。古着のコーデ写真ばっかり。けっこうおしゃれ','最近の投稿に、「簡単に稼げる仕事あります。口座さえあればOK」って書いてある人と、仲よさそうにやりとりしてる','「アプリで知り合った人に口座を売らされて、凍結された」って書きこみ、ケイタくんと同じ店の名前が出てた。……そのお店、去年つぶれてるんだって'],
+    true:['ケイタくんのアカウント、あったよ。古着のコーデ写真ばっかり。けっこうおしゃれ','お店の公式アカウントにも、ケイタくんがいた。「スタッフ日野、本日も元気です」だって。お客さんの評判もいいみたい','3年前から「いつか自分の店を出す」って書いてる。貯金箱の写真まであった。地道な人だね']},
+  obs:{
+    wolf:['あの子は、ずいぶん電話が多いね。席を立って、外で小声で話していたよ','先週、あの子は知らない男の人たちとここに来ていたよ。「口座」「名義」という言葉が、何度も聞こえた。……あまり、いい話には聞こえなかったね'],
+    true:['あの子は、ずいぶん電話が多いね。席を立って、外で小声で話していたよ','あの電話はね、お店の仕入れの相談だったよ。帰りぎわ、「この店の椅子、いつか自分の店に置きたい」と、まじめな顔で聞いてきたんだ']},
+  req:{
+    small:{ask:[['keita','ねえ{n}ちゃん、Lumi やめてさ、LINE にしない？'],['keita','もう{n}ちゃん以外と話す気ないし。俺も、Lumi 消すからさ']],
+      detail:{true:[['keita','正直に言うと、Lumi の有料プラン、今月で切れるんだよね。更新するの、ちょっともったいなくて'],['keita','……でも、{n}ちゃんが Lumi のほうが安心なら、そっちでいいよ。ほんとに']],
+              wolf:[['keita','Lumi って、運営にトーク見られてるらしいじゃん。二人の話、誰にも見られたくないし'],['keita','LINE なら、誰にも知られないで話せるっしょ。今日中に移ろ？']]},
+      cost:{true:0,wolf:0}, gain:{true:10,wolf:4}, loss:{true:-5,wolf:-3},
+      accept:{true:[['nar','ケイタと LINE を交換した。最初に届いたのは、店の看板猫の写真だった'],['keita','やった！　これで通知、秒で気づけるわ']],
+              wolf:[['nar','ケイタと LINE を交換した。その日のうちに、Lumi のケイタのアカウントは消えていた'],['keita','やった！　これで、俺たちだけの場所だな']]},
+      refuse:{true:[['keita','そっか、そうだよな。アプリのほうが安心だよな'],['keita','ごめん、焦った。ゆっくりでいいわ']],
+              wolf:[['keita','……え、なんで？'],['keita','俺のこと、信用してないってこと？']]}},
+    big:{ask:[['keita','{n}ちゃん、ちょっと頼みがあるんだけど……'],['keita','銀行口座のことで、相談させてほしいんだよね']],
+      detail:{true:[['keita','古着の買い付けで、来月タイに行くことになってさ。向こうの業者が、日本の口座に代金を返金したいって言うんだけど、俺の口座、なんか凍結されててさ'],['keita','……って店長に話したら、「人の口座を使うのは絶対ダメだ、自分のを作り直せ」って怒られた。だから、銀行までついてきてくれない？　交通費、半分出してもらえたらうれしい'],['keita','俺、こういう手続き、ほんと苦手でさ']],
+              wolf:[['keita','先輩の会社でさ、給料の振込用に口座が足りないんだって。使ってない口座、貸してくれたら、お礼に3万円もらえるんだよ'],['keita','キャッシュカードと暗証番号を、封筒に入れて渡すだけ。すぐ終わるって'],['keita','……あ、これは誰にも言わないでね。先輩に迷惑かかるから']]},
+      cost:{true:1200}, gain:{true:16}, loss:{true:-10,wolf:-3},
+      accept:{true:[['nar','銀行の窓口で、ケイタは書類を3回書き直した。帰り道、ケイタは新しい通帳を、宝物みたいに両手で持っていた'],['keita','……ついてきてくれて、マジでありがと。{n}ちゃんいなかったら、たぶん変なことしてた']]},
+      refuse:{true:[['keita','そっか。……まあ、ひとりで行くわ。窓口の人、こわいけど'],['keita','ごめん、子どもみたいなこと言った']],
+              wolf:[['keita','……そっか'],['keita','せっかく{n}ちゃんにも、いい思いさせてあげようと思ったのに']]}}},
+  waver:[['keita','……俺、ほんとはさ。いや、なんでもない。……{n}ちゃんは、こういうのやめときな']],
+  over:{title:'口座売り渡しエンド', lines:[['nar','封筒を渡した2週間後、銀行から「口座が凍結されました」と連絡が来た。{n}の口座は、詐欺の振込先に使われていた'],['nar','警察で事情を聞かれた。お礼の3万円は、最初から振り込まれていなかった。ケイタの LINE は、もうつながらない']]},
+  convert:[['keita','{n}ちゃん。……俺、先輩の「手伝い」で、人の口座を集めてた'],['keita','簡単な仕事だと思ってた。でも、{n}ちゃんの口座だけは、どうしても先輩に渡せなかった'],['keita','全部、警察に話してくる。……自分の店は、ちゃんと自分の金で出すわ。時間かかっても']],
+  fate:'ケイタの LINE は、ある日から既読がつかなくなった。',
+  love:{title:'恋人エンド　日野 ケイタ', lines:[['keita','{n}ちゃん、見て。……店の物件、仮押さえした！'],['nar','がらんとした店内に、ケイタは古いレコードプレーヤーをひとつだけ置いた'],['keita','最初のお客さんは、{n}ちゃんな。……で、二人目からも、ずっと隣にいてよ']]},
+  friend:[['keita','{n}ちゃん、店出したら、絶対いちばんに来てよ！　友達割、するから！']],
+  confess:{ask:[['keita','{n}ちゃん。……俺、ノリで言ってると思われたくないから、ちゃんと言うわ'],['keita','好きだ。……付き合ってほしい。マジで']],
+    yes:[['keita','……っしゃあ！　やべ、手汗やば。……大事にする、ほんとに']], no:[['keita','……そっか。……ははっ、フラれた。……でも、また古着、見に来てよ']]},
+  after:['今日マジ楽しかった！　帰ったら連絡して！','家ついた？　今日の服、ほんと似合ってたわ','次どこ行く？　{n}ちゃんの行きたいとこ、全部メモってるから'],
+  colors:{light:'#b2561c', dark:'#f0a46a'},
+  px:{c:{H:'#d9823b',C:'#3c8c7a',E:'#5a3a1a'}, h:[
+    '...H...H..H.....','..HHHHHHHHHHH...','..HHHHHHHHHHHH..','.HHHHHHHHHHHHH..','.HHHHHHHHHHHHH..',
+    '..HH.H..H..HH...','..H..........H..']}
+};
+
+// 修一: his small request is "tell no one about us" — accepting it locks ミヤ and 柳 out unless the promise is broken.
+C.shuichi = { full:'高嶺 修一', short:'修一', age:34, job:'大学の准教授（数学）', mode:'恋人', login:'ログイン：12時間以内',
+  bio:'大学で数学を教えています。休日は美術館とクラシック音楽。口数は少ないほうですが、話を聞くのは得意です。', tags:['数学','美術館','クラシック'], scam:'結婚をちらつかせて資金を預からせる結婚詐欺',
+  talks:[
+    {t:[['nar','静かな美術館。修一さんは、一枚の絵の前で、もう10分も動かない'],['shuichi','……すみません。この絵の構図、黄金比でできているんです。つい、測ってしまって']],
+     c:[['わたしにも教えて',12,[['shuichi','……いいんですか？　では、あの窓の線と、人物の肩を結んでみてください'],['shuichi','ほら。美しいものには、たいてい理由があるんです。……あなたの笑い方にも、きっと']]],
+        ['数学の先生っぽい！',6,[['shuichi','よく言われます。……学生には、少し怖がられていますが'],['shuichi','怖くないと、言ってもらえるとうれしいです']]],
+        ['絵は、好きに見ればいいんじゃない？',9,[['shuichi','……おっしゃるとおりです。測ってばかりで、楽しむのを忘れていました'],['shuichi','今日は、あなたの見方で見てみます']]]]},
+    {t:[['nar','コンサートの帰り道。修一さんは、まだ音楽の余韻の中にいるみたいだ'],['shuichi','……ずっと、ひとりで聴きに来ていたんです。誰かと来たのは、何年ぶりでしょう']],
+     c:[['これからは、一緒に来よう',12,[['shuichi','……はい。チケットは、いつも2枚とることにします'],['nar','修一さんは、手帳に何かをていねいに書き込んだ']]],
+        ['どうしてひとりで？',9,[['shuichi','人に合わせるのが、下手なんです。……時間どおりに動かないと、落ち着かなくて'],['shuichi','でも今日は、あなたが遅れてきても、少しも気になりませんでした。ふしぎです']]],
+        ['眠くなっちゃった',5,[['shuichi','……正直ですね。実は、第2楽章で私も少し'],['shuichi','これは、学生には内緒にしてください']]]]},
+    {t:[['nar','喫茶かもめ。修一さんは、角砂糖を2つ、きっちり並べてからコーヒーに入れた'],['shuichi','……私は、一度約束を破られたことがあるんです。だから、つい、確かめすぎてしまう']],
+     c:[['どんな約束だったの？',12,[['shuichi','婚約していた人が、式の前の月に、いなくなりました。理由は、いまもわかりません'],['shuichi','……こんな話をしたのは、あなたが初めてです']]],
+        ['わたしは、いなくならないよ',10,[['shuichi','……ありがとうございます。証明はできませんが、信じたいと思います'],['shuichi','数学者が「信じたい」なんて言うのは、おかしいですね']]],
+        ['無理に話さなくていいよ',8,[['shuichi','……やさしいですね'],['shuichi','いつか、きちんと話します。そのときまで、待っていてください']]]]}],
+  tells:{
+    wolf:['あなたのご家族は、どんな方ですか？　……いえ、結婚となれば、いずれご挨拶に伺うので','お仕事の収入は、安定していますか？　将来の計画は、数字で立てたほうがいい','私たちのこと、まだ誰にも話していませんよね？　……それなら、安心です'],
+    true:['今日、ゼミの学生に「先生、最近やさしくなりましたね」と言われました。……心当たりは、ひとつしかありません','母に、あなたのことを少し話しました。「あなたが人を好きになるなんて」と、電話口で泣かれました','手帳の、あなたと会う日の欄だけ、色を変えています。……見なかったことにしてください']},
+  sns:{
+    wolf:['修一さん、大学の名前で検索したら、教員一覧に名前があったよ。……あれ？','その教員一覧の写真、顔がちがう人だった。名前だけ同じで、本物の高嶺先生は60歳くらいのおじいちゃん先生','婚活サイトの被害の掲示板に、「数学の准教授を名乗る男に、結婚資金を預けて逃げられた」って書きこみがあった。手口が、修一さんの話とそっくりだよ'],
+    true:['修一さん、大学の名前で検索したら、教員一覧に名前があったよ。写真もちゃんと本人','論文もいっぱい出てる。……タイトル、ぜんぜん読めないけど','学生の授業の口コミに「厳しいけど、質問に行くと何時間でも付き合ってくれる」って書いてあった。いい先生なんだね']},
+  obs:{
+    wolf:['あの人は、角砂糖を2つ、いつもきっちり並べてから入れるね。几帳面な人だ','先月、あの人は別のお嬢さんと来ていたよ。「ご家族には、まだ内緒にしておきましょう」と、何度も念を押していた。……お嬢さんは、通帳を持っていたね'],
+    true:['あの人は、角砂糖を2つ、いつもきっちり並べてから入れるね。几帳面な人だ','あの人は、何年も前からひとりで来てくれている常連さんでね。昔、婚約者を待って、閉店までここに座っていたことがある。……きみといるときは、よく笑うようになった']},
+  req:{
+    small:{ask:[['shuichi','ひとつ、お願いがあります'],['shuichi','私たちのことは、しばらく、誰にも話さないでいただけませんか']],
+      detail:{true:[['shuichi','以前、大学で根も葉もない噂を立てられた同僚がいて……私も、慎重になってしまうんです'],['shuichi','ご友人に話すのは、もう少し落ち着いてからにしてもらえたら。……もちろん、どうしても困ったときは、相談してかまいません']],
+              wolf:[['shuichi','周りに話すと、必ず反対する人が出てきます。年の差がある、とか、早すぎる、とか'],['shuichi','二人のことは、二人だけの秘密にしましょう。ご友人にも、ご家族にも']]},
+      cost:{true:0,wolf:0}, gain:{true:10,wolf:4}, loss:{true:-6,wolf:-3},
+      accept:{true:[['shuichi','ありがとうございます。……わがままを言って、すみません'],['nar','修一さんのことは、しばらく誰にも話さないと約束した。ミヤや柳さんに相談すると、約束をやぶることになる']],
+              wolf:[['shuichi','ありがとうございます。あなたなら、わかってくれると思っていました'],['nar','修一さんのことは、しばらく誰にも話さないと約束した。ミヤや柳さんに相談すると、約束をやぶることになる']]},
+      refuse:{true:[['shuichi','……そうですね。隠しごとをさせるのは、よくありませんでした'],['shuichi','忘れてください']],
+              wolf:[['shuichi','……そうですか'],['shuichi','あなたは、私より、ご友人の意見を大事にするんですね']]}},
+    big:{ask:[['shuichi','大切なお話があります'],['shuichi','私たちの、将来のことです']],
+      detail:{true:[['shuichi','来年、海外の大学に1年、研究に行くことになりました。……一緒に来てほしい、とは言えません'],['shuichi','そのかわり、出発前に、おそろいの腕時計を買いたいんです。離れていても、同じ時間を見られるように。半分、15,000円を出してもらえませんか'],['shuichi','……数学者らしくない理屈ですね。断ってもかまいません']],
+              wolf:[['shuichi','結婚を前提に、二人の口座を作りたいと考えています。新居の頭金と、式の費用です'],['shuichi','まずは、あなたの分として50万円、私の口座に預けてください。管理は、私がきちんとします'],['shuichi','ご家族に話すのは、すべて整ってからにしましょう。驚かせたいので']]},
+      cost:{true:15000}, gain:{true:16}, loss:{true:-10,wolf:-3},
+      accept:{true:[['nar','時計屋さんで、修一さんは2本の針を、秒まできっちり合わせてもらった'],['shuichi','……これで、どこにいても、同じ時間です']]},
+      refuse:{true:[['shuichi','……そうですね。物で気持ちをつなぎとめようなんて、私の悪いくせです'],['shuichi','そのかわり、毎朝、同じ時間にメッセージを送ります']],
+              wolf:[['shuichi','……そうですか'],['shuichi','結婚を考えているのは、私だけだったようですね']]}}},
+  waver:[['shuichi','……あなたは、いなくならないんですね。……計算が、合いません']],
+  over:{title:'結婚詐欺エンド', lines:[['nar','50万円を振り込んだ翌週、修一さんの電話はつながらなくなった'],['nar','大学に問い合わせると、「高嶺という准教授は、たしかにおりますが……写真の人物とは別人です」と言われた。誰にも話していなかったから、誰にも止めてもらえなかった']]},
+  convert:[['shuichi','……私は、数学者ではありません。名前も、肩書も、他人のものを借りていました'],['shuichi','「誰にも話さないで」と言えば、人は孤立します。そこまで計算どおりだったのに、あなたはいつも、私の話を最後まで聞いてくれた'],['shuichi','この計算は、ここで終わりにします。……答えを間違えたのは、私のほうでした']],
+  fate:'修一の電話番号は、いつのまにか「現在使われておりません」になっていた。',
+  love:{title:'恋人エンド　高嶺 修一', lines:[['shuichi','出発の朝。空港の時計と、おそろいの腕時計の針が、ぴったり重なっていた'],['shuichi','1年後の今日、この時間に、ここで。……今度は、私が待つ番です'],['nar','修一さんは、生まれて初めて、時間に遅れることを楽しみにしているように見えた']]},
+  friend:[['shuichi','また、美術館に行きましょう。……あなたの見方で、もう一度見たい絵があるんです']],
+  confess:{ask:[['shuichi','……少しだけ、時間をください。言葉を、何度も組み立て直してきたので'],['shuichi','あなたのことが、好きです。証明はできません。……私と、お付き合いしていただけませんか']],
+    yes:[['shuichi','……ありがとうございます。今日の日付は、一生忘れません']], no:[['shuichi','……そうですか。答えを急がせて、すみませんでした。……これからも、美術館には付き合ってください']]},
+  after:['今日はありがとうございました。無事に帰れましたか？','あなたと話していると、時計を見るのを忘れます。……珍しいことです','次の休み、空いていますか？　気になる展覧会があります'],
+  colors:{light:'#4a4f6a', dark:'#aeb4d6'},
+  px:{c:{H:'#1f1d24',C:'#6d6f78',E:'#2b1d2f',G:'#2a2a33'}, h:[
+    '................','....HHHHHHHH....','...HHHHHHHHHH...','...HHHHHHHHHH...','...HHHHHHHHHH...',
+    '...HGGG..GGGH...','...HG.G..G.GH...']}
+};
+
+// リョウ: the family-medical-bill story from the INTERNET Watch cases.
+C.ryo = { full:'風間 リョウ', short:'リョウ', age:21, job:'大学生（陸上部）', mode:'恋人', login:'ログイン：30分以内',
+  bio:'大学で陸上をやってます！　専門は400m。朝は5時起き、夜は9時に寝ます。年上の人と話すの、けっこう好きです！', tags:['陸上','早起き','おにぎり'], scam:'家族の治療費をかたる寸借詐欺',
+  talks:[
+    {t:[['nar','朝の河川敷。リョウは、もう3周走ったあとらしい'],['ryo','{n}さん、おはようございます！　来てくれたんですね！　……あ、汗くさかったらすみません']],
+     c:[['いっしょに走ろうか',12,[['ryo','ほんとですか！？　じゃあ、{n}さんのペースで！'],['nar','並んで走ると、リョウはずっと、こちらの歩幅に合わせてくれた']]],
+        ['朝早すぎない？',6,[['ryo','ですよね……！　でも、朝の河川敷、ほんとにきれいなんですよ'],['ryo','{n}さんに、見せたかったんです']]],
+        ['これ、差し入れ',10,[['ryo','おにぎり！　……しかも鮭！　好きなの、なんで知ってるんですか'],['ryo','プロフィールに書いてた？　……書いてました。うわ、うれしい']]]]},
+    {t:[['nar','大学の競技場。観客席には、ほとんど人がいない'],['ryo','今日、記録会なんです。……{n}さんが見てると思うと、緊張します']],
+     c:[['がんばれ！',12,[['nar','ピストルの音。リョウは、最後の直線で、ひとり抜いた'],['ryo','自己ベストです！　……{n}さんの声、ちゃんと聞こえました！']]],
+        ['緊張しなくて大丈夫',9,[['ryo','……はい。深呼吸します'],['nar','走り終えたリョウは、真っ先にこちらに手をふった']]],
+        ['負けたら、ジュースおごりね',7,[['ryo','えっ、プレッシャー……！'],['ryo','……勝ちました。なので、おごりは僕です！']]]]},
+    {t:[['nar','夕方のファミレス。リョウは、ドリンクバーのメロンソーダを3杯目までおかわりした'],['ryo','……あの。{n}さんに、ちょっとだけ、家の話をしてもいいですか']],
+     c:[['もちろん',12,[['ryo','うち、母ひとり子ひとりで。母さん、ずっと働きづめで、僕を大学に行かせてくれたんです'],['ryo','だから、ちゃんと卒業して、恩返ししたくて。……重いですよね、すみません']]],
+        ['無理しなくていいよ',8,[['ryo','……やさしいなあ。{n}さんは、母さんに少し似てます'],['ryo','あ、いまの、ほめ言葉です！']]],
+        ['メロンソーダ、飲みすぎ',6,[['ryo','……ばれました？　部活では、炭酸禁止なんです'],['ryo','{n}さんといるときだけの、ズルです']]]]}],
+  tells:{
+    wolf:['母さんの病院、個室じゃないとダメらしくて。……お金って、ほんと、いくらあっても足りないですね','{n}さんって、一人暮らしですよね？　家賃とか、どれくらいですか？','大学の友達には、家のこと、話してないんです。{n}さんにだけです'],
+    true:['母さんが、退院したら、{n}さんにお礼を言いたいって。……まだ何もしてもらってないのに','陸上部のキャプテンに「彼女できた？」って聞かれました。……まだ、って答えました','今日、バイト代が入ったので、母さんに花を送りました。照れくさいから、名前は書かずに']},
+  sns:{
+    wolf:['リョウくんのアカウント、あったよ。走ってる写真ばっかり。さわやか〜','その大学の陸上部のページ、部員名簿に「風間」って名前がない。……写真の子、別の大学の選手みたい','「入院中の母の治療費を貸してと言われて、学生に何度もお金を渡した」って相談、地域の掲示板に何件もあった。年上の女の人ばっかり狙われてるみたい'],
+    true:['リョウくんのアカウント、あったよ。走ってる写真ばっかり。さわやか〜','大学の陸上部のページに、ちゃんと名前があった。400mの部内記録、2位だって','お母さんの病院の近くの花屋さんの写真を、毎週あげてる。……コメント欄で、お母さんっぽい人が「いつもありがとう」って返してた']},
+  obs:{
+    wolf:['あの子は、よく食べるね。……ただ、お会計のとき、いつも財布を忘れたと言っていたよ','あの子は、別の日に、年上の女性と来ていた。母親の手術代の話をして、封筒を受け取っていたよ。……その女性は、きみとは別の人だった'],
+    true:['あの子は、よく食べるね。……ただ、お会計のとき、いつも財布を忘れたと言っていたよ','あの子のお母さんは、昔うちの近くでパートをしていてね。小さいころのあの子を連れて、よく来てくれた。……親孝行な子だよ']},
+  req:{
+    small:{ask:[['ryo','{n}さん、ちょっとだけ、相談してもいいですか'],['ryo','……母さんが、入院することになって']],
+      detail:{true:[['ryo','保険の手続きが遅れてて、今月の入院費の立て替えが、1万円足りないんです。来週には保険がおりるので、すぐ返します'],['ryo','……病院の請求書の写真も、送ります。こんなこと頼むの、本当にごめんなさい']],
+              wolf:[['ryo','明日、検査なんです。今日中に1万円払わないと、検査を受けられなくて'],['ryo','部活の仲間には、言えなくて。……{n}さんしか、いないんです']]},
+      cost:{true:10000,wolf:10000}, gain:{true:10,wolf:4}, loss:{true:-6,wolf:-3},
+      repay:{true:{amount:10000,lines:[['ryo','{n}さん、保険がおりました！　お借りした1万円です。本当に、本当にありがとうございました']]}},
+      accept:{true:[['nar','1万円を送ると、病院の領収書の写真と、深々と頭を下げるスタンプが届いた'],['ryo','{n}さんに足を向けて寝られません。……あ、それ、使い方合ってますか？']],
+              wolf:[['nar','1万円を送ると、何度もお礼のメッセージが届いた'],['ryo','{n}さんは、命の恩人です。母さんにも、ちゃんと伝えます']]},
+      refuse:{true:[['ryo','……ですよね。学生にお金貸すとか、こわいですよね'],['ryo','なんとかします。部活の先輩に相談してみます']],
+              wolf:[['ryo','……そうですか'],['ryo','母さん、検査、受けられないかもしれません']]}},
+    big:{ask:[['ryo','{n}さん、どうしよう'],['ryo','母さんが、手術することになりました']],
+      detail:{true:[['ryo','手術は、来週です。費用は保険と高額療養費の制度で、なんとかなるそうです'],['ryo','お願いは、お金じゃないんです。……手術の日、病院の待合室で、一緒に待っていてくれませんか。交通費だけ、ほんとに申し訳ないんですけど'],['ryo','ひとりで待つの、こわくて']],
+              wolf:[['ryo','手術代が、50万円足りないんです。今週中に払わないと、手術の順番を後ろにされるって'],['ryo','バイトで、必ず返します。……どうか、誰にも言わないでください。母さんが、知られるのを嫌がるので']]},
+      cost:{true:2000}, gain:{true:16}, loss:{true:-10,wolf:-3},
+      accept:{true:[['nar','病院の待合室。手術中のランプが消えるまで、リョウはずっと膝の上で手を握りしめていた'],['ryo','……成功だって。……{n}さん、いてくれて、よかった']]},
+      refuse:{true:[['ryo','……そうですよね。家族のことに、巻き込んじゃいけないですよね'],['ryo','終わったら、連絡します']],
+              wolf:[['ryo','……わかりました'],['ryo','{n}さんだけは、味方だと思ってたのに']]}}},
+  waver:[['ryo','……僕、母さんなんて、本当は……いえ。なんでもないです']],
+  over:{title:'治療費詐欺エンド', lines:[['nar','50万円を振り込んだ翌週、「手術のあとの治療費が、さらに80万円かかる」とメッセージが来た'],['nar','大学の陸上部に問い合わせると、「風間リョウという部員はいません」と言われた。リョウのアカウントは、もう見つからない']]},
+  convert:[['ryo','{n}さん。……入院している母さんなんて、いません。全部、つくり話でした'],['ryo','断られても、{n}さんは怒らないで、「お母さん、大丈夫？」って毎回聞いてくれた。……それが、いちばんきつかったです'],['ryo','本当の母さんに、電話してきます。何年も、かけてなかったので']],
+  fate:'リョウのアカウントは、ある朝、跡形もなく消えていた。',
+  love:{title:'恋人エンド　風間 リョウ', lines:[['nar','退院の日。リョウのお母さんは、病院の玄関で、深々と頭を下げてくれた'],['ryo','母さん、紹介するね。……僕の、大事な人'],['ryo','{n}さん、来年の大会、いちばん前の席で見ててください。……ぜったい、勝つので']]},
+  friend:[['ryo','{n}さん、また朝の河川敷、走りましょうね！　今度は僕が、おにぎり作ってきます！']],
+  confess:{ask:[['ryo','{n}さん。……走ってるときより、心臓がうるさいです'],['ryo','年下だけど、ちゃんと守れるようになります。……僕と、付き合ってください！']],
+    yes:[['ryo','……やった！　……あ、すみません、声大きかった。……うれしいです']], no:[['ryo','……はい。わかりました。……でも、朝のランニングには、また来てくれますか']]},
+  after:['今日はありがとうございました！　ちゃんと帰れましたか？','{n}さんと話すと、次の日の練習、がんばれます！','おやすみなさい！　……僕はもう、寝る時間を1時間すぎてます'],
+  colors:{light:'#b23a2a', dark:'#f2907e'},
+  px:{c:{H:'#2a1f1a',C:'#c8402f',E:'#2b1d2f'}, h:[
+    '................','................','....HHHHHHHH....','...HHHHHHHHHH...','...HHHHHHHHHH...',
+    '...H........H...']}
+};
+
+C.noa.lie = {
+  claim: [['noa','先週の週末は、ずっと会社で残業でした。どこにも行っていません'],['noa','窓から海が見えるのに、一回も行けないの、ちょっとかなしいです']],
+  evidence: {
+    wolf: 'ノアさん、週末はずっと残業って言ってたよね？　その週末に、ビーチで撮った写真が上がってた。……でも、写真の海、どう見ても日本の海なんだよね。うしろに日本語の看板がある',
+    true: 'ノアさん、週末はずっと残業って言ってたよね？　その週末に、ビーチで撮った写真が上がってた。サングラスで、すごく楽しそう'
+  },
+  confront: {
+    wolf: [['noa','……それは、昔の写真です。いえ、友達の写真です'],['nar','電話のむこうで、何かを打ちこむ音がする。返事が来るまでに、ずいぶん時間がかかった'],['noa','{n}さん、ぼくを疑うのは、悲しいです。……その写真、誰が見せたんですか？']],
+    true: [['noa','あ……見つかりましたか。あれは、去年の夏の写真です。同僚が、今週になってタグをつけたんです'],['noa','残業は本当です。……証拠に、いまからオフィスの窓、映しますね']]
+  }
+};
+C.keita.lie = {
+  claim: [['keita','昨日はさ、一日じゅう店で棚の入れ替えしてたわ。ヘトヘト'],['keita','重いジーンズの山、30往復くらいした']],
+  evidence: {
+    wolf: 'ケイタくん、昨日は一日お店って言ってたよね？　昨日のお昼、駅前のカフェでスーツの男の人たちと写ってる写真があった。テーブルに、封筒がいくつも並んでる',
+    true: 'ケイタくん、昨日は一日お店って言ってたよね？　昨日のお昼、駅前のカフェでスーツの男の人と写ってる写真があった。テーブルに、書類が並んでる'
+  },
+  confront: {
+    wolf: [['keita','あー……あれ、先輩の手伝い。ちょっとだけ抜けたんだって'],['nar','ケイタは笑っている。でも、テーブルの下で、足がずっと小刻みに揺れていた'],['keita','てか、なんで知ってんの？　……{n}ちゃん、そういうの、あんまよくないよ']],
+    true: [['keita','うわ、見られてた！？　あれ、不動産屋さん。店の物件、こっそり見に行ってたんだよね'],['keita','まだ全然お金足りないけど、見るだけならタダだし。……ダサいから、言いたくなかった']]
+  }
+};
+C.shuichi.lie = {
+  claim: [['shuichi','先週末は、学会で京都に行っていました。発表は、まあ、うまくいきました'],['shuichi','おみやげを買う時間もなくて、すみません']],
+  evidence: {
+    wolf: '修一さん、先週末は京都の学会って言ってたよね？　その学会のプログラム、発表者の名前に修一さんがいなかった。かわりに、その週末、都内の結婚相談所のパーティーの写真に写ってた',
+    true: '修一さん、先週末は京都の学会って言ってたよね？　その学会のプログラム、発表者の名前に修一さんがいなかった。かわりに、その週末、都内のホテルの写真に写ってた'
+  },
+  confront: {
+    wolf: [['shuichi','……プログラムの記載ミスでしょう。よくあることです'],['nar','修一さんは、角砂糖をもう1つ入れた。3つ目だ。本人は、気づいていないようだった'],['shuichi','それより、そういうことは誰に聞いたんですか？　……二人のことは、誰にも話さない約束でしたよね']],
+    true: [['shuichi','……ああ。京都の発表は、体調不良で代理を立てたんです。プログラムが、もう刷られたあとで'],['shuichi','都内のホテルにいたのは、高校の同級生の結婚式です。……体調不良なのに出席したのが、ばつが悪くて']]
+  }
+};
+C.ryo.lie = {
+  claim: [['ryo','昨日は、一日じゅう母さんの病院にいました。面会時間ぎりぎりまで'],['ryo','病院のごはん、母さんが残したの、僕が食べちゃいました']],
+  evidence: {
+    wolf: 'リョウくん、昨日は一日病院って言ってたよね？　昨日の夕方、繁華街のパチンコ屋の前で、友達と写ってる写真があった',
+    true: 'リョウくん、昨日は一日病院って言ってたよね？　昨日の夕方、繁華街のお店の前で、友達と写ってる写真があった'
+  },
+  confront: {
+    wolf: [['ryo','……え、それ、僕じゃないです。似てる人ですよ'],['nar','リョウは笑った。でも、メロンソーダのストローを、ずっと噛んでいる'],['ryo','{n}さん、母さんが入院してるのに、そんなこと言うんですか']],
+    true: [['ryo','あっ……！　あれは、病院の帰りです。部活の仲間が、母さんのお見舞いのお菓子、一緒に選んでくれて'],['ryo','面会のあとだから、夕方なんです。……証拠、お菓子の箱の写真、見ますか？']]
+  }
+};
+C.keita.req.small.sets = 'offApp';
+C.shuichi.req.small.sets = 'secret';
 
 const DAY_FLAVOR = [
   '新しい職場に通いはじめて3週間。満員電車にも、少しだけ慣れてきた',
@@ -1338,7 +1618,9 @@ const DAY_FLAVOR = [
   'アプリを入れてから、20日目。今日で、ひと区切りだ',
 ];
 const DATE_COST = { minato: 1500, rei: 4000, sakura: 2500, sou: 1500, haruto: 2500, nanase: 2000 };
-const dateCost = id => DATE_COST[id] || 3000;
+const DATE_COST2 = { keita: 2000, shuichi: 4000, ryo: 1500 };
+const isRemote = id => C[id].remote && !(S && S.chars[id].home);
+const dateCost = id => (isRemote(id) ? 0 : DATE_COST[id] || DATE_COST2[id] || 3000);
 const heart = (id, d) => ['sys', `${C[id].short}　♥ ${d > 0 ? '+' : ''}${d}`];
 const LIFE_EVENTS = [
   [-8000, 'スマホの画面を割ってしまった。修理代がかかった'],
@@ -1419,6 +1701,7 @@ function registerCast() {
     if (!PX[id] && c.px) PX[id] = c.px;
     if (!SPK[id]) SPK[id] = c.short;
     if (!AFTER[id] && c.after) AFTER[id] = c.after.map(m => (Array.isArray(m) ? m[m.length - 1] : m));
+    if (c.confess && !CONFESS[id]) CONFESS[id] = c.confess;
     if (c.colors) { light += `--c-${id}:${c.colors.light};`; dark += `--c-${id}:${c.colors.dark};`; }
   });
   const st = document.createElement('style');
@@ -1437,14 +1720,17 @@ const v = id => (S.wolves.includes(id) ? 'wolf' : 'true');
 const addAff = (id, d) => { S.chars[id].aff = clamp(S.chars[id].aff + d); };
 const reduceMotion = () => window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 function dateLabel(day) { const d = new Date(2027, 3, day); return `4月${day}日（${'日月火水木金土'[d.getDay()]}）`; }
-const pool = () => IDS.filter(id => !S.matched.includes(id));
+// People with a special entry (ノア's wrong-number message) never appear in the Lumi deck.
+const deckIds = () => IDS.filter(id => !C[id].entry);
+const pool = () => deckIds().filter(id => !S.matched.includes(id));
 function clue(id, src, text) { S.clues[id].push({ day: S.day, src, text: fmt(text) }); S.newClues++; }
 function tx(amount, label) { S.money += amount; S.tx.unshift({ day: S.day, amount, label }); }
 const INVITES = ['今日、少しだけ会えたりする？', '仕事のあと、よかったら会えないかな', '今日ひま？　なんだか顔が見たくなって', '近くまで来てるんだけど、会えたりする？'];
 
 /* ---------- chat threads ---------- */
 const NPC = { miya: { name: 'ミヤ', sub: '幼なじみ', who: 'miya' }, kamome: { name: '喫茶かもめ', sub: 'マスター　柳', who: 'yanagi' } };
-const thName = tid => (NPC[tid] ? NPC[tid].name : C[tid].short);
+const stranger = tid => C[tid] && C[tid].entry && !S.matched.includes(tid);
+const thName = tid => (NPC[tid] ? NPC[tid].name : stranger(tid) ? '知らない番号' : C[tid].short);
 const thWho = tid => (NPC[tid] ? NPC[tid].who : tid);
 function thread(tid) { return S.threads[tid] || (S.threads[tid] = { msgs: [], unread: 0, last: 0, lastDay: 0, pending: null }); }
 function post(tid, from, text, who) {
@@ -1495,21 +1781,21 @@ function pickDay(lo, hi) {
   if (!c.length) c = freeDays(lo, LAST_DAY).slice(0, 1);
   return c.length ? shuffle(c)[0] : null;
 }
-function match(id) {
+function match(id, how) {
   S.matched.push(id);
   S.chars[id].since = S.day;
   const sd = pickDay(S.day + 2, S.day + 4);
   if (sd) S.schedule[sd] = { id, kind: 'small' };
-  const bd = pickDay(Math.max(12, S.day + 5, (sd || 0) + 1), 18);
+  const bd = pickDay(Math.max(12, S.day + 5, (sd || 0) + 1), C[id].bigBy || 18);
   if (bd) S.schedule[bd] = { id, kind: 'big' };
-  post(id, 'nar', `Lumi で${C[id].short}とマッチしました`);
+  post(id, 'nar', how || `Lumi で${C[id].short}とマッチしました`);
 }
 
 function newGame(name) {
   S = { name: name || 'ミオ', day: 1, money: 60000, wolves: shuffle(IDS).slice(0, WOLF_COUNT), picks: [], outfit: 0, gift: false, shopped: 0,
         schedule: {}, repay: [], chars: {}, clues: {}, matched: [], view: 'story', story: null, swipe: null, guess: null, overBy: null,
         meFlag: false, twinNow: null, knowTwin: false, twinCaught: 0, motif: Math.floor(Math.random() * MOTIFS.length), motifKnown: false,
-        decoy: {}, partner: null, threads: {}, notes: [], seq: 0, plan: null, guide: null, profile: null, tx: [], newClues: 0, open: null, finale: false, v: 10 };
+        decoy: {}, partner: null, threads: {}, notes: [], seq: 0, plan: null, guide: null, profile: null, tx: [], newClues: 0, open: null, finale: false, wrongDay: 3 + Math.floor(Math.random() * 3), v: 10 };
   const decoys = shuffle(DECOYS.map((_, i) => i));
   IDS.forEach((id, i) => {
     S.chars[id] = { aff: 20, sns: 0, obs: 0, tell: 0, used: [], dates: 0, hooked: false, bigDone: false, since: 0, claim: false, evidence: false, confronted: false, exposed: false, confessed: false };
@@ -1532,10 +1818,18 @@ function newGame(name) {
   ], [{ label: 'Lumi を開く', act: 'openSwipe', arg: 'start' }], true);
 }
 
+// Asking ミヤ or 柳 about someone you promised to keep secret costs that person's trust, once.
+function breakSecret(id) {
+  const ch = S.chars[id];
+  if (!ch.secret) return;
+  ch.secret = false; addAff(id, -8);
+  post(id, 'nar', `${C[id].short}との約束をやぶって、人に相談した。少しだけ、胸がちくりとした`);
+}
+
 /* ---------- actions ---------- */
 const ACT = {
   openSwipe(mode) {
-    S.swipe = { mode, deck: mode === 'start' ? shuffle(IDS) : pool(), pos: 0, added: [] };
+    S.swipe = { mode, deck: mode === 'start' ? shuffle(deckIds()) : pool(), pos: 0, added: [] };
     S.view = 'swipe'; render();
   },
 
@@ -1545,7 +1839,7 @@ const ACT = {
     sw.pos++;
     const full = sw.mode === 'start' ? S.matched.length >= MAX_START : S.matched.length >= MAX_TOTAL;
     if (full || sw.pos >= sw.deck.length) {
-      if (sw.mode === 'start' && !S.matched.length) { sw.deck = shuffle(IDS); sw.pos = 0; sw.retry = true; render(); return; }
+      if (sw.mode === 'start' && !S.matched.length) { sw.deck = shuffle(deckIds()); sw.pos = 0; sw.retry = true; render(); return; }
       ACT.closeSwipe();
       return;
     }
@@ -1583,6 +1877,23 @@ const ACT = {
       tx(real, text.split('。')[0]);
       notify('bank', '銀行', `${text}（${real < 0 ? '−' : '+'}${yen(Math.abs(real))}）`);
     }
+    // ノア: a wrong-number message arrives once, if there is room for one more match.
+    if (S.day === S.wrongDay && !S.matched.includes('noa') && S.matched.length < MAX_TOTAL) {
+      const th = thread('noa'); th.wrong = true;
+      post('noa', 'them', 'ユウタさん、あしたの会議の資料、送りました。確認してください');
+      post('noa', 'them', '……すいません！　番号をまちがえました。日本語の連絡先、まだ慣れていなくて');
+      notify('talk', '知らない番号', 'すいません！　番号をまちがえました。', 'noa');
+    }
+    if (S.day === C.noa.returnDay && S.matched.includes('noa')) {
+      if (v('noa') === 'true') {
+        S.chars.noa.home = true;
+        post('noa', 'them', '{n}さん、いま羽田に着きました！　……今日、会えますか？');
+        notify('talk', 'ノア', 'いま羽田に着きました！　……今日、会えますか？', 'noa');
+      } else {
+        post('noa', 'them', '{n}さん、ごめんなさい。帰国が、延期になりました。……くわしいことは、また連絡します');
+        notify('talk', 'ノア', 'ごめんなさい。帰国が、延期になりました', 'noa');
+      }
+    }
     const ev = S.schedule[S.day];
     if (ev && S.matched.includes(ev.id)) {
       const R = C[ev.id].req[ev.kind];
@@ -1594,7 +1905,7 @@ const ACT = {
     const free = shuffle(S.matched.filter(id => !thread(id).pending));
     const invited = free.slice(0, Math.random() < 0.5 ? 2 : 1);
     invited.forEach(id => {
-      const t = pick1(INVITES);
+      const t = isRemote(id) ? '今夜、少しだけ電話できますか？' : pick1(INVITES);
       post(id, 'them', t); notify('talk', C[id].short, t, id);
     });
     // Quiet people never ping first, so remind the player about whoever has been left alone longest.
@@ -1636,6 +1947,7 @@ const ACT = {
         lines = [...R.accept[k]]; d = R.gain.true;
         if (!asked) { d += 5; lines.push(['nar', `何も聞かずに信じてくれたことが、${C[id].short}にはうれしかったみたいだ`]); }
         if (k === 'wolf') ch.hooked = true;
+        if (R.sets) ch[R.sets] = true;
         if (R.repay && R.repay[k]) S.repay.push({ day: S.day + 3, id, amount: R.repay[k].amount, lines: R.repay[k].lines });
       }
     } else {
@@ -1647,12 +1959,24 @@ const ACT = {
     render();
   },
 
+  wrongReply(yes) {
+    const th = thread('noa'); th.wrong = false;
+    if (!yes) { post('noa', 'nar', '返信はしなかった'); render(); return; }
+    post('noa', 'me', '番号、まちがってますよ。お仕事おつかれさまです');
+    post('noa', 'them', 'ご親切に、ありがとうございます！　日本の人は、やさしいですね');
+    post('noa', 'them', 'ぼくは、ノアといいます。シンガポールで働いています。……もしよかったら、ときどき、日本語の練習相手になってくれませんか？');
+    match('noa', '間違いメッセージから、ノアと話すようになった');
+    clue('noa', 'はじまり', 'Lumi ではなく、知らない番号からの間違いメッセージで知り合った。シンガポール在住だという');
+    render();
+  },
+
   /* the day's plan: a date */
   date(id) {
     const ch = S.chars[id], cost = dateCost(id);
     S.plan = { type: 'date', id };
-    tx(-cost, `${C[id].short}とデート`);
-    post(id, 'me', '今日、会えるかな？');
+    const remote = isRemote(id);
+    if (cost) tx(-cost, `${C[id].short}とデート`);
+    post(id, 'me', remote ? '今夜、少し話せる？' : '今日、会えるかな？');
     ch.dates++; ch.lastDate = S.day;
     if (C[id].twin) {
       const yo = ch.dates > 1 && Math.random() < (v(id) === 'wolf' ? 0.5 : 0.3);
@@ -1671,28 +1995,37 @@ const ACT = {
       scene(`デート　${C[id].short}`, lines, [...choices, ...confrontChoice(id)], true);
       return;
     }
-    const meet = ['nar', `待ち合わせ場所に、${C[id].short}の姿が見えた`];
+    if (C[id].remote && !remote && !ch.met) {
+      // First time actually meeting someone who was only ever a voice on the phone.
+      ch.met = true;
+      const T = C[id].talks[3];
+      scene(`デート　${C[id].short}`, T.t, [...T.c.map((c, ci) => ({ label: c[0], me: c[0], act: 'talkAns', arg: { id, idx: 3, ci } })), ...confrontChoice(id)], true);
+      return;
+    }
+    const tag = `${remote ? '通話' : 'デート'}　${C[id].short}`;
+    const meet = ['nar', remote ? `夜、${C[id].short}に電話をかけた` : `待ち合わせ場所に、${C[id].short}の姿が見えた`];
     const idx = [0, 1, 2].find(i => !ch.used.includes(i));
     if (idx === undefined) {
-      scene(`デート　${C[id].short}`, [meet], [{ label: 'のんびり過ごす', act: 'talkAns', arg: { id, idx: -1 } }, ...confrontChoice(id)], true);
+      scene(tag, [meet], [{ label: remote ? 'とりとめなく話す' : 'のんびり過ごす', act: 'talkAns', arg: { id, idx: -1 } }, ...confrontChoice(id)], true);
       return;
     }
     ch.used.push(idx);
     const T = C[id].talks[idx];
-    scene(`デート　${C[id].short}`, [meet, ...T.t], [...T.c.map((c, ci) => ({ label: c[0], me: c[0], act: 'talkAns', arg: { id, idx, ci } })), ...confrontChoice(id)], true);
+    const tl = Array.isArray(T.t) ? T.t : T.t[v(id)];
+    scene(tag, remote ? tl : [meet, ...tl], [...T.c.map((c, ci) => ({ label: c[0], me: c[0], act: 'talkAns', arg: { id, idx, ci } })), ...confrontChoice(id)], true);
   },
 
   talkAns({ id, idx, ci }) {
     const ch = S.chars[id];
     let lines, d;
-    if (idx === -1) { lines = [['nar', `${C[id].short}と、のんびりした時間を過ごした`]]; d = 5; }
+    if (idx === -1) { lines = [['nar', `${C[id].short}と、${isRemote(id) ? '夜遅くまで電話で話した' : 'のんびりした時間を過ごした'}`]]; d = 5; }
     else if (C[id].twin) {
       const c = C[id].talks[idx].c[ci], yo = S.twinNow === 'yo';
       lines = [...(yo ? c[4] : c[2])]; d = yo ? c[3] : c[1];
     }
     else { const c = C[id].talks[idx].c[ci]; lines = [...c[2]]; d = c[1]; }
-    if (S.outfit > 0) { S.outfit--; d += 3; lines.push(['nar', `${C[id].short}が、新しい服をほめてくれた`]); }
-    if (S.gift) { S.gift = false; d += 6; lines.push(['nar', `${C[id].short}にプレゼントを渡すと、とても喜んでくれた`]); }
+    if (S.outfit > 0 && !isRemote(id)) { S.outfit--; d += 3; lines.push(['nar', `${C[id].short}が、新しい服をほめてくれた`]); }
+    if (S.gift && !isRemote(id)) { S.gift = false; d += 6; lines.push(['nar', `${C[id].short}にプレゼントを渡すと、とても喜んでくれた`]); }
     addAff(id, d);
     const tp = C[id].twin ? C[id].tells[S.twinNow === 'yo' && v(id) === 'wolf' ? 'wolf' : 'true'] : C[id].tells[v(id)];
     if (ch.tell < tp.length && Math.random() < 0.6) {
@@ -1701,7 +2034,7 @@ const ACT = {
       clue(id, 'デート', t);
     }
     const liar = v(id) === 'wolf' && (!C[id].twin || S.twinNow === 'yo');
-    if (Math.random() < (liar ? 0.5 : 0.4)) {
+    if (!isRemote(id) && Math.random() < (liar ? 0.5 : 0.4)) {
       const t = (liar ? MOTIFS[S.motif].scene : DECOYS[S.decoy[id]]).split('{c}').join(C[id].short);
       lines.push(['nar', t]);
       clue(id, '持ち物', t);
@@ -1790,6 +2123,7 @@ const ACT = {
   sns(id) {
     S.plan = { type: 'sns', id };
     const ch = S.chars[id], L = C[id].lie;
+    breakSecret(id);
     post('miya', 'me', `${C[id].short}のこと、調べてもらえる？`);
     post('miya', 'them', 'オッケー、ちょっと待ってね……');
     if (L && ch.claim && !ch.evidence) {
@@ -1809,6 +2143,7 @@ const ACT = {
 
   obs(id) {
     S.plan = { type: 'obs', id };
+    breakSecret(id);
     post('kamome', 'me', `${C[id].short}さんのこと、何か覚えていますか？`);
     const text = C[id].obs[v(id)][S.chars[id].obs++];
     if (C[id].twin) S.knowTwin = true;
@@ -1895,7 +2230,8 @@ function ending() {
 /* ---------- render helpers ---------- */
 const who = id => `style="--who:var(--c-${id})"`;
 const hearts = aff => { const n = Math.round(aff / 20); return `<span class="hearts" aria-label="好感度"><span>${'♥'.repeat(n)}</span>${'♥'.repeat(5 - n)}</span>`; };
-const relTag = id => S.partner === id ? '<span class="tagpill lover">恋人</span>' : C[id].mode === '友達' ? '<span class="tagpill">友達</span>' : '';
+const relTag = id => (S.partner === id ? '<span class="tagpill lover">恋人</span>' : C[id].mode === '友達' ? '<span class="tagpill">友達</span>' : '')
+  + (isRemote(id) ? '<span class="tagpill">海外</span>' : '') + (S.chars[id].offApp ? '<span class="tagpill">LINE</span>' : '') + (S.chars[id].secret ? '<span class="tagpill">秘密の約束</span>' : '');
 
 function lineHTML([w, t, kind], cls = '') {
   const say = esc(fmt(t));
@@ -1984,12 +2320,17 @@ function talkHTML() {
   return `<div class="pad"><h1 class="apptitle">トーク</h1><div>${tids.map(tid => {
     const th = S.threads[tid], lastMsg = [...th.msgs].reverse().find(m => m.from !== 'stamp');
     const sub = NPC[tid] ? `<span class="pv">${esc(NPC[tid].sub)}</span>` : '';
-    return `<button class="lrow" data-thread="${tid}">${pfHTML(thWho(tid))}<span class="mid"><span class="nm">${esc(thName(tid))}${C[tid] ? relTag(tid) : ''}</span>${sub}<span class="pv">${lastMsg ? esc((lastMsg.from === 'me' ? 'あなた：' : '') + lastMsg.text) : ''}</span></span>${th.unread ? `<span class="unread">${th.unread}</span>` : '<span></span>'}</button>`;
+    return `<button class="lrow" data-thread="${tid}">${pfHTML(thWho(tid))}<span class="mid"><span class="nm">${esc(thName(tid))}${C[tid] && !stranger(tid) ? relTag(tid) : ''}</span>${sub}<span class="pv">${lastMsg ? esc((lastMsg.from === 'me' ? 'あなた：' : '') + lastMsg.text) : ''}</span></span>${th.unread ? `<span class="unread">${th.unread}</span>` : '<span></span>'}</button>`;
   }).join('')}</div></div>`;
 }
 
 function threadOptions(tid) {
   if (S.finale) return tid === 'miya' ? guessOptions() : [];
+  if (C[tid] && thread(tid).wrong) return [
+    { label: '返信する', act: 'wrongReply', arg: true, note: '番号ちがいを教える' },
+    { label: 'そのままにする', act: 'wrongReply', arg: false },
+  ];
+  if (C[tid] && !S.matched.includes(tid)) return [];
   if (C[tid]) {
     const p = thread(tid).pending;
     if (p) return [
@@ -1999,32 +2340,34 @@ function threadOptions(tid) {
     ];
     if (S.plan) return [];
     const cost = dateCost(tid);
+    if (isRemote(tid)) return [{ label: '電話する', act: 'date', arg: tid, note: '今日の予定にする・海外にいるので会えない' }];
     return [{ label: '会いに行く', act: 'date', arg: tid, disabled: cost > S.money, note: cost > S.money ? 'お金が足りない' : `今日の予定にする・${yen(cost)}` }];
   }
   if (S.plan) return [];
   if (tid === 'miya') return S.matched.map(id => {
     const ch = S.chars[id], pend = C[id].lie && ch.claim && !ch.evidence;
-    return { label: `${C[id].short}のことを調べてもらう`, act: 'sns', arg: id, disabled: ch.sns >= 3 && !pend, note: pend ? '本人の話の裏を取る' : ch.sns >= 3 ? 'もう調べつくした' : `${ch.sns}/3回` };
+    return { label: `${C[id].short}のことを調べてもらう`, act: 'sns', arg: id, disabled: ch.sns >= 3 && !pend, note: ch.secret && !(ch.sns >= 3 && !pend) ? '秘密の約束をやぶる' : pend ? '本人の話の裏を取る' : ch.sns >= 3 ? 'もう調べつくした' : `${ch.sns}/3回` };
   });
   return S.matched.map(id => {
     const ch = S.chars[id];
-    return { label: `${C[id].short}のことを聞く`, act: 'obs', arg: id, disabled: !ch.dates || ch.obs >= 2, note: !ch.dates ? 'まだ一緒に来ていない' : ch.obs >= 2 ? 'もう聞けることはない' : `${ch.obs}/2回` };
+    return { label: `${C[id].short}のことを聞く`, act: 'obs', arg: id, disabled: !ch.dates || ch.obs >= 2, note: !ch.dates ? 'まだ一緒に来ていない' : ch.obs >= 2 ? 'もう聞けることはない' : ch.secret ? '秘密の約束をやぶる' : `${ch.obs}/2回` };
   });
 }
 
 function threadHTML() {
   const tid = S.open, th = thread(tid);
   OPTS = threadOptions(tid);
-  const head = C[tid]
+  const head = stranger(tid) ? `<span class="who"><b>知らない番号</b><span class="muted">連絡先に登録されていません</span></span>`
+    : C[tid]
     ? `<span class="who"><b>${esc(C[tid].short)}</b><span>${hearts(S.chars[tid].aff)} ${relTag(tid)}</span></span>`
     : `<span class="who"><b>${esc(thName(tid))}</b><span class="muted">${esc(NPC[tid].sub)}</span></span>`;
   const body = th.msgs.map(m => m.from === 'stamp' ? `<span class="stamp">${esc(m.text)}</span>`
     : m.from === 'nar' ? `<p class="mnar">${esc(m.text)}</p>`
     : m.from === 'me' ? `<div class="msg me"><div class="b">${esc(m.text)}</div></div>`
-    : `<div class="msg">${C[m.who] ? `<button class="pfbtn" data-prof="${m.who}" aria-label="プロフィール">${pfHTML(m.who)}</button>` : pfHTML(m.who)}<div class="b">${esc(m.text)}</div></div>`).join('');
+    : `<div class="msg">${C[m.who] && !stranger(m.who) ? `<button class="pfbtn" data-prof="${m.who}" aria-label="プロフィール">${pfHTML(m.who)}</button>` : pfHTML(m.who)}<div class="b">${esc(m.text)}</div></div>`).join('');
   const hint = S.finale ? '' : S.plan && !(C[tid] && thread(tid).pending) ? '<p class="th-hint">予定は1日に1つまで。今日はもう埋まっています。ホームの「おやすみ」で次の日へ</p>' : '';
   const opts = OPTS.map((o, i) => `<button class="opt" data-o="${i}" ${o.disabled ? 'disabled' : ''}><span>${esc(o.label)}</span>${o.note ? `<small>${esc(o.note)}</small>` : ''}</button>`).join('');
-  const face = C[tid] ? `<button class="pfbtn" data-prof="${tid}" aria-label="${esc(C[tid].short)}のプロフィール">${pfHTML(tid)}</button>` : pfHTML(thWho(tid));
+  const face = C[tid] && !stranger(tid) ? `<button class="pfbtn" data-prof="${tid}" aria-label="${esc(C[tid].short)}のプロフィール">${pfHTML(tid)}</button>` : pfHTML(thWho(tid));
   return `<div class="th-h"><button class="back" data-tab="talk" aria-label="トーク一覧へ">‹</button>${face}${head}</div>
     <div class="th-body" id="scroller">${body}</div>
     ${opts || hint ? `<div class="th-opts">${opts}${hint}</div>` : ''}`;
@@ -2148,8 +2491,8 @@ function profileHTML() {
   const id = S.profile, c = C[id], ch = S.chars[id], met = S.matched.includes(id);
   const rec = met ? `<dl class="rec">
       <div><dt>マッチ</dt><dd>${ch.since}日目</dd></div>
-      <div><dt>デート</dt><dd>${ch.dates}回</dd></div>
-      <div><dt>最後に会った日</dt><dd>${ch.lastDate ? `${ch.lastDate}日目` : 'まだ会っていない'}</dd></div>
+      <div><dt>${C[id].remote ? 'デート・通話' : 'デート'}</dt><dd>${ch.dates}回</dd></div>
+      <div><dt>${C[id].remote ? '最後に話した日' : '最後に会った日'}</dt><dd>${ch.lastDate ? `${ch.lastDate}日目` : 'まだ会っていない'}</dd></div>
       <div><dt>好感度</dt><dd ${who(id)}>${hearts(ch.aff)}</dd></div>
     </dl>` : '';
   return `<div class="sheet-wrap" role="dialog" aria-modal="true" aria-label="${esc(c.short)}のプロフィール"><div class="sheet prof">
@@ -2157,7 +2500,7 @@ function profileHTML() {
       <div class="photo"><img class="px" src="${PORTRAIT[id]}" alt="${esc(c.short)}の写真">
         <div class="badges"><span class="badge">本人確認済み</span>${c.mode === '友達' ? '<span class="badge friend">友達モード</span>' : ''}${relTag(id)}</div></div>
       <div class="pinfo"><h2>${esc(c.full)}<small>${c.age}歳</small></h2>
-        <p class="job">${esc(c.job)}</p><p class="bio">${esc(c.bio)}</p>
+        <p class="job">${esc(c.job)}${c.entry ? `　・　${esc(c.login)}` : ''}${ch.offApp ? '　・　Lumi は退会し、LINE でやりとりしている' : ''}</p><p class="bio">${esc(c.bio)}</p>
         <div class="tags">${c.tags.map(t => `<span>#${esc(t)}</span>`).join('')}</div></div>
     </article>
     ${rec}
