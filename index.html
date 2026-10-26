@@ -1835,7 +1835,20 @@ function dealWolves() {
   const r = Math.random();
   const k = mine.length >= 2 ? (r < NO_WOLF_RATE ? 0 : r < NO_WOLF_RATE + TWO_WOLF_RATE ? 2 : 1) : r < 0.5 ? 1 : 0;
   S.wolves = [...mine.slice(0, k), ...rest.slice(0, WOLF_COUNT - k)];
+  // Noise: some sincere people get one misleading report from ミヤ or 柳 (never for wolves, never the decisive 3rd check).
+  S.noise = {};
+  IDS.filter(id => !S.wolves.includes(id) && !C[id].twin).forEach(id => {
+    if (Math.random() < NOISE_RATE) S.noise[id] = Math.random() < 0.5 ? 'miya' : 'yanagi';
+  });
 }
+const NOISE_RATE = 0.35;
+const NOISE = {
+  miya: c => `${c}さんの裏アカっぽいの、見つけちゃった。名前もアイコンもそっくり。「アプリでチョロそうなの見つけた」って書いてる……{n}、気をつけて。ユキのときも、最初はいい人だったんだから`,
+  miyaFix: c => `……{n}、ごめん！　前に言った${c}さんの裏アカ、別人だった。住んでる県もちがうし、写真をよく見たら顔もちがう。アイコンが似てただけ。……ユキのことがあってから、ちょっと疑いすぎてるのかも、わたし`,
+  yanagi: c => `${c}さんは、帰りぎわに、きみの鞄のほうへ手をのばしていたね。……昔、私も同じように近づいてきた人に、店の売上をそっくりだまし取られたことがあるんだ。悪いことは言わない、気をつけなさい`,
+  dateFix: { miya: c => `${c}は、同じ名前の別人のアカウントによく間違えられて困っている、と苦笑いしていた`,
+             yanagi: c => `${c}が、この前の喫茶かもめで、{n}の鞄から落ちかけた定期券を戻そうとしていた、と話してくれた` },
+};
 
 /* ---------- actions ---------- */
 const ACT = {
@@ -2045,6 +2058,12 @@ const ACT = {
       lines.push(['nar', '別れぎわ、ふと思い出したように——'], [id, t]);
       clue(id, 'デート', t);
     }
+    if (ch.noised && !ch.fixed && Math.random() < 0.6) {
+      ch.fixed = true;
+      const t = NOISE.dateFix[S.noise[id]](C[id].short);
+      lines.push(['nar', t]);
+      clue(id, '本人の話', t);
+    }
     const liar = v(id) === 'wolf' && (!C[id].twin || S.twinNow === 'yo');
     if (!isRemote(id) && Math.random() < (liar ? 0.5 : 0.4)) {
       const t = (liar ? MOTIFS[S.motif].scene : DECOYS[S.decoy[id]]).split('{c}').join(C[id].short);
@@ -2144,7 +2163,18 @@ const ACT = {
       post('miya', 'them', ev);
       post('miya', 'them', 'これ、この前本人が言ってた話と違くない？　今度会ったとき、聞いてみたら？');
       clue(id, 'ミヤのSNS調査', ev);
+    } else if (S.noise && S.noise[id] === 'miya' && ch.sns === 1 && !ch.noised) {
+      ch.noised = true; ch.sns++;
+      const text = NOISE.miya(C[id].short);
+      post('miya', 'them', text);
+      clue(id, 'ミヤのSNS調査', text);
     } else {
+      if (ch.noised && S.noise[id] === 'miya' && !ch.fixed) {
+        ch.fixed = true;
+        const fix = NOISE.miyaFix(C[id].short);
+        post('miya', 'them', fix);
+        clue(id, 'ミヤのSNS調査', fix);
+      }
       const text = C[id].sns[v(id)][ch.sns++];
       if (C[id].twin) S.knowTwin = true;
       post('miya', 'them', text);
@@ -2157,7 +2187,10 @@ const ACT = {
     S.plan = { type: 'obs', id };
     breakSecret(id);
     post('kamome', 'me', `${C[id].short}さんのこと、何か覚えていますか？`);
-    const text = C[id].obs[v(id)][S.chars[id].obs++];
+    const ch = S.chars[id];
+    let text;
+    if (S.noise && S.noise[id] === 'yanagi' && ch.obs === 1 && !ch.noised) { ch.noised = true; ch.obs++; text = NOISE.yanagi(C[id].short); }
+    else text = C[id].obs[v(id)][ch.obs++];
     if (C[id].twin) S.knowTwin = true;
     post('kamome', 'them', text);
     clue(id, '柳さんの話', text);
