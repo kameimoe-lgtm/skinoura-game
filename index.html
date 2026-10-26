@@ -1827,10 +1827,13 @@ function breakSecret(id) {
   post(id, 'nar', `${C[id].short}との約束をやぶって、人に相談した。少しだけ、胸がちくりとした`);
 }
 
-// Wolves are dealt after the first likes, so a small start (2–3 people) still holds at least one of them.
+// Wolves are dealt after the first likes, so a small start (2–3 people) usually holds one or two of them.
+// Now and then there are none at all — suspecting everyone and finding nobody is part of the fun (owner's call).
+const NO_WOLF_RATE = 0.15, TWO_WOLF_RATE = 0.3;
 function dealWolves() {
   const mine = shuffle(S.matched), rest = shuffle(IDS.filter(id => !S.matched.includes(id)));
-  const k = mine.length >= 2 ? (Math.random() < 0.35 ? 2 : 1) : Math.random() < 0.5 ? 1 : 0;
+  const r = Math.random();
+  const k = mine.length >= 2 ? (r < NO_WOLF_RATE ? 0 : r < NO_WOLF_RATE + TWO_WOLF_RATE ? 2 : 1) : r < 0.5 ? 1 : 0;
   S.wolves = [...mine.slice(0, k), ...rest.slice(0, WOLF_COUNT - k)];
 }
 
@@ -2253,7 +2256,9 @@ const linesHTML = lines => lines.map(l => lineHTML(l)).join('');
 function wolfListHTML(fate) {
   // Only wolves the player matched are revealed, so unmatched characters keep their secret for the next run.
   const met = S.wolves.filter(id => S.matched.includes(id));
-  if (!met.length) return '<p>マッチした人のなかに、狼はいませんでした。</p>';
+  if (!met.length) return S.guess && S.guess.length
+    ? '<p><b>まさかの、狼ゼロ。</b>マッチした人は、全員が本気でした。……疑われた人には、あとで謝っておこう。</p>'
+    : '<p><b>まさかの、狼ゼロ。</b>マッチした人は、全員が本気でした。最後まで信じきった、あなたの勝ちです。</p>';
   return `<p>マッチした人のなかの狼は、この${met.length}人でした。</p><ul class="wolves">${met.map(id => `<li ${who(id)}>${pfHTML(id)}<span><b class="wolfmark">${C[id].full}</b>　${esc(C[id].scam)}<br><small>${fate(id)}</small></span></li>`).join('')}</ul>`;
 }
 function tallyHTML() {
