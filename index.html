@@ -275,6 +275,7 @@ const ALL_IDS = ['minato','rei','sakura','sou','haruto','nanase','shizuma','gou'
 const WOLF_COUNT = 5;
 let IDS = ALL_IDS;
 const SPK = {news:'ニュース', minato:'湊', rei:'レイ', sakura:'さくら', sou:'ソウ', haruto:'ハルト', nanase:'七瀬', you:'ヨウ', miya:'ミヤ', yanagi:'柳', nar:''};
+const WRONG_RATE = 0.4; // chance that ノア's wrong-number message arrives in a game
 const LAST_DAY = 20, MAX_START = 4, MAX_TOTAL = 6, ADD_UNTIL = 14, PAYDAY = 15;
 
 /* ---------- pixel portraits (16x16) ---------- */
@@ -1795,7 +1796,7 @@ function newGame(name) {
   S = { name: name || 'ミオ', day: 1, money: 60000, wolves: shuffle(IDS).slice(0, WOLF_COUNT), picks: [], outfit: 0, gift: false, shopped: 0,
         schedule: {}, repay: [], chars: {}, clues: {}, matched: [], view: 'story', story: null, swipe: null, guess: null, overBy: null,
         meFlag: false, twinNow: null, knowTwin: false, twinCaught: 0, motif: Math.floor(Math.random() * MOTIFS.length), motifKnown: false,
-        decoy: {}, partner: null, threads: {}, notes: [], seq: 0, plan: null, guide: null, profile: null, tx: [], newClues: 0, open: null, finale: false, wrongDay: 3 + Math.floor(Math.random() * 3), v: 10 };
+        decoy: {}, partner: null, threads: {}, notes: [], seq: 0, plan: null, guide: null, profile: null, tx: [], newClues: 0, open: null, finale: false, wrongDay: Math.random() < WRONG_RATE ? 3 + Math.floor(Math.random() * 3) : null, v: 10 };
   const decoys = shuffle(DECOYS.map((_, i) => i));
   IDS.forEach((id, i) => {
     S.chars[id] = { aff: 20, sns: 0, obs: 0, tell: 0, used: [], dates: 0, hooked: false, bigDone: false, since: 0, claim: false, evidence: false, confronted: false, exposed: false, confessed: false };
