@@ -271,7 +271,7 @@ button.ntf:hover{border-color:var(--rose)}
 <div id="app"></div>
 
 <script>
-const ALL_IDS = ['minato','rei','sakura','sou','haruto','nanase','shizuma','gou','kai','iroha','shingo','nagi','ren','akira','shion','noa','keita','shuichi','ryo'];
+const ALL_IDS = ['minato','rei','sakura','sou','haruto','nanase','shizuma','gou','kai','iroha','shingo','nagi','ren','akira','shion','noa','keita','shuichi','ryo','leo'];
 const WOLF_COUNT = 5;
 let IDS = ALL_IDS;
 const SPK = {news:'ニュース', minato:'湊', rei:'レイ', sakura:'さくら', sou:'ソウ', haruto:'ハルト', nanase:'七瀬', you:'ヨウ', miya:'ミヤ', yanagi:'柳', nar:''};
@@ -1593,6 +1593,74 @@ C.ryo.lie = {
     true: [['ryo','あっ……！　あれは、病院の帰りです。部活の仲間が、母さんのお見舞いのお菓子、一緒に選んでくれて'],['ryo','面会のあとだから、夕方なんです。……証拠、お菓子の箱の写真、見ますか？']]
   }
 };
+
+/* ---------- red herring added 2026-10-26 (第19版) ---------- */
+// レオ: suspicious at every turn — alias, two phones, dodged questions — but never a wolf. His identity shows up only at the end.
+C.leo = { full:'神崎 レオ', short:'レオ', age:29, job:'翻訳家（フリーランス）', mode:'恋人', login:'ログイン：不明', neverWolf:true,
+  bio:'英語とスペイン語の翻訳をしています。夜の散歩と、静かなバーが好きです。写真は苦手なので、これ1枚で許してください。', tags:['語学','夜の散歩','ジム'],
+  reveal:'レオは狼ではありませんでした。本名はレオン・ハート。アメリカから来た、政府の情報機関の調査員でした。怪しく見えたのは、ぜんぶ「本業」のせいです。',
+  talks:[
+    {t:[['nar','駅前のカフェ。レオは、入口がいちばんよく見える奥の席に座っていた'],['leo','やあ、{n}。……こっちの席のほうが、落ち着くんだ。気にしないで']],
+     c:[['入口が気になるの？',8,[['leo','……クセみたいなものだよ。誰が入ってきたか、わかるほうが安心する'],['leo','君が来たのも、一番に見えた。それは、悪くなかったな']]],
+        ['翻訳って、どんな仕事？',10,[['leo','契約書とか、マニュアルとか。……地味な仕事だよ'],['leo','君の話のほうが、ずっと面白い。今日はどんな一日だった？']]],
+        ['写真、ほんとに1枚だけなんだね',6,[['leo','写真に残るのは、苦手なんだ。……変かな'],['leo','でも、君と並んだ写真なら、1枚くらい撮ってもいい']]]]},
+    {t:[['nar','夜の散歩。人通りの多い交差点で、レオがふいに{n}の肩を引き寄せた'],['leo','……ごめん、少しだけ、このまま歩いて。うしろを振り向かないで']],
+     c:[['どうしたの？',9,[['leo','……なんでもない。知り合いに似た人がいただけだ'],['nar','三つ目の角を曲がると、レオはようやく、ほっとしたように笑った']]],
+        ['黙ってついていく',12,[['leo','……ありがとう。何も聞かないでくれて'],['leo','君は、思っていたよりずっと肝がすわってるな']]],
+        ['映画みたい！',7,[['leo','……はは。映画なら、ここでキスする場面だな'],['leo','冗談だよ。……半分は']]]]},
+    {t:[['nar','静かなバー。レオは、バーテンダーとスペイン語で短く話したあと、グラスを置いた'],['leo','……{n}。もし僕が、いま言っていることの半分が嘘だったら、どうする？']],
+     c:[['どっちの半分か、聞いてもいい？',12,[['leo','……君を大事に思っているほうは、本当だ。それだけは、約束する'],['leo','残りの半分は、いつか話せる日が来たら']]],
+        ['嘘はいやだな',6,[['leo','……そうだよな。正しい答えだ'],['leo','だから、君に言えないことはあっても、君をだますことはしない']]],
+        ['それでも、会いに来るよ',10,[['leo','……変わってるな、君は'],['nar','レオは、はじめて照れたように目をそらした']]]]}],
+  tells:{
+    true:['……スマホが2台あるのは、仕事用と、もう1台は……気にしないでくれ','この前のカフェ、しばらく行かないほうがいい。……理由は、聞かないでほしい','僕の本当の誕生日？　……プロフィールに書いてあるのとは、ちがう日だよ']},
+  sns:{
+    true:['レオさんのアカウント、探したけど……ない。どのSNSにも、ひとつもない。今どきそんな人いる？','プロフィール写真で画像検索してみた。……何も出てこない。逆に、何も出てこなさすぎて怖いんだけど','……見つけた。アメリカ大使館の交流イベントの写真の、すみっこに写ってた。翻訳家ってこういうところにも呼ばれるの？　……少なくとも、だまし取ったお金で遊んでる感じの人じゃないね']},
+  obs:{
+    true:['あの人は、座るとき、必ず入口が見える席を選ぶね。それから、会計はいつも、ぴったりの小銭だ','私の若いころの英語を、帰りぎわにそっと直していったよ。……ずいぶん、きちんとした発音でね。人をだます目では、なかったな']},
+  req:{
+    small:{ask:[['leo','{n}、ひとつ頼みがある'],['leo','このUSBメモリを、一晩だけ預かってくれないか']],
+      detail:{true:[['leo','中身は……仕事の資料だ。それ以上は言えない。危ないものじゃないことだけは、約束する'],['leo','明日の夜には、必ず受け取りに行く。君の部屋の引き出しに入れておいてくれれば、それでいい']]},
+      cost:{true:0}, gain:{true:10}, loss:{true:-6},
+      accept:{true:[['nar','小さな黒いUSBメモリを、引き出しの奥にしまった。次の夜、レオは約束どおりに受け取りに来た'],['leo','助かった。……君を巻きこむつもりはなかったんだ。本当に、ありがとう']]},
+      refuse:{true:[['leo','……そうだよな。中身も言えないものを預かれなんて、どうかしてた'],['leo','忘れてくれ。君は、正しい']]}},
+    big:{ask:[['leo','{n}、大事な話がある'],['leo','来週、急に国へ戻ることになるかもしれない']],
+      detail:{true:[['leo','もしそうなったら、しばらく連絡が取れなくなる。探さないでほしい。……それと'],['leo','出発の朝、空港まで一緒に来てくれないか。何も聞かずに。タクシー代は、半分ずつで'],['leo','……最後になるかもしれないから、君の顔を見ておきたいんだ']]},
+      cost:{true:5000}, gain:{true:16}, loss:{true:-10},
+      accept:{true:[['nar','早朝の空港。レオは、搭乗口の手前で、くるりと振り返った'],['leo','……結局、出発は延期になった。来た意味、なかったな'],['leo','でも、君が来てくれた。それで十分だ']]},
+      refuse:{true:[['leo','……そうか。そうだよな'],['leo','わがままを言った。もし行くことになったら、手紙を書くよ']]}}},
+  waver:[],
+  scam:'（なし）',
+  over:{title:'', lines:[]},
+  convert:[],
+  fate:'',
+  love:{title:'恋人エンド　神崎 レオ……？', lines:[['leo','{n}。……約束どおり、半分の話をするよ'],['leo','僕の本当の名前は、レオン・ハート。アメリカから来た、ある機関の調査員だ。この街には、詐欺グループを追って来ていた'],['leo','任務は終わった。でも、帰りの便は取っていない。……今度は本当の名前で、君の隣にいたいんだ']]},
+  friend:[['leo','{n}、もし困ったことがあったら、この番号に。……2台目のほうだ。誰よりも早く駆けつける']],
+  confess:{ask:[['leo','{n}。……君には、言えないことがたくさんある'],['leo','それでも、言える本当のことがひとつだけある。君が好きだ。……僕と、付き合ってくれないか']],
+    yes:[['leo','……ありがとう。この返事は、どこにも報告しない。僕だけの秘密にする']], no:[['leo','……そうか。正しい判断だと思う。……でも、たまには夜の散歩に付き合ってくれ']]},
+  after:['今日はありがとう。……家に着いたら、ひとことだけ連絡をくれ。安心したいんだ','君と話していると、仕事のことを忘れる。……これは、かなり珍しいことなんだ','おやすみ、{n}。戸締まりは、ちゃんとしてね'],
+  colors:{light:'#4a5568', dark:'#c9d1de'},
+  px:{c:{S:'#b98560',B:'#a8714f',M:'#7a3f30',H:'#e4e8ee',C:'#1d2029',E:'#22324a',A:'#e8c35a'}, h:[
+    '................','.....HHHHHHH....','....HHHHHHHHH...','...HHHHHHHHHHHH.','...HHHHHHHHHHHH.',
+    '...HH..HHHH..H..','...H.........H..','................','............A...']}
+};
+// レオ is never a wolf, so the wolf-side lines simply mirror the sincere ones (the code always reads by variant).
+(c => {
+  for (const k of ['tells', 'sns', 'obs']) c[k].wolf = c[k].true;
+  for (const r of [c.req.small, c.req.big]) for (const k of ['detail', 'accept', 'refuse', 'cost', 'gain', 'loss']) r[k].wolf = r[k].true;
+})(C.leo);
+C.leo.lie = {
+  claim: [['leo','先週末は、静岡の実家に帰っていたよ。母の手料理を食べて、ずっと寝てた']],
+  evidence: {
+    wolf: 'レオさん、週末は静岡の実家って言ってたよね？　その週末、横田基地の近くのお祭りの写真に写ってた。軍服の人たちと、英語でふつうに話してる',
+    true: 'レオさん、週末は静岡の実家って言ってたよね？　その週末、横田基地の近くのお祭りの写真に写ってた。軍服の人たちと、英語でふつうに話してる'
+  },
+  confront: {
+    wolf: [],
+    true: [['leo','……よく見つけたな。君の友達は、優秀だ'],['leo','実家に帰ったのは本当だよ。そのあと、少しだけ、古い友人に会いに行った。……それ以上は、聞かないでくれると助かる'],['nar','レオは、まったく動揺していなかった。それが、かえって不思議だった']]
+  }
+};
+
 C.keita.req.small.sets = 'offApp';
 C.shuichi.req.small.sets = 'secret';
 
@@ -1619,7 +1687,7 @@ const DAY_FLAVOR = [
   'アプリを入れてから、20日目。今日で、ひと区切りだ',
 ];
 const DATE_COST = { minato: 1500, rei: 4000, sakura: 2500, sou: 1500, haruto: 2500, nanase: 2000 };
-const DATE_COST2 = { keita: 2000, shuichi: 4000, ryo: 1500 };
+const DATE_COST2 = { keita: 2000, shuichi: 4000, ryo: 1500, leo: 3500 };
 const isRemote = id => C[id].remote && !(S && S.chars[id].home);
 const dateCost = id => (isRemote(id) ? 0 : DATE_COST[id] || DATE_COST2[id] || 3000);
 const heart = (id, d) => ['sys', `${C[id].short}　♥ ${d > 0 ? '+' : ''}${d}`];
@@ -1793,7 +1861,7 @@ function match(id, how) {
 }
 
 function newGame(name) {
-  S = { name: name || 'ミオ', day: 1, money: 60000, wolves: shuffle(IDS).slice(0, WOLF_COUNT), picks: [], outfit: 0, gift: false, shopped: 0,
+  S = { name: name || 'ミオ', day: 1, money: 60000, wolves: shuffle(IDS.filter(id => !C[id].neverWolf)).slice(0, WOLF_COUNT), picks: [], outfit: 0, gift: false, shopped: 0,
         schedule: {}, repay: [], chars: {}, clues: {}, matched: [], view: 'story', story: null, swipe: null, guess: null, overBy: null,
         meFlag: false, twinNow: null, knowTwin: false, twinCaught: 0, motif: Math.floor(Math.random() * MOTIFS.length), motifKnown: false,
         decoy: {}, partner: null, threads: {}, notes: [], seq: 0, plan: null, guide: null, profile: null, tx: [], newClues: 0, open: null, finale: false, wrongDay: Math.random() < WRONG_RATE ? 3 + Math.floor(Math.random() * 3) : null, v: 10 };
@@ -1831,7 +1899,7 @@ function breakSecret(id) {
 // Now and then there are none at all — suspecting everyone and finding nobody is part of the fun (owner's call).
 const NO_WOLF_RATE = 0.15, TWO_WOLF_RATE = 0.3;
 function dealWolves() {
-  const mine = shuffle(S.matched), rest = shuffle(IDS.filter(id => !S.matched.includes(id)));
+  const mine = shuffle(S.matched.filter(id => !C[id].neverWolf)), rest = shuffle(IDS.filter(id => !S.matched.includes(id) && !C[id].neverWolf));
   const r = Math.random();
   const k = mine.length >= 2 ? (r < NO_WOLF_RATE ? 0 : r < NO_WOLF_RATE + TWO_WOLF_RATE ? 2 : 1) : r < 0.5 ? 1 : 0;
   S.wolves = [...mine.slice(0, k), ...rest.slice(0, WOLF_COUNT - k)];
@@ -2511,6 +2579,7 @@ function endHTML() {
     <div class="kicker">${e.kicker}</div><h1>${esc(e.title)}</h1>
     <div class="endlines lines">${linesHTML(e.lines)}</div>
     <div class="reveal"><h3>答え合わせ</h3><p>${guessLine}</p>${wolfListHTML(fate)}
+      ${S.matched.filter(id => C[id].reveal).map(id => `<p ${who(id)}><b>${esc(C[id].full)}の正体</b>　${esc(C[id].reveal)}</p>`).join('')}
       ${e.metWolves.length > e.converted.length ? '<p class="muted">もっと距離を縮めていたら、狼の心も変えられたかもしれません。</p>' : ''}</div>
     <div class="reveal"><h3>好感度</h3>${tallyHTML()}</div>
     <div class="row"><button class="btn-main" data-act="restart">もう一度あそぶ</button><button class="btn-sub" data-act="toTitle">タイトルへ</button></div>
