@@ -328,7 +328,206 @@ function buildPortraits() {
     }
     PORTRAIT[id] = cv.toDataURL();
   }
+  // 第23版: the 32x32 portraits replace the 16x16 ones for everyone who has a look (the old PX stay as a fallback).
+  for (const id in P32.LOOK) PORTRAIT[id] = P32.toDataURL(P32.LOOK[id]);
 }
+/* ---------- pixel portraits (32x32, 第23版) ---------- */
+// Each look is built from shared parts: hair (crown + fringe profile + sides + back), eyes, mouth, outfit,
+// body build and jaw, plus small accessories. Shapes are tested per pixel, then a 1px dark outline is added.
+const P32 = (() => {
+  const N = 32, OUT = '#2a2230';
+  const SKINS = { base: ['#f3d2b6', '#e0ad8e'], fair: ['#f8dfcc', '#e8bba0'], tan: ['#c98e62', '#a8714f'] };
+  const BLUSH = '#f6b3b3', LIP = '#c4566c';
+  const BUILD = { slim: { neck: 3, sh: 7, slope: 1.5 }, normal: { neck: 3.5, sh: 8, slope: 1.8 }, broad: { neck: 4.5, sh: 10, slope: 2.2 } };
+  const JAW = { soft: [7.6, 7.2, 6.6, 5.6, 4.2, 2.4], square: [7.8, 7.6, 7.3, 6.6, 5.4, 3.6] };
+  const inEll = (x, y, cx, cy, rx, ry) => ((x + 0.5 - cx) / rx) ** 2 + ((y + 0.5 - cy) / ry) ** 2 <= 1;
+  const tone = (hex, f) => '#' + [1, 3, 5].map(i => Math.max(0, Math.min(255, Math.round(parseInt(hex.slice(i, i + 2), 16) * f))).toString(16).padStart(2, '0')).join('');
+  const faceAt = (x, y, jaw) => (y <= 16 ? inEll(x, y, 16, 14, 7.8, 8) : y <= 22 && Math.abs(x + 0.5 - 16) <= JAW[jaw][y - 17]);
+
+  // Fringe profiles: the lowest hair row for each column x = 8..23.
+  const FRINGE = {
+    neat:    [13, 11, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 13],
+    center:  [13, 12, 11, 11, 10, 10, 9, 8, 8, 9, 10, 10, 11, 11, 12, 13],
+    messy:   [13, 12, 11, 12, 10, 11, 12, 10, 11, 12, 10, 11, 12, 10, 12, 13],
+    swept:   [14, 14, 14, 13, 13, 12, 12, 11, 11, 10, 10, 9, 9, 9, 10, 12],
+    side:    [13, 13, 12, 12, 11, 11, 10, 10, 9, 9, 9, 8, 8, 8, 9, 11],
+    slick:   [11, 9, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 11],
+    spiky:   [12, 11, 12, 10, 11, 12, 10, 11, 12, 10, 11, 12, 10, 11, 12, 12],
+    bangs:   [13, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 13],
+    curtain: [16, 15, 14, 12, 11, 10, 9, 8, 8, 9, 10, 11, 12, 14, 15, 16],
+    shaggy:  [13, 12, 11, 11, 11, 12, 12, 12, 13, 13, 14, 14, 14, 14, 14, 14],
+    asym:    [10, 9, 9, 9, 9, 9, 10, 11, 12, 13, 14, 15, 16, 16, 16, 16],
+    short:   [11, 10, 10, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10, 10, 11],
+  };
+
+  function hairPixels(h) {
+    const fr = FRINGE[h.style], cells = [];
+    const top = h.top ?? 8;                                   // ry of the crown; bigger = more volume
+    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+      let on = false;
+      if (inEll(x, y, 16, 10.5, 9.4 + (h.wide || 0), top) && y < 13 && (x < 8 || x > 23 || y < fr[x - 8])) on = true;
+      if (x >= 8 && x <= 23 && y < fr[x - 8] && inEll(x, y, 16, 10.5, 9.4 + (h.wide || 0), top)) on = true;
+      if (y >= 8 && ((x === 7 || x === 8) && y <= (h.sideL ?? 14) || (x === 23 || x === 24) && y <= (h.sideR ?? 14))) on = true;
+      if (on) cells.push([x, y]);
+    }
+    // spikes: a tuft from the given tip straight down into the crown, so it never floats
+    (h.spikes || []).forEach(([x, y]) => { for (let yy = y; yy <= 6; yy++) cells.push([x, yy]); });
+    return cells;
+  }
+
+  const EX = [10, 18];
+  const EYES = {
+    round: (set, c, lash) => EX.forEach((x, i) => {
+      for (let k = 0; k < 4; k++) set(x + k, 13, OUT);
+      set(i ? x + 4 : x - 1, 13, OUT); if (lash) set(i ? x + 4 : x - 1, 12, OUT);
+      for (let k = 0; k < 4; k++) { set(x + k, 14, c); set(x + k, 15, c); }
+      set(x + 1, 15, tone(c, 0.45)); set(x + 2, 15, tone(c, 0.45));
+      set(x + 1, 16, tone(c, 1.5)); set(x + 2, 16, tone(c, 1.5));
+      set(i ? x + 2 : x + 1, 14, '#ffffff');
+    }),
+    sharp: (set, c, lash) => EX.forEach((x, i) => {
+      for (let k = 0; k < 4; k++) set(x + k, 13, OUT);
+      set(i ? x + 4 : x - 1, 12, OUT); set(i ? x + 4 : x - 1, 13, OUT);
+      for (let k = 0; k < 4; k++) set(x + k, 14, c);
+      set(x + 1, 14, tone(c, 0.45)); set(x + 2, 14, tone(c, 0.45));
+      set(x + 1, 15, tone(c, 1.5)); set(x + 2, 15, tone(c, 1.5));
+      set(i ? x + 2 : x + 1, 14, '#ffffff');
+    }),
+    calm: (set, c) => EX.forEach((x, i) => {
+      for (let k = 0; k < 4; k++) { set(x + k, 13, OUT); set(x + k, 14, c); set(x + k, 15, c); }
+      set(x + 1, 15, tone(c, 0.45)); set(x + 2, 15, tone(c, 0.45));
+      set(i ? x + 2 : x + 1, 14, '#ffffff');
+    }),
+    sleepy: (set, c) => EX.forEach((x, i) => {
+      for (let k = 0; k < 4; k++) { set(x + k, 14, OUT); set(x + k, 15, c); }
+      set(x + 1, 15, tone(c, 0.45)); set(x + 2, 15, tone(c, 0.45));
+      set(i ? x + 2 : x + 1, 15, '#ffffff');
+    }),
+    smile: set => EX.forEach(x => { set(x, 15, OUT); set(x + 1, 14, OUT); set(x + 2, 14, OUT); set(x + 3, 15, OUT); }),
+  };
+  const MOUTH = {
+    smile: set => { set(15, 19, LIP); set(16, 19, LIP); set(14, 18, LIP); set(17, 18, LIP); },
+    grin: set => { [14, 15, 16, 17].forEach(x => set(x, 19, LIP)); set(15, 20, LIP); set(16, 20, LIP); },
+    smirk: set => { set(15, 19, LIP); set(16, 19, LIP); set(17, 18, LIP); },
+    calm: set => { set(15, 19, LIP); set(16, 19, LIP); },
+  };
+
+  // Outfits: (x, y, v = distance from the center line, o = options) => color.
+  const V = (v, y, w = 2.5) => v <= w - (y - 24) * 0.5;               // the V of an open collar
+  const OUTFIT = {
+    tee: (x, y, v, o) => (y === 24 && v <= 4 ? tone(o.c, 0.8) : o.c),
+    vneck: (x, y, v, o) => (V(v, y) && y <= 28 ? o.skin : o.c),
+    shirt: (x, y, v, o) => (V(v, y, 3) && y <= 27 ? o.skin : (y <= 26 && v >= 2 && v <= 4.5 && (y - 24) <= 4.5 - v) ? (o.collar || '#ffffff') : o.c),
+    hoodie: (x, y, v, o) => { if (y === 24 && v <= 5) return tone(o.c, 0.75); if ((x === 14 || x === 17) && y >= 25 && y <= 28) return '#ffffff'; if (o.strap && Math.abs((x - 5) - (y - 24) * 1.1) <= 1 && x < 20) return tone(o.c, 0.55); return o.c; },
+    suit: (x, y, v, o) => { if (o.tie && v <= 0.5 && y >= 25) return o.tie; if (o.bow && y === 25 && v <= 1.5) return o.bow; if (V(v, y)) return o.shirt || '#ffffff'; if (o.watch && (x === 3 || x === 4) && y === 30) return '#e3b341'; if (o.pin && x === 21 && y === 27) return o.pin; return o.c; },
+    cardigan: (x, y, v, o) => { if (V(v, y)) return o.shirt || '#e8eef2'; if ((x === 15 || x === 16) && y === 30) return '#cccccc'; return o.c; },
+    turtle: (x, y, v, o) => (y <= 25 && v <= 4.5 ? tone(o.c, 1.12) : o.c),
+    apron: (x, y, v, o) => { if (y >= 26 && v <= 5) return o.apron; if (y >= 24 && (v >= 3.5 && v <= 4.5)) return o.apron; return o.c; },
+    jacket: (x, y, v, o) => (v <= 3 - (y - 24) * 0.2 ? o.inner : (v <= 3.8 - (y - 24) * 0.2 ? tone(o.c, 0.75) : o.c)),
+    jersey: (x, y, v, o) => { if (v <= 0.5 && y >= 25) return '#ffffff'; if (y === 24 && v <= 4) return '#ffffff'; if (v >= 9 && v <= 10) return '#ffffff'; return o.c; },
+    blouse: (x, y, v, o) => (y <= 25 && v <= 4 && !(v <= 0.5 && y === 25) ? (o.collar || '#ffffff') : o.c),
+    necklace: (x, y, v, o) => (V(v, y) && y <= 28 ? (y === 26 && v <= 1 ? '#d9d9e0' : o.skin) : (v <= 3 - (y - 24) * 0.3 ? tone(o.c, 1.4) : o.c)),
+  };
+
+  // Accessories drawn on top of everything: set(x, y, color).
+  const ACC = {
+    glassesRound: (set, c = '#6a7480') => { for (const x0 of [9, 17]) { for (let i = 1; i < 5; i++) { set(x0 + i, 12, c); set(x0 + i, 17, c); } for (let y = 13; y <= 16; y++) { set(x0, y, c); set(x0 + 5, y, c); } } set(15, 14, c); set(16, 14, c); },
+    glassesSquare: (set, c = '#6a7480') => { for (const x0 of [9, 17]) { for (let i = 0; i < 6; i++) set(x0 + i, 17, c); for (let y = 13; y <= 17; y++) { set(x0, y, c); set(x0 + 5, y, c); } } set(15, 14, c); set(16, 14, c); },
+    earringR: (set, c) => { set(24, 18, c); set(24, 19, c); },
+    earringL: (set, c) => { set(7, 18, c); set(7, 19, c); },
+    hoopR: (set, c) => { set(24, 18, c); set(25, 19, c); set(24, 20, c); },
+    mustache: (set, c) => { [13, 14, 15, 16, 17, 18].forEach(x => set(x, 18, c)); set(13, 19, c); set(18, 19, c); },
+    beard: (set, c) => { for (let y = 18; y <= 23; y++) for (let x = 9; x <= 22; x++) if (faceAt(x, y, 'square') && !(y === 19 && x >= 15 && x <= 16) && (y >= 20 || x <= 12 || x >= 19 || y === 18)) set(x, y, c); },
+    wrinkles: set => { set(8, 15, SKINS.base[1]); set(23, 15, SKINS.base[1]); },
+    hairpin: (set, c) => { set(19, 9, c); set(20, 9, c); set(21, 8, c); },
+    bandana: (set, c) => { for (let x = 7; x <= 24; x++) { set(x, 8, c); set(x, 9, c); } set(25, 9, c); set(26, 10, c); set(25, 11, c); },
+    beret: (set, c) => { for (let y = 0; y <= 5; y++) for (let x = 6; x <= 25; x++) if (inEll(x, y, 15, 3.5, 10, 3.2)) set(x, y, c); set(15, 0, c); },
+    shadesOnHead: (set, c) => { for (let x = 9; x <= 22; x++) set(x, 6, c); for (const x0 of [10, 17]) for (let i = 0; i < 5; i++) set(x0 + i, 7, c); },
+    headphones: (set, c) => { for (let x = 9; x <= 22; x++) set(x, 1, c); for (const [a, b] of [[6, 7], [24, 25]]) for (let y = 2; y <= 17; y++) { if (y < 11) { set(y < 6 ? (a === 6 ? 8 : 23) : a === 6 ? 7 : 24, y, c); } else { set(a, y, c); set(b, y, c); } } },
+    neckphones: (set, c) => { for (let x = 11; x <= 20; x++) set(x, 24, c); for (const x0 of [9, 20]) for (let y = 23; y <= 26; y++) { set(x0, y, c); set(x0 + 2, y, c); set(x0 + 1, y, c); } },
+    freckles: set => { [[10, 17], [12, 17], [19, 17], [21, 17]].forEach(([x, y]) => set(x, y, '#d9a07a')); },
+  };
+
+  function render(L) {
+    const px = Array.from({ length: N }, () => Array(N).fill(null));
+    const set = (x, y, c) => { if (x >= 0 && y >= 0 && x < N && y < N && c) px[y][x] = c; };
+    const [skin, shade] = SKINS[L.skin || 'base'];
+    const b = BUILD[L.build || 'normal'], h = L.hair;
+    // back hair (behind everything)
+    if (h.back) for (let y = 9; y <= h.back; y++) for (let x = 0; x < N; x++) {
+      const v = Math.abs(x + 0.5 - 16);
+      if (v >= 6.5 && v <= 9.5 + (h.backWide || 0)) set(x, y, tone(h.c, 0.85));
+    }
+    // body and neck
+    const o = { ...L.outfit, skin };
+    for (let y = 24; y < N; y++) for (let x = 0; x < N; x++) { const v = Math.abs(x + 0.5 - 16); if (v <= b.sh + (y - 24) * b.slope) set(x, y, OUTFIT[o.kind](x, y, v, o)); }
+    for (let y = 20; y <= 24; y++) for (let x = 0; x < N; x++) if (Math.abs(x + 0.5 - 16) <= b.neck && !(y === 24 && px[y][x] && px[y][x] !== skin && o.kind === 'turtle')) set(x, y, y === 23 ? shade : skin);
+    if (o.kind === 'turtle') for (let y = 22; y <= 24; y++) for (let x = 0; x < N; x++) if (Math.abs(x + 0.5 - 16) <= b.neck + 0.5) set(x, y, tone(o.c, 1.12));
+    // face, ears
+    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) if (faceAt(x, y, L.jaw || 'soft')) set(x, y, skin);
+    [[7, 14], [7, 15], [7, 16], [24, 14], [24, 15], [24, 16]].forEach(([x, y]) => set(x, y, skin));
+    set(16, 17, shade);
+    EYES[L.eyes || 'round'](set, L.iris, L.lash);
+    MOUTH[L.mouth || 'smile'](set);
+    if (L.blush !== false) [[9, 17], [10, 17], [21, 17], [22, 17]].forEach(([x, y]) => set(x, y, BLUSH));
+    // brows show only where the fringe leaves room
+    if (L.brows) for (const [x0, s] of [[10, 1], [19, -1]]) for (let i = 0; i < 3; i++) set(x0 + i, 11 + (L.browTilt ? (s > 0 ? (i === 0 ? 1 : 0) : (i === 2 ? 1 : 0)) : 0), L.brows);
+    // hair
+    const shine = h.shine || tone(h.c, 1.45);
+    hairPixels(h).forEach(([x, y]) => set(x, y, h.c));
+    (h.shineAt || [[12, 4], [13, 4], [14, 4], [15, 4], [11, 5]]).forEach(([x, y]) => { if (px[y][x] === h.c) set(x, y, shine); });
+    if (h.gray) h.gray.forEach(([x, y]) => set(x, y, '#b8b8b8'));
+    (L.acc || []).forEach(([k, c]) => ACC[k](set, c));
+    // outline
+    const out = px.map(r => r.slice());
+    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+      if (px[y][x]) continue;
+      if ([[1, 0], [-1, 0], [0, 1], [0, -1]].some(([dx, dy]) => px[y + dy] && px[y + dy][x + dx])) out[y][x] = OUT;
+    }
+    return out;
+  }
+
+  function toDataURL(L) {
+    const cv = document.createElement('canvas'); cv.width = N; cv.height = N;
+    const g = cv.getContext('2d');
+    render(L).forEach((r, y) => r.forEach((c, x) => { if (c) { g.fillStyle = c; g.fillRect(x, y, 1, 1); } }));
+    return cv.toDataURL();
+  }
+
+  const temples = [[7, 11], [7, 12], [7, 13], [24, 11], [24, 12], [24, 13]];
+  const LOOK = {
+    minato:  { hair: { style: 'center', c: '#4a3326' }, iris: '#6b4a3a', eyes: 'calm', mouth: 'smile', outfit: { kind: 'shirt', c: '#7fae8e' }, acc: [['glassesRound', '#3a2a36']] },
+    rei:     { hair: { style: 'swept', c: '#e8c35a', sideR: 18, sideL: 16 }, iris: '#8a5ab8', eyes: 'sharp', mouth: 'smirk', build: 'slim', outfit: { kind: 'vneck', c: '#5b3f9e' }, acc: [['earringR', '#f2f2f2']] },
+    sakura:  { hair: { style: 'bangs', c: '#d98a8f', back: 23, sideL: 20, sideR: 20 }, iris: '#b05a6a', eyes: 'round', lash: true, build: 'slim', outfit: { kind: 'blouse', c: '#f6c1cf' }, acc: [['hairpin', '#ffd84a']] },
+    sou:     { hair: { style: 'shaggy', c: '#1e1e2a', top: 8.6, sideL: 17, sideR: 17, spikes: [[11, 1], [16, 0], [20, 1]] }, iris: '#4a5a7a', eyes: 'sharp', mouth: 'calm', outfit: { kind: 'jacket', c: '#34445e', inner: '#1e1e2a' }, acc: [['earringL', '#c9ced6']] },
+    haruto:  { hair: { style: 'messy', c: '#b98a5a', sideL: 15, sideR: 15 }, iris: '#8a6a3a', eyes: 'round', mouth: 'smile', build: 'slim', outfit: { kind: 'apron', c: '#f4efe6', apron: '#e9dcc6' } },
+    nanase:  { hair: { style: 'side', c: '#3b3f5c', sideL: 15, sideR: 15 }, iris: '#5a6080', eyes: 'calm', mouth: 'smile', build: 'slim', outfit: { kind: 'cardigan', c: '#a7b48a', shirt: '#f4f1e6' } },
+    you:     { hair: { style: 'side', c: '#3b3f5c', sideL: 15, sideR: 15 }, iris: '#5a6080', eyes: 'sharp', mouth: 'grin', build: 'slim', outfit: { kind: 'hoodie', c: '#d0563f' } },
+    miya:    { hair: { style: 'bangs', c: '#2a2228', back: 27, backWide: 0.5, sideL: 22, sideR: 22 }, iris: '#6a4a5a', eyes: 'round', lash: true, mouth: 'grin', build: 'slim', outfit: { kind: 'tee', c: '#e5a23b' } },
+    yanagi:  { hair: { style: 'slick', c: '#b9b4b0', shine: '#e6e2de' }, iris: '#2b1d2f', eyes: 'smile', mouth: 'calm', jaw: 'square', outfit: { kind: 'apron', c: '#f4efe6', apron: '#6b4a33' }, acc: [['beard', '#c9c4c0'], ['wrinkles']] },
+    shizuma: { hair: { style: 'side', c: '#1f1c22', sideL: 13, sideR: 13 }, iris: '#4a3a5a', eyes: 'calm', mouth: 'calm', outfit: { kind: 'suit', c: '#26304a', bow: '#c9a24a', pin: '#c9a24a' } },
+    gou:     { hair: { style: 'short', c: '#3a2a20' }, iris: '#7a4a28', eyes: 'round', mouth: 'grin', build: 'broad', jaw: 'square', brows: '#3a2a20', outfit: { kind: 'apron', c: '#3b4f86', apron: '#ece6d6' }, acc: [['bandana', '#ece6d6']] },
+    kai:     { hair: { style: 'spiky', c: '#5a3a22', spikes: [[10, 2], [14, 1], [18, 1], [22, 2]] }, iris: '#8a5a2a', eyes: 'round', mouth: 'grin', build: 'broad', jaw: 'square', outfit: { kind: 'jacket', c: '#e2703a', inner: '#262626' }, acc: [['shadesOnHead', '#262626']] },
+    iroha:   { hair: { style: 'bangs', c: '#7d9fd6', back: 24, sideL: 21, sideR: 21 }, iris: '#4a6ab0', eyes: 'round', lash: true, mouth: 'grin', build: 'slim', outfit: { kind: 'shirt', c: '#efe3c4', collar: '#ffffff' }, acc: [['beret', '#c4473a'], ['freckles']] },
+    shingo:  { hair: { style: 'short', c: '#22201e', top: 7.4 }, iris: '#4a3a3a', eyes: 'calm', mouth: 'smile', brows: '#22201e', outfit: { kind: 'suit', c: '#4a5570', tie: '#7a8aa8' } },
+    nagi:    { hair: { style: 'bangs', c: '#a9b6cc', sideL: 15, sideR: 15 }, iris: '#7a5aa0', eyes: 'sleepy', mouth: 'calm', build: 'slim', outfit: { kind: 'hoodie', c: '#3b3f4f' }, acc: [['headphones', '#2a2a33']] },
+    ren:     { hair: { style: 'curtain', c: '#2b2d42', sideL: 18, sideR: 18 }, iris: '#4a6a8a', eyes: 'sleepy', mouth: 'smile', build: 'slim', outfit: { kind: 'turtle', c: '#3a3a40' }, acc: [['neckphones', '#1fa3a8']] },
+    akira:   { hair: { style: 'asym', c: '#b7a3c9', sideL: 10, sideR: 19 }, iris: '#8a5a9a', eyes: 'sharp', lash: true, mouth: 'smirk', build: 'slim', outfit: { kind: 'vneck', c: '#2e3a3a' }, acc: [['earringL', '#e6c35c'], ['hoopR', '#e6c35c']] },
+    shion:   { hair: { style: 'curtain', c: '#2a2440', back: 26, sideL: 22, sideR: 22 }, iris: '#8a7ac0', eyes: 'sharp', lash: true, mouth: 'smile', build: 'slim', outfit: { kind: 'vneck', c: '#4b3a6b' }, acc: [['earringR', '#e8d27a'], ['earringL', '#e8d27a']] },
+    noa:     { hair: { style: 'center', c: '#c9a46a', sideL: 14, sideR: 14 }, skin: 'fair', iris: '#4a8ab0', eyes: 'round', mouth: 'smile', outfit: { kind: 'shirt', c: '#2e3f63' } },
+    keita:   { hair: { style: 'messy', c: '#d9823b', top: 8.8, wide: 0.6, sideL: 15, sideR: 15, spikes: [[9, 2], [13, 1], [19, 1]] }, iris: '#8a5a2a', eyes: 'round', mouth: 'grin', outfit: { kind: 'jacket', c: '#3c8c7a', inner: '#e8e2d0' } },
+    shuichi: { hair: { style: 'neat', c: '#1f1d24' }, iris: '#4a4a5a', eyes: 'calm', mouth: 'calm', outfit: { kind: 'turtle', c: '#6d6f78' }, acc: [['glassesSquare', '#2a2a33']] },
+    ryo:     { hair: { style: 'short', c: '#2a1f1a', top: 7.4 }, iris: '#6a4a3a', eyes: 'round', mouth: 'grin', brows: '#2a1f1a', outfit: { kind: 'jersey', c: '#c8402f' } },
+    leo:     { hair: { style: 'short', c: '#e4e8ee', shine: '#ffffff' }, skin: 'tan', iris: '#4a6a9a', eyes: 'sharp', mouth: 'calm', brows: '#c9ced6', outfit: { kind: 'tee', c: '#1d2029' }, acc: [['earringR', '#e8c35a']] },
+    takumi:  { hair: { style: 'messy', c: '#3b2a20', spikes: [[12, 2], [13, 1], [19, 2]] }, iris: '#6b4a2a', eyes: 'round', mouth: 'grin', outfit: { kind: 'hoodie', c: '#3a7d44', strap: true } },
+    riku:    { hair: { style: 'swept', c: '#e8d7a8', back: 19, sideL: 18, sideR: 18 }, iris: '#8a55b5', eyes: 'sharp', mouth: 'smirk', build: 'slim', brows: '#b89f6a', browTilt: true, outfit: { kind: 'necklace', c: '#22202a' }, acc: [['earringR', '#d9d9e0']] },
+    seiji:   { hair: { style: 'slick', c: '#4a4a4a', shineAt: [[12, 4], [16, 4], [20, 4], [13, 5], [17, 5]], shine: '#9a9a9a' }, iris: '#2b1d14', eyes: 'smile', mouth: 'grin', build: 'broad', jaw: 'square', brows: '#3a3a3a', outfit: { kind: 'suit', c: '#1f2a44', tie: '#c0392b', watch: true }, acc: [['mustache', '#3e3a36'], ['wrinkles']] },
+    koichi:  { hair: { style: 'side', c: '#3a3632', gray: temples }, iris: '#4a5a6a', eyes: 'calm', mouth: 'calm', outfit: { kind: 'cardigan', c: '#5b6b7a' }, acc: [['glassesSquare'], ['wrinkles']] },
+    jin:     { hair: { style: 'spiky', c: '#c9a24a', spikes: [[10, 1], [11, 2], [15, 0], [16, 1], [20, 1], [21, 2]] }, iris: '#7a5a2a', eyes: 'round', mouth: 'grin', outfit: { kind: 'vneck', c: '#e05a8a' }, acc: [['wrinkles']] },
+  };
+
+  return { LOOK, render, toDataURL };
+})();
 const pfHTML = id => `<div class="pf" style="--who:var(--c-${id})"><img class="px" src="${PORTRAIT[id]}" alt=""></div>`;
 
 /* ---------- cast ---------- */
